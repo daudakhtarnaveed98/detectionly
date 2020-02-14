@@ -2,6 +2,7 @@
 
 // Define user schema.
 const userSchemaDefinition = `
+    # User schema.
     type User {
         _id: ID!,
         userName: String!,
