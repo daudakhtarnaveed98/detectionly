@@ -1,10 +1,12 @@
-// Requiring modules.
+'use strict';
+
+// Require modules.
 const mongoose = require('mongoose');
 
 // Create schema constructor from mongoose.
 const Schema = mongoose.Schema;
 
-// Create schema for user.
+// Create user schema for mongoose.
 const userSchema = new Schema({
     // Required properties.
     userName: {
@@ -46,5 +48,5 @@ const userSchema = new Schema({
     }
 });
 
-// Create model using mongoose and export it.
-exports = mongoose.model('User', userSchema);
+// Create model using mongoose.
+exports.User = mongoose.model('User', userSchema);
