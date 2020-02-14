@@ -4,9 +4,9 @@
 const queries = `
     # Root level query.
     type Query {
-        
+        loginUser
     }
 `;
 
-// Export rootSchemaDefinition.
+// Export queries.
 exports.queries = queries;

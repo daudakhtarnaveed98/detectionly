@@ -1,10 +1,10 @@
 'use strict';
 
 // Define inputs.
-const UserInput = `
+// For user registration.
+const UserRegistrationInput = `
     # Input to register a user.
-    input UserInput {
-        userName: String!
+    input UserRegistrationInput {
         emailAddress: String!
         password: String!
         firstName: String!
@@ -12,5 +12,15 @@ const UserInput = `
     }
 `;
 
-// Export rootSchemaDefinition.
-exports.UserInput = UserInput;
+// For user login.
+const UserLoginInput = `
+    # Input to login a user.
+    input UserRegistrationInput {
+        emailAddress: String!
+        password: String!
+    }
+`;
+
+// Export inputs.
+exports.UserRegistrationInput = UserRegistrationInput;
+exports.UserLoginInput = UserLoginInput;

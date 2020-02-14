@@ -9,5 +9,5 @@ const rootSchemaDefinition = `
     }
 `;
 
-// Export rootSchemaDefinition.
+// Export root schema definition.
 exports.rootSchemaDefinition = rootSchemaDefinition;

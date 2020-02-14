@@ -7,10 +7,11 @@ const { userSchemaDefinition } = require('./user-schema');
 const { rootSchemaDefinition } = require('./root-schema');
 const { queries } = require('./queries');
 const { mutations } = require('./mutations');
+const { UserRegistrationInput } = require('./inputs');
 
 // Concatenate schemas, queries and mutations.
 const concatenatedSchemas = concatenateSchemas(
-    userSchemaDefinition, rootSchemaDefinition, queries, mutations
+    userSchemaDefinition, rootSchemaDefinition, queries, mutations, UserRegistrationInput
 );
 
 // Build graphql schema.
