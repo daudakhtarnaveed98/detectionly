@@ -4,7 +4,7 @@
 const rootSchemaDefinition = `
     # Root level schema.
     type schema {
-        query: Query,
+        query: Query
         mutation: Mutation
     }
 `;
