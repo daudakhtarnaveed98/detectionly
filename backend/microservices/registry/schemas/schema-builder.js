@@ -17,5 +17,5 @@ const concatenatedSchema = concatenateSchemas(
 // Build graphql schema.
 const graphqlSchema = buildSchema(concatenatedSchema);
 
-// Export schema.
+// Export.
 exports.graphqlSchema = graphqlSchema;

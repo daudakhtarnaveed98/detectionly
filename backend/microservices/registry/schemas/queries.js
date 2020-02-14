@@ -8,5 +8,5 @@ const queries = `
     }
 `;
 
-// Export queries.
+// Export.
 exports.queries = queries;

@@ -15,5 +15,5 @@ function concatenateSchemas(...schemasToCombine) {
     return concatenatedSchemas;
 }
 
-// Export functions.
+// Export.
 exports.concatenateSchemas = concatenateSchemas;

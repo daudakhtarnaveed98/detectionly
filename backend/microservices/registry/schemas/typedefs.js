@@ -36,9 +36,7 @@ const authenticationDataDefinition = `
     }
 `;
 
-// Export schema definitions.
+// Export.
 exports.rootSchemaDefinition = rootSchemaDefinition;
 exports.userSchemaDefinition = userSchemaDefinition;
-
-// Export other type definitions.
 exports.authenticationDataDefinition = authenticationDataDefinition;

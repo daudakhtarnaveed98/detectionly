@@ -4,9 +4,9 @@
 const mutations = `
     # Root level mutation.
     type Mutation {
-        registerUser(userRegistrationData: UserRegistrationInput): User
+        registerUser(userRegistrationData: UserRegistrationInput): User!
     }
 `;
 
-// Export mutations.
+// Export.
 exports.mutations = mutations;

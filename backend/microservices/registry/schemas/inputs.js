@@ -21,6 +21,6 @@ const UserLoginInput = `
     }
 `;
 
-// Export inputs.
+// Export.
 exports.UserRegistrationInput = UserRegistrationInput;
 exports.UserLoginInput = UserLoginInput;

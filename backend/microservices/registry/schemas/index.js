@@ -3,6 +3,6 @@
 // Require modules.
 const { graphqlSchema } = require('./schema-builder');
 
-// Export schema.
+// Export.
 exports.graphqlSchema = graphqlSchema;
 

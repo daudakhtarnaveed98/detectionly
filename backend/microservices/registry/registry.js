@@ -5,18 +5,29 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
 const schemas = require('./schemas');
+const resolvers = require("./resolvers");
+const database = require('./database');
 
 // Initialize objects.
 const registry = express();
 
 // Initialize middleware.
 registry.use(bodyParser.json());
-registry.use('/api/registry', graphqlHttp(
-    {
-        schema: schemas.graphqlSchema,
-        graphiql: true
-    }
-));
+registry.use('/api/registry', graphqlHttp({
+    // Provide schema.
+    schema: schemas.graphqlSchema,
+
+    // Provide resolvers.
+    rootValue: {
+        registerUser: (args) => {
+            const {userRegistrationData: userRegistrationData} = args;
+            return resolvers.registerUserResolver(userRegistrationData);
+        }
+    },
+
+    // Enable graphiql.
+    graphiql: true,
+}));
 
 // Start listening.
 registry.listen(3000);
