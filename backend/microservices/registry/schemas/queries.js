@@ -4,7 +4,7 @@
 const queries = `
     # Root level query.
     type Query {
-        loginUser
+        loginUser(userLoginData: UserLoginInput): AuthenticationData!
     }
 `;
 

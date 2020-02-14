@@ -15,7 +15,7 @@ const UserRegistrationInput = `
 // For user login.
 const UserLoginInput = `
     # Input to login a user.
-    input UserRegistrationInput {
+    input UserLoginInput {
         emailAddress: String!
         password: String!
     }

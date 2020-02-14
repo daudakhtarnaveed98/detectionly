@@ -13,7 +13,8 @@ const registry = express();
 registry.use(bodyParser.json());
 registry.use('/api/registry', graphqlHttp(
     {
-
+        schema: schemas.graphqlSchema,
+        graphiql: true
     }
 ));
 

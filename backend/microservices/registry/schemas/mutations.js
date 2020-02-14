@@ -4,7 +4,7 @@
 const mutations = `
     # Root level mutation.
     type Mutation {
-        registerUser(userInput: UserInput): User
+        registerUser(userRegistrationData: UserRegistrationInput): User
     }
 `;
 

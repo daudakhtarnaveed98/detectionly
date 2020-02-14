@@ -9,10 +9,6 @@ const Schema = mongoose.Schema;
 // Create user schema for mongoose.
 const userSchema = new Schema({
     // Required properties.
-    userName: {
-        type: String,
-        required: true
-    },
     emailAddress: {
         type: String,
         required: true
