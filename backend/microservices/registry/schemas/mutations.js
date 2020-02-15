@@ -4,8 +4,8 @@
 const mutations = `
     # Root level mutation.
     type Mutation {
-        registerUser(userRegistrationData: UserRegistrationInput): User!
-        updateUserData(userUpdateData: UserDataUpdateInput): User!
+        registerUser(userRegistrationData: UserRegistrationInput): Response!
+        updateUserData(userUpdateData: UserDataUpdateInput): Response!
         updateUserPassword(userUpdatePasswordData: UserPasswordUpdateInput): Response!
     }
 `;
