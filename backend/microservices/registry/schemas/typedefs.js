@@ -36,7 +36,17 @@ const authenticationDataDefinition = `
     }
 `;
 
+const responseMessageDefinition = `
+    # Response message.
+    type Response {
+        _id: ID!
+        statusCode: String!
+        responseMessage: String!
+    }
+`;
+
 // Export.
 exports.rootSchemaDefinition = rootSchemaDefinition;
 exports.userSchemaDefinition = userSchemaDefinition;
 exports.authenticationDataDefinition = authenticationDataDefinition;
+exports.responseMessageDefinition = responseMessageDefinition;

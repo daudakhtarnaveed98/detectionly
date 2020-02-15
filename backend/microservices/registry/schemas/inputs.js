@@ -23,7 +23,7 @@ const UserLoginInput = `
 
 // For user update.
 const UserDataUpdateInput = `
-# Input to update a user.
+    # Input to update a user.
     input UserDataUpdateInput {
         emailAddress: String!
         firstName: String
@@ -36,7 +36,17 @@ const UserDataUpdateInput = `
     }
 `;
 
+// For password update.
+const UserPasswordUpdateInput = `
+    # Input to update password.
+    input UserPasswordUpdateInput {
+        emailAddress: String!
+        password: String!
+    }
+`;
+
 // Export.
 exports.UserRegistrationInput = UserRegistrationInput;
 exports.UserLoginInput = UserLoginInput;
 exports.UserDataUpdateInput = UserDataUpdateInput;
+exports.UserPasswordUpdateInput = UserPasswordUpdateInput;
