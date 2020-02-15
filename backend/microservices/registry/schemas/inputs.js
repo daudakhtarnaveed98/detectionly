@@ -21,6 +21,22 @@ const UserLoginInput = `
     }
 `;
 
+// For user update.
+const UserUpdateInput = `
+# Input to update a user.
+    input UserUpdateInput {
+        password: String
+        firstName: String
+        lastName: String
+        gender: String
+        phoneNumber: String
+        dateOfBirth: String
+        organizationName: String
+        roleInOrganization: String
+    }
+`;
+
 // Export.
 exports.UserRegistrationInput = UserRegistrationInput;
 exports.UserLoginInput = UserLoginInput;
+exports.UserUpdateInput = UserUpdateInput;
