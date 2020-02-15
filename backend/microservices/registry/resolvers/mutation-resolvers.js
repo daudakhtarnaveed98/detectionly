@@ -83,12 +83,29 @@ async function updateUserData(userUpdateData) {
         new: true
     };
 
-    // Find and update user.
+    // Variables.
+    let returned = null;        // To store results for checkIfExists function.
+
+    // Check for existence.
     try {
-        const result = await User.findOneAndUpdate(conditions, update, options).exec();
-        return { _id: result._id, statusCode:"200 OK", responseMessage:"User Updated Successfully." };
+        returned = await checkIfExists(userUpdateData.emailAddress);
     } catch (error) {
         console.log(error);
+    }
+
+    // Update if exists.
+    const exists = returned[0];
+
+    if (exists) {
+        // Find and update user.
+        try {
+            const result = await User.findOneAndUpdate(conditions, update, options).exec();
+            return {_id: result._id, statusCode: "200 OK", responseMessage: "User Updated Successfully."};
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        return {statusCode: "404 Not Found", responseMessage: "User Not Found."};
     }
 }
 
@@ -106,9 +123,12 @@ async function updateUserPassword(userUpdatePasswordData) {
         emailAddress: userUpdatePasswordData.emailAddress
     };
 
+    // Get data.
+    const {currentPassword, emailAddress, newPassword} = userUpdatePasswordData;
+
     // Update data.
     const update = {
-        password: userUpdatePasswordData.newPassword
+        password: newPassword
     };
 
     // Options.
@@ -117,12 +137,43 @@ async function updateUserPassword(userUpdatePasswordData) {
         new: true
     };
 
-    // Find and update user.
+    // Variables.
+    let returned = null;        // To store results for checkIfExists function.
+
+    // Check for existence.
     try {
-        const result = await User.findOneAndUpdate(conditions, update, options).exec();
-        return { _id: result._id, statusCode:"200 OK", responseMessage:"Password Updated Successfully." };
+        returned = await checkIfExists(emailAddress);
     } catch (error) {
         console.log(error);
+    }
+
+    // Update if exists.
+    const exists = returned[0];
+
+    if (exists) {
+        // Verify old password.
+        const oldPassword = returned[1].password;
+
+        let comparisonResult = null;
+        try {
+            comparisonResult = await compare(currentPassword, oldPassword);
+        } catch (error) {
+            console.log(error);
+        }
+
+        // Find and update user.
+        if (comparisonResult) {
+            try {
+                const result = await User.findOneAndUpdate(conditions, update, options).exec();
+                return {_id: result._id, statusCode: "200 OK", responseMessage: "Password Updated Successfully."};
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            return {statusCode: "401 Unauthorized", responseMessage: "Invalid Credentials."};
+        }
+    } else {
+        return {statusCode: "404 Not Found", responseMessage: "User Not Found."};
     }
 }
 
@@ -142,9 +193,6 @@ async function deleteUser(userLoginData) {
     const exists = returned[0];
 
     if (exists) {
-        // Get user object from returned array.
-        const existingUser = returned[1];
-
         // Compare passwords.
         const existingUserPassword = returned[1].password;
         let comparisonResult = null;
