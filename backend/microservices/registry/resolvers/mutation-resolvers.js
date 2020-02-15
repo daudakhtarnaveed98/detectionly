@@ -33,7 +33,7 @@ async function registerUser(userRegistrationData) {
 
 // For user update.
 async function updateUserData(userUpdateData) {
-    // Query to find user.
+    // Conditions to find user.
     const conditions = {
         emailAddress: userUpdateData.emailAddress
     };
@@ -60,6 +60,40 @@ async function updateUserData(userUpdateData) {
     return { ...result._doc, password:null};
 }
 
+// For password update.
+async function updateUserPassword(userUpdatePasswordData) {
+    // Hash password.
+    userUpdatePasswordData.newPassword = await hash(userUpdatePasswordData.newPassword, 12);
+
+    // Conditions to find user.
+    const conditions = {
+        emailAddress: userUpdatePasswordData.emailAddress
+    };
+
+    // Update data.
+    const update = {
+        password: userUpdatePasswordData.newPassword
+    };
+
+    // Options.
+    const options = {
+        useFindAndModify:false,
+        new: true
+    };
+
+    // Find and update user.
+    const result = await User.findOneAndUpdate(conditions, update, options).exec();
+
+    // Return if success.
+    if (result) {
+        return { _id: result._doc._id, statusCode:"200", responseMessage:"OK"};
+    }
+
+    // Else return result.
+    return result;
+}
+
 // Export.
 exports.registerUserResolver = registerUser;
 exports.updateUserDataResolver = updateUserData;
+exports.updateUserPassword = updateUserPassword;

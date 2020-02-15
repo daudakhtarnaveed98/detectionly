@@ -41,7 +41,7 @@ const UserPasswordUpdateInput = `
     # Input to update password.
     input UserPasswordUpdateInput {
         emailAddress: String!
-        password: String!
+        newPassword: String!
     }
 `;
 

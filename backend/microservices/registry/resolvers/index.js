@@ -1,8 +1,9 @@
 'use strict';
 
 // Require modules.
-const { registerUserResolver, updateUserDataResolver } = require('./mutation-resolvers');
+const { registerUserResolver, updateUserDataResolver, updateUserPassword } = require('./mutation-resolvers');
 
 // Export.
 exports.registerUserResolver = registerUserResolver;
 exports.updateUserDataResolver = updateUserDataResolver;
+exports.updateUserPasswordResolver = updateUserPassword;

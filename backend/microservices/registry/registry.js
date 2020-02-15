@@ -24,8 +24,12 @@ registry.use('/api/registry', graphqlHttp({
             return await resolvers.registerUserResolver(userRegistrationData);
         },
         updateUserData: async (args) => {
-            const {UserDataUpdateInput: userUpdateData} = args;
+            const {userUpdateData: userUpdateData} = args;
             return await resolvers.updateUserDataResolver(userUpdateData);
+        },
+        updateUserPassword: async (args) => {
+            const {userUpdatePasswordData: userUpdatePasswordData} = args;
+            return await resolvers.updateUserPasswordResolver(userUpdatePasswordData);
         }
     },
 
