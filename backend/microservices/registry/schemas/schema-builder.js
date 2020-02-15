@@ -5,13 +5,13 @@ const { buildSchema } = require('graphql');
 const {concatenateSchemas} = require('./utils');
 const { queries } = require('./queries');
 const { mutations } = require('./mutations');
-const { UserRegistrationInput, UserLoginInput, UserUpdateInput } = require('./inputs');
+const { UserRegistrationInput, UserLoginInput, UserDataUpdateInput } = require('./inputs');
 const { userSchemaDefinition, rootSchemaDefinition, authenticationDataDefinition } = require('./typedefs');
 
 // Concatenate schemas, queries and mutations.
 const concatenatedSchema = concatenateSchemas(
     userSchemaDefinition, rootSchemaDefinition, queries, mutations, UserRegistrationInput,
-    authenticationDataDefinition, UserLoginInput, UserUpdateInput
+    authenticationDataDefinition, UserLoginInput, UserDataUpdateInput
 );
 
 // Build graphql schema.
