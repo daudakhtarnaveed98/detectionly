@@ -33,7 +33,7 @@ async function registerUser(userRegistrationData) {
     // Save user to database.
     try {
         const result = await userToRegister.save();
-        return {...result._doc, password: null};
+        return { _id: result._doc._id, statusCode:"201 Created", responseMessage:"User Registered Successfully." };
     } catch (error) {
         console.log(error);
     }
@@ -66,7 +66,7 @@ async function updateUserData(userUpdateData) {
     // Find and update user.
     try {
         const result = await User.findOneAndUpdate(conditions, update, options).exec();
-        return { ...result._doc, password:null};
+        return { _id: result._id, statusCode:"200 OK", responseMessage:"User Updated Successfully." };
     } catch (error) {
         console.log(error);
     }
@@ -100,7 +100,7 @@ async function updateUserPassword(userUpdatePasswordData) {
     // Find and update user.
     try {
         const result = await User.findOneAndUpdate(conditions, update, options).exec();
-        return { _id: result._doc._id, statusCode:"200", responseMessage:"OK"};
+        return { _id: result._id, statusCode:"200 OK", responseMessage:"Password Updated Successfully." };
     } catch (error) {
         console.log(error);
     }
