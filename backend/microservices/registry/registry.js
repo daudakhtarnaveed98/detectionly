@@ -21,15 +21,29 @@ registry.use('/api/registry', graphqlHttp({
     rootValue: {
         registerUser: async (args) => {
             const {userRegistrationData: userRegistrationData} = args;
-            return await resolvers.registerUserResolver(userRegistrationData);
+            try {
+                return await resolvers.registerUserResolver(userRegistrationData);
+            } catch (error) {
+                console.log(error);
+            }
         },
+
         updateUserData: async (args) => {
             const {userUpdateData: userUpdateData} = args;
-            return await resolvers.updateUserDataResolver(userUpdateData);
+            try {
+                return await resolvers.updateUserDataResolver(userUpdateData);
+            } catch (error) {
+                console.log(error);
+            }
         },
+
         updateUserPassword: async (args) => {
             const {userUpdatePasswordData: userUpdatePasswordData} = args;
-            return await resolvers.updateUserPasswordResolver(userUpdatePasswordData);
+            try {
+                return await resolvers.updateUserPasswordResolver(userUpdatePasswordData);
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
 

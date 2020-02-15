@@ -8,7 +8,11 @@ const { hash } = require('bcryptjs');
 // For user registration.
 async function registerUser(userRegistrationData) {
     // Hash password.
-    userRegistrationData.password = await hash(userRegistrationData.password, 12);
+    try {
+        userRegistrationData.password = await hash(userRegistrationData.password, 12);
+    } catch (error) {
+        console.log(error);
+    }
 
     // Create user based on model.
     const userToRegister = new User({
@@ -27,8 +31,12 @@ async function registerUser(userRegistrationData) {
     });
 
     // Save user to database.
-    const result = await userToRegister.save();
-    return {...result._doc, password: null};
+    try {
+        const result = await userToRegister.save();
+        return {...result._doc, password: null};
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // For user update.
@@ -56,14 +64,22 @@ async function updateUserData(userUpdateData) {
     };
 
     // Find and update user.
-    const result = await User.findOneAndUpdate(conditions, update, options).exec();
-    return { ...result._doc, password:null};
+    try {
+        const result = await User.findOneAndUpdate(conditions, update, options).exec();
+        return { ...result._doc, password:null};
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // For password update.
 async function updateUserPassword(userUpdatePasswordData) {
     // Hash password.
-    userUpdatePasswordData.newPassword = await hash(userUpdatePasswordData.newPassword, 12);
+    try {
+        userUpdatePasswordData.newPassword = await hash(userUpdatePasswordData.newPassword, 12);
+    } catch (error) {
+        console.log(error);
+    }
 
     // Conditions to find user.
     const conditions = {
@@ -82,15 +98,12 @@ async function updateUserPassword(userUpdatePasswordData) {
     };
 
     // Find and update user.
-    const result = await User.findOneAndUpdate(conditions, update, options).exec();
-
-    // Return if success.
-    if (result) {
+    try {
+        const result = await User.findOneAndUpdate(conditions, update, options).exec();
         return { _id: result._doc._id, statusCode:"200", responseMessage:"OK"};
+    } catch (error) {
+        console.log(error);
     }
-
-    // Else return result.
-    return result;
 }
 
 // Export.
