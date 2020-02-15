@@ -7,6 +7,7 @@ const mutations = `
         registerUser(userRegistrationData: UserRegistrationInput): Response!
         updateUserData(userUpdateData: UserDataUpdateInput): Response!
         updateUserPassword(userUpdatePasswordData: UserPasswordUpdateInput): Response!
+        deleteUser(userLoginData: UserLoginInput): Response!
     }
 `;
 

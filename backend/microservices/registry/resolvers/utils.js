@@ -5,7 +5,7 @@ const { User } = require('../models');
 
 // Utility functions.
 // Function to check duplicate users.
-async function checkDuplicate(userEmailAddress) {
+async function checkIfExists(userEmailAddress) {
     // Conditions to find user.
     const conditions = {
         emailAddress: userEmailAddress
@@ -21,4 +21,4 @@ async function checkDuplicate(userEmailAddress) {
 }
 
 // Export.
-exports.checkDuplicate = checkDuplicate;
+exports.checkIfExists = checkIfExists;

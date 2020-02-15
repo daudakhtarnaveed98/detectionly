@@ -2,18 +2,18 @@
 
 // Require modules.
 const { User } = require('../models');
-const { hash } = require('bcryptjs');
-const { checkDuplicate } = require('./utils');
+const { hash, compare } = require('bcryptjs');
+const { checkIfExists } = require('./utils');
 
 // Define resolver functions.
 // For user registration.
 async function registerUser(userRegistrationData) {
     // Variables.
-    let returned = null;        // To store results for checkDuplicate function.
+    let returned = null;        // To store results for checkIfExists function.
 
-    // Check for duplicate.
+    // Check for existence.
     try {
-        returned = await checkDuplicate(userRegistrationData.emailAddress);
+        returned = await checkIfExists(userRegistrationData.emailAddress);
     } catch (error) {
         console.log(error);
     }
@@ -49,13 +49,13 @@ async function registerUser(userRegistrationData) {
         // Save user to database.
         try {
             const result = await userToRegister.save();
-            return {_id: result._doc._id, statusCode: "201 Created", responseMessage: "User Registered Successfully."};
+            return {_id: result._id, statusCode: "201 Created", responseMessage: "User Registered Successfully."};
         } catch (error) {
             console.log(error);
         }
     } else {
         // Return conflict on duplicate.
-        return {_id: returned[1]._doc._id, statusCode: "409 Conflict", responseMessage: "User Already Exists."};
+        return {_id: returned[1]._id, statusCode: "409 Conflict", responseMessage: "User Already Exists."};
     }
 }
 
@@ -126,7 +126,56 @@ async function updateUserPassword(userUpdatePasswordData) {
     }
 }
 
+// For user deletion.
+async function deleteUser(userLoginData) {
+    // Variables.
+    let returned = null;        // To store results for checkIfExists function.
+
+    // Check for existence.
+    try {
+        returned = await checkIfExists(userLoginData.emailAddress);
+    } catch (error) {
+        console.log(error);
+    }
+
+    // Extract boolean value from returned array.
+    const exists = returned[0];
+
+    if (exists) {
+        // Get user object from returned array.
+        const existingUser = returned[1];
+
+        // Compare passwords.
+        const existingUserPassword = returned[1].password;
+        let comparisonResult = null;
+
+        try {
+            comparisonResult = await compare(userLoginData.password, existingUserPassword);
+        } catch (error) {
+            console.log(error);
+        }
+
+        // Filter to query database.
+        const filter = {
+            emailAddress: userLoginData.emailAddress
+        };
+
+        // If passwords match, delete user.
+        if (comparisonResult) {
+            try {
+                const result = await User.findOneAndDelete(filter);
+                return {_id: result._id, statusCode: "200 OK", responseMessage: "User Deleted Successfully."};
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    } else {
+        return {statusCode: "404 Not Found", responseMessage: "User Not Found."};
+    }
+}
+
 // Export.
 exports.registerUserResolver = registerUser;
 exports.updateUserDataResolver = updateUserData;
 exports.updateUserPassword = updateUserPassword;
+exports.deleteUser = deleteUser;

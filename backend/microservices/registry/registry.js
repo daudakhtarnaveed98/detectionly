@@ -44,6 +44,15 @@ registry.use('/api/registry', graphqlHttp({
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        deleteUser: async (args) => {
+            const {userLoginData: userLoginData} = args;
+            try {
+                return await resolvers.deleteUserResolver(userLoginData);
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
 

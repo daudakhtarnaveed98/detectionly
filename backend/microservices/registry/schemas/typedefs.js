@@ -39,7 +39,7 @@ const authenticationDataDefinition = `
 const responseMessageDefinition = `
     # Response message.
     type Response {
-        _id: ID!
+        _id: ID
         statusCode: String!
         responseMessage: String!
     }
