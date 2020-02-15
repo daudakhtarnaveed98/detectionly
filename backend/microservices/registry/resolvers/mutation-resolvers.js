@@ -168,6 +168,8 @@ async function deleteUser(userLoginData) {
             } catch (error) {
                 console.log(error);
             }
+        } else {
+            return {statusCode: "401 Unauthorized", responseMessage: "Invalid Credentials."};
         }
     } else {
         return {statusCode: "404 Not Found", responseMessage: "User Not Found."};
