@@ -2,9 +2,13 @@
 
 // Require modules.
 const { User } = require('../models');
+const { hash } = require('bcryptjs');
 
 // Define resolver functions.
-function registerUser(userRegistrationData) {
+async function registerUser(userRegistrationData) {
+    // Hash password.
+    userRegistrationData.password = await hash(userRegistrationData.password, 12);
+
     // Create user based on model.
     const userToRegister = new User({
         emailAddress: userRegistrationData.emailAddress,
@@ -14,15 +18,8 @@ function registerUser(userRegistrationData) {
     });
 
     // Save user to database.
-    userToRegister
-        .save()
-        .then(result => {
-            return { ...result._doc };
-        })
-        .catch(error => {
-            throw error;
-        });
-    return userToRegister;
+    const result = await userToRegister.save();
+    return {...result._doc, password: null};
 }
 
 // Export.

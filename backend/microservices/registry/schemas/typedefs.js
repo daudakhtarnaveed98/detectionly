@@ -15,7 +15,7 @@ const userSchemaDefinition = `
     type User {
         _id: ID!
         emailAddress: String!
-        password: String!
+        password: String
         firstName: String!
         lastName: String!
         gender: String
