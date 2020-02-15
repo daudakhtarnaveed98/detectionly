@@ -3,39 +3,59 @@
 // Require modules.
 const { User } = require('../models');
 const { hash } = require('bcryptjs');
+const { checkDuplicate } = require('./utils');
 
 // Define resolver functions.
 // For user registration.
 async function registerUser(userRegistrationData) {
-    // Hash password.
+    // Variables.
+    let returned = null;        // To store results for checkDuplicate function.
+
+    // Check for duplicate.
     try {
-        userRegistrationData.password = await hash(userRegistrationData.password, 12);
+        returned = await checkDuplicate(userRegistrationData.emailAddress);
     } catch (error) {
         console.log(error);
     }
 
-    // Create user based on model.
-    const userToRegister = new User({
-        // Required properties.
-        emailAddress: userRegistrationData.emailAddress,
-        password: userRegistrationData.password,
-        firstName: userRegistrationData.firstName,
-        lastName: userRegistrationData.lastName,
+    // Extract boolean value from returned array.
+    const isDuplicate = returned[0];
 
-        // Optional properties.
-        gender: null,
-        phoneNumber: null,
-        dateOfBirth: null,
-        organizationName: null,
-        roleInOrganization: null
-    });
+    // Register unique user.
+    if (!isDuplicate) {
+        // Hash password.
+        try {
+            userRegistrationData.password = await hash(userRegistrationData.password, 12);
+        } catch (error) {
+            console.log(error);
+        }
 
-    // Save user to database.
-    try {
-        const result = await userToRegister.save();
-        return { _id: result._doc._id, statusCode:"201 Created", responseMessage:"User Registered Successfully." };
-    } catch (error) {
-        console.log(error);
+        // Create user based on model.
+        const userToRegister = new User({
+            // Required properties.
+            emailAddress: userRegistrationData.emailAddress,
+            password: userRegistrationData.password,
+            firstName: userRegistrationData.firstName,
+            lastName: userRegistrationData.lastName,
+
+            // Optional properties.
+            gender: null,
+            phoneNumber: null,
+            dateOfBirth: null,
+            organizationName: null,
+            roleInOrganization: null
+        });
+
+        // Save user to database.
+        try {
+            const result = await userToRegister.save();
+            return {_id: result._doc._id, statusCode: "201 Created", responseMessage: "User Registered Successfully."};
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        // Return conflict on duplicate.
+        return {_id: returned[1]._doc._id, statusCode: "409 Conflict", responseMessage: "User Already Exists."};
     }
 }
 
