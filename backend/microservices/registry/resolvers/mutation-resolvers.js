@@ -3,7 +3,7 @@
 // Require modules.
 const { User } = require('../models');
 const { hash, compare } = require('bcryptjs');
-const { checkIfExists } = require('./utils');
+const { checkIfExists, checkIfAllDataProvided } = require('./utils');
 
 // Define resolver functions.
 // For user registration.
@@ -23,35 +23,44 @@ async function registerUser(userRegistrationData) {
 
     // Register unique user.
     if (!isDuplicate) {
-        // Hash password.
-        try {
-            userRegistrationData.password = await hash(userRegistrationData.password, 12);
-        } catch (error) {
-            console.log(error);
-        }
+        // Check if all data is provided.
+        const isAllDataProvided = await checkIfAllDataProvided(userRegistrationData);
+        const boolIsAllDataProvided = isAllDataProvided[0];
+        const isAllDataProvidedResponse = isAllDataProvided[1];
 
-        // Create user based on model.
-        const userToRegister = new User({
-            // Required properties.
-            emailAddress: userRegistrationData.emailAddress,
-            password: userRegistrationData.password,
-            firstName: userRegistrationData.firstName,
-            lastName: userRegistrationData.lastName,
+        if (boolIsAllDataProvided) {
+            // Hash password.
+            try {
+                userRegistrationData.password = await hash(userRegistrationData.password, 12);
+            } catch (error) {
+                console.log(error);
+            }
 
-            // Optional properties.
-            gender: null,
-            phoneNumber: null,
-            dateOfBirth: null,
-            organizationName: null,
-            roleInOrganization: null
-        });
+            // Create user based on model.
+            const userToRegister = new User({
+                // Required properties.
+                emailAddress: userRegistrationData.emailAddress,
+                password: userRegistrationData.password,
+                firstName: userRegistrationData.firstName,
+                lastName: userRegistrationData.lastName,
 
-        // Save user to database.
-        try {
-            const result = await userToRegister.save();
-            return {_id: result._id, statusCode: "201 Created", responseMessage: "User Registered Successfully."};
-        } catch (error) {
-            console.log(error);
+                // Optional properties.
+                gender: null,
+                phoneNumber: null,
+                dateOfBirth: null,
+                organizationName: null,
+                roleInOrganization: null
+            });
+
+            // Save user to database.
+            try {
+                const result = await userToRegister.save();
+                return {_id: result._id, statusCode: "201 Created", responseMessage: "User Registered Successfully."};
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            return isAllDataProvidedResponse;
         }
     } else {
         // Return conflict on duplicate.
