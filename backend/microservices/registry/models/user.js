@@ -28,21 +28,29 @@ const userSchema = new Schema({
 
     // Optional properties.
     gender: {
-        type: String
+        type: String,
+        default: null
     },
     phoneNumber: {
-        type: String
+        type: String,
+        default: null
     },
     dateOfBirth: {
-        type: String
+        type: String,
+        default: null
     },
     organizationName: {
-        type: String
+        type: String,
+        default: null
     },
     roleInOrganization: {
-        type: String
+        type: String,
+        default: null
     }
 });
 
-// Create model using mongoose.
-exports.User = mongoose.model('User', userSchema);
+// Create model based on userSchema using mongoose.
+const User = mongoose.model('User', userSchema);
+
+// Export.
+exports.User = User;
