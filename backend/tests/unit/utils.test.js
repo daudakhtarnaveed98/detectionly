@@ -2,6 +2,7 @@
 
 // Require modules.
 const utils = require('../../utils');
+const faker = require('faker');
 
 // Tests for checkIfAllUserRegistrationDataIsProvided function.
 describe('Function: checkIfAllUserRegistrationDataIsProvided', () => {
@@ -9,10 +10,7 @@ describe('Function: checkIfAllUserRegistrationDataIsProvided', () => {
     test('[Complete Registration Data]: Should return true', async () => {
         const returnedBoolean = await utils.checkIfAllUserRegistrationDataIsProvided(
             {
-                "emailAddress": "demo@demo.com",
-                "password": "demo",
-                "firstName": "demo",
-                "lastName": "demo"
+                "emailAddress": faker.internet.email(), "password": faker.internet.password(), "firstName": faker.name.firstName(), "lastName": faker.name.lastName()
             }
         );
         expect(returnedBoolean).toBeTruthy();
@@ -22,19 +20,22 @@ describe('Function: checkIfAllUserRegistrationDataIsProvided', () => {
     test('[Incomplete Registration Data]: Should return false', async () => {
         const incompleteInputDataArray = [
             {
-                "emailAddress": "", "password": "demo", "firstName": "demo", "lastName": "demo"
+                "emailAddress": "", "password": faker.internet.password(), "firstName": faker.name.firstName(), "lastName": faker.name.lastName()
             },
             {
-                "emailAddress": "demo@demo.com", "password": "", "firstName": "demo", "lastName": "demo"
+                "emailAddress": faker.internet.email(), "password": "", "firstName": faker.name.firstName(), "lastName": faker.name.lastName()
             },
             {
-                "emailAddress": "demo@demo.com", "password": "demo", "firstName": "", "lastName": "demo"
+                "emailAddress": faker.internet.email(), "password": faker.internet.password(), "firstName": "", "lastName": faker.name.lastName()
             },
             {
-                "emailAddress": "demo@demo.com", "password": "demo", "firstName": "demo", "lastName": ""
+                "emailAddress": faker.internet.email(), "password": faker.internet.password(), "firstName": faker.name.firstName(), "lastName": ""
             },
             {
                 "emailAddress": "", "password": "", "firstName": "", "lastName": ""
+            },
+            {
+                "emailAddress": null, "password": null, "firstName": null, "lastName": null
             },
         ];
 
