@@ -4,7 +4,7 @@
 const utils = require('../../utils');
 const models = require('../../models');
 const commons = require('../../commons');
-const {hash, compare} = require('bcryptjs');
+const {hash} = require('bcryptjs');
 
 // Function to update user personal information.
 async function updateUserInformation(userEmailAddress, updatedInformation) {

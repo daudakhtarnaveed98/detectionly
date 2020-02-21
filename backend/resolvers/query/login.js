@@ -1,11 +1,9 @@
 'use strict';
 
 // Require modules.
-const {compare} = require('bcryptjs');
 const commons = require('../../commons');
 const utils = require('../../utils');
 const jsonwebtoken = require('jsonwebtoken');
-
 
 // Function to login user.
 async function loginUser(userLoginData) {
