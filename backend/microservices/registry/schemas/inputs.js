@@ -8,16 +8,14 @@ const UserRegistrationInput = `
         password: String!
         firstName: String!
         lastName: String!
-    }
-`;
+    }`;
 
 // For user login.
 const UserLoginInput = `
     input UserLoginInput {
         emailAddress: String!
         password: String!
-    }
-`;
+    }`;
 
 // For user update.
 const UserDataUpdateInput = `
@@ -29,16 +27,14 @@ const UserDataUpdateInput = `
         dateOfBirth: String
         organizationName: String
         roleInOrganization: String
-    }
-`;
+    }`;
 
 // For password update.
 const UserPasswordUpdateInput = `
     input UserPasswordUpdateInput {
         currentPassword: String!
         newPassword: String!
-    }
-`;
+    }`;
 
 // Combined input schema.
 const InputSchema = UserRegistrationInput + UserLoginInput + UserDataUpdateInput + UserPasswordUpdateInput;
