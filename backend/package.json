@@ -2,7 +2,7 @@
   "name": "registry",
   "version": "1.0.0",
   "description": "registry microservice for detectionly project.",
-  "main": "registry.js",
+  "main": "detectionly.js",
   "scripts": {
     "test": "jest"
   },

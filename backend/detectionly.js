@@ -9,11 +9,11 @@ const resolvers = require("./resolvers");
 require('./configurations/database');
 
 // Initialize objects.
-const registry = express();
+const detectionly = express();
 
 // Initialize middleware.
-registry.use(bodyParser.json());
-registry.use('/api/registry', graphqlHttp({
+detectionly.use(bodyParser.json());
+detectionly.use('/api', graphqlHttp({
     // Provide schema.
     schema: schemas.graphqlSchema,
 
@@ -71,4 +71,4 @@ registry.use('/api/registry', graphqlHttp({
 }));
 
 // Start listening.
-registry.listen(3000);
+detectionly.listen(3000);
