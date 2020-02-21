@@ -1,11 +1,12 @@
 'use strict';
 
 // Require modules.
-const { registerUserResolver, updateUserDataResolver,
-        updateUserPassword, deleteUser } = require('./mutation-resolvers');
+const mutation = require('./mutation');
+const query = require('./query');
 
 // Export.
-exports.registerUserResolver = registerUserResolver;
-exports.updateUserDataResolver = updateUserDataResolver;
-exports.updateUserPasswordResolver = updateUserPassword;
-exports.deleteUserResolver = deleteUser;
+exports.registerUserResolver = mutation.registerUserResolver;
+exports.updateUserInformationResolver = mutation.updateUserInformationResolver;
+exports.updateUserPasswordResolver = mutation.updateUserPasswordResolver;
+exports.deleteUserAccountResolver = mutation.deleteUserAccountResolver;
+exports.loginUserResolver = query.loginUserResolver;

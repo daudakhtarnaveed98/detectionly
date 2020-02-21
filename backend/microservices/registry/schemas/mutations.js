@@ -1,15 +1,14 @@
 'use strict';
 
-// Define mutations.
-const mutations = `
-    # Root level mutation.
+// Define mutation.
+const mutationsSchema = `
     type Mutation {
         registerUser(userRegistrationData: UserRegistrationInput): Response!
-        updateUserData(userUpdateData: UserDataUpdateInput): Response!
-        updateUserPassword(userUpdatePasswordData: UserPasswordUpdateInput): Response!
-        deleteUser(userLoginData: UserLoginInput): Response!
+        updateUserInformation(userEmailAddress: String!, updatedInformation: UserInformationUpdateInput): Response!
+        updateUserPassword(userEmailAddress: String!, userUpdatePasswordData: UserPasswordUpdateInput): Response!
+        deleteUserAccount(userEmailAddress: String!, password: String!): Response!
     }
 `;
 
 // Export.
-exports.mutations = mutations;
+exports.mutationsSchema = mutationsSchema;

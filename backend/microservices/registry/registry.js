@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
 const schemas = require('./schemas');
 const resolvers = require("./resolvers");
-const database = require('./database');
+require('./configurations/database');
 
 // Initialize objects.
 const registry = express();
@@ -22,34 +22,44 @@ registry.use('/api/registry', graphqlHttp({
         registerUser: async (args) => {
             const {userRegistrationData: userRegistrationData} = args;
             try {
-                return await resolvers.registerUserResolver(userRegistrationData);
+                return (await resolvers.registerUserResolver(userRegistrationData));
             } catch (error) {
                 console.log(error);
             }
         },
 
-        updateUserData: async (args) => {
-            const {userUpdateData: userUpdateData} = args;
+        updateUserInformation: async (args) => {
+            const {userEmailAddress: userEmailAddress, updatedInformation: updatedInformation} = args;
             try {
-                return await resolvers.updateUserDataResolver(userUpdateData);
+                return (await resolvers.updateUserInformationResolver(userEmailAddress, updatedInformation));
             } catch (error) {
                 console.log(error);
             }
         },
 
         updateUserPassword: async (args) => {
-            const {userUpdatePasswordData: userUpdatePasswordData} = args;
+            const {userEmailAddress: userEmailAddress, userUpdatePasswordData: userUpdatePasswordData} = args;
+            const {currentPassword: currentPassword, newPassword: newPassword} = userUpdatePasswordData;
             try {
-                return await resolvers.updateUserPasswordResolver(userUpdatePasswordData);
+                return (await resolvers.updateUserPasswordResolver(userEmailAddress, currentPassword, newPassword));
             } catch (error) {
                 console.log(error);
             }
         },
 
-        deleteUser: async (args) => {
+        deleteUserAccount: async (args) => {
+            const {userEmailAddress: userEmailAddress, password: password} = args;
+            try {
+                return (await resolvers.deleteUserAccountResolver(userEmailAddress, password));
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        loginUser: async (args) => {
             const {userLoginData: userLoginData} = args;
             try {
-                return await resolvers.deleteUserResolver(userLoginData);
+                return (await resolvers.loginUserResolver(userLoginData));
             } catch (error) {
                 console.log(error);
             }

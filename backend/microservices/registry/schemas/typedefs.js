@@ -2,7 +2,6 @@
 
 // Define root schema.
 const rootSchemaDefinition = `
-    # Root level schema.
     type schema {
         query: Query
         mutation: Mutation
@@ -11,7 +10,6 @@ const rootSchemaDefinition = `
 
 // Define user schema.
 const userSchemaDefinition = `
-    # User schema.
     type User {
         _id: ID!
         emailAddress: String!
@@ -28,25 +26,23 @@ const userSchemaDefinition = `
 
 // Other type definitions.
 const authenticationDataDefinition = `
-    # Authentication data.
     type AuthenticationData {
-        _id: ID!
-        token: String!
-        tokenExpirationTime: Int!
+        token: String
+        tokenExpirationTime: Int
+        response: Response!
     }
 `;
 
 const responseMessageDefinition = `
-    # Response message.
     type Response {
-        _id: ID
-        statusCode: String!
+        statusCode: Int!
+        statusMessage: String!
         responseMessage: String!
     }
 `;
 
+// Combined typedefs schema.
+const TypeDefs = rootSchemaDefinition + userSchemaDefinition + authenticationDataDefinition + responseMessageDefinition;
+
 // Export.
-exports.rootSchemaDefinition = rootSchemaDefinition;
-exports.userSchemaDefinition = userSchemaDefinition;
-exports.authenticationDataDefinition = authenticationDataDefinition;
-exports.responseMessageDefinition = responseMessageDefinition;
+exports.TypeDefs = TypeDefs;

@@ -4,7 +4,11 @@
   "description": "registry microservice for detectionly project.",
   "main": "registry.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "tests-coverage"
   },
   "repository": {
     "type": "git",
@@ -27,6 +31,10 @@
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "graphql": "^14.6.0",
-    "mongoose": "^5.8.12"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.1"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
   }
 }
