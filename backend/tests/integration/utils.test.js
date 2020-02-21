@@ -5,7 +5,7 @@ const utils = require('../../utils');
 const faker = require('faker');
 const mongoose = require('mongoose');
 const models = require('../../models');
-const {hash, compare} = require('bcryptjs');
+const {hash} = require('bcryptjs');
 
 // Global variables.
 // Credentials to use for testing authenticateUser function.
@@ -21,7 +21,7 @@ beforeAll(async () => {
     }
 
     // Insert some fake users in database.
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
         const emailAddress = faker.internet.email();
         const firstName = faker.name.firstName();
         const lastName = faker.name.lastName();
@@ -73,6 +73,9 @@ afterAll(async () => {
     } catch (error) {
         console.log(error);
     }
+
+    // Delete storedFakeUsersCredentials.
+    storedFakeUsersCredentials = null;
 });
 
 // Tests for checkIfUserRecordExistsInDatabase function.
@@ -110,7 +113,7 @@ describe('Function: checkIfUserRecordExistsInDatabase', () => {
     // Test with a non-existing user's email address as argument.
     test('[User Does Not Exist In Database]: Should return false', async () => {
         // Repeat for five times.
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 3; i++) {
             // Generate a new fake email address (non existent in database).
             const nonExistentEmailAddress = faker.internet.email();
 
@@ -165,7 +168,7 @@ describe('Function: getUserFromDatabase', () => {
     // Test with a non-existing user's email address as argument.
     test('[User Does Not Exist In Database]: Should return null', async () => {
         // Repeat for five times.
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 3; i++) {
             // Generate a new fake email address (non existent in database).
             const nonExistentEmailAddress = faker.internet.email();
 
@@ -186,7 +189,7 @@ describe('Function: getUserFromDatabase', () => {
 describe('Function: saveUserToDatabase', () => {
     // Test with an correct user registration data.
     test('[Correct User Data]: Should return 201', async () => {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 3; i++) {
             // Generate fake user data.
             const correctUserData = {
                 emailAddress: faker.internet.email(),
@@ -233,22 +236,29 @@ describe('Function: authenticateUser', () => {
     });
 
     // Test with an incorrect user login data.
-    // TODO: Correct this test.
     test('[Incorrect Email]: Should return false', async () => {
-        // Loop and authenticate each saved user.
+        // Loop and authenticate each saved user with invalid email.
         for (let userCredentials of storedFakeUsersCredentials) {
             let invalidEmailReturnValue = true;
-            let invalidPasswordReturnValue = true;
             try {
                 invalidEmailReturnValue = await utils.authenticateUser(faker.internet.email(), userCredentials.password);
+            } catch (error) {
+                console.log(error);
+            }
+            // Expect returned boolean to be true.
+            expect(invalidEmailReturnValue).toBeFalsy();
+        }
+
+        // Loop and authenticate each saved user with invalid password.
+        for (let userCredentials of storedFakeUsersCredentials) {
+            let invalidPasswordReturnValue = true;
+            try {
                 invalidPasswordReturnValue = await utils.authenticateUser(userCredentials.emailAddress, faker.internet.password());
             } catch (error) {
                 console.log(error);
             }
-
             // Expect returned boolean to be true.
-            expect(invalidEmailReturnValue).toBeFalsy();
-            expect(invalidPasswordReturnValue).toBeTruthy();
+            expect(invalidPasswordReturnValue).toBeFalsy();
         }
     });
 });

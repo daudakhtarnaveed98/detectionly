@@ -27,19 +27,32 @@ async function checkIfUserRecordExistsInDatabase(userEmailAddress) {
 
 // Function to get a user from database.
 async function getUserFromDatabase(userEmailAddress) {
-    // Conditions to find user.
-    const conditions = {
-        emailAddress: userEmailAddress
-    };
-
-    // Try to find user and return.
+    // Try to check if user record exists in database.
+    let doesUserRecordExist = false;
     try {
-        // Find user from database.
-        return await models.User.findOne(conditions).exec();
-    }
-    // Catch and log error.
-    catch (error) {
+        doesUserRecordExist = await checkIfUserRecordExistsInDatabase(userEmailAddress);
+    } catch (error) {
         console.log(error);
+    }
+
+    // If doesUserRecordExist === true, get and return user.
+    if (doesUserRecordExist) {
+        // Conditions to find user.
+        const conditions = {
+            emailAddress: userEmailAddress
+        };
+
+        // Try to find user and return.
+        try {
+            // Find user from database.
+            return await models.User.findOne(conditions).exec();
+        }
+            // Catch and log error.
+        catch (error) {
+            console.log(error);
+        }
+    } else {
+        return null;
     }
 }
 
@@ -86,14 +99,18 @@ async function authenticateUser(userEmailAddress, password) {
         console.log(error);
     }
 
-    // Extract password.
-    const {password: userCurrentPassword} = userFromDatabase;
+    if (userFromDatabase != null) {
+        // Extract password.
+        const {password: userCurrentPassword} = userFromDatabase;
 
-    // Compare passwords.
-    try {
-        return await compare(password, userCurrentPassword);
-    } catch (error) {
-        console.log(error);
+        // Compare passwords.
+        try {
+            return await compare(password, userCurrentPassword);
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        return false;
     }
 }
 
