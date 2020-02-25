@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const login = require('./login');
+const mapper = require("./mapper");
 
 // Export.
-exports.loginUserResolver = login.loginUser;
+exports.queryResolversMap = mapper.queryResolversMap;

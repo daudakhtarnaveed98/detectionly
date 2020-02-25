@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const commons = require('../../commons');
-const utils = require('../../utils');
-const jsonwebtoken = require('jsonwebtoken');
+const commons = require("../../commons");
+const utils = require("../../utils");
+const jsonwebtoken = require("jsonwebtoken");
 
 // Function to login user.
 async function loginUser(userLoginData) {
@@ -15,7 +15,7 @@ async function loginUser(userLoginData) {
     try {
         userRecordExistsInDatabase = await utils.checkIfUserRecordExistsInDatabase(userEmailAddress);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
     // Proceed if user exists.
@@ -23,13 +23,13 @@ async function loginUser(userLoginData) {
         // Compare entered password with correct password.
         const comparisonResult = await utils.authenticateUser(userEmailAddress, password);
 
-        // If comparisonResult === true, generate and return a token with OK response.
+        // If comparisonResult is true, generate and return a token with OK response.
         if (comparisonResult) {
             try {
                 const token = jsonwebtoken.sign({emailAddress: userEmailAddress,}, "vMpW~f#1KNAuiT!p%-QmO9K] f+bm9~VC?{s-4_#H<D)e0SC?-I-sGx_Lm<NFAt6", {expiresIn: "1h"});
                 return ({"token":token, "tokenExpirationTime": 1, "response":{statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Login Successful"}});
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         }
         // Else return UNAUTHORIZED response.

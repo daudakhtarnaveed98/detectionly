@@ -1,12 +1,11 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const mutation = require('./mutation');
-const query = require('./query');
+const mutation = require("./mutation");
+const query = require("./query");
+
+// Merge mutation and query resolver maps.
+const resolversMap = Object.assign(query.queryResolversMap, mutation.mutationResolversMap);
 
 // Export.
-exports.registerUserResolver = mutation.registerUserResolver;
-exports.updateUserInformationResolver = mutation.updateUserInformationResolver;
-exports.updateUserPasswordResolver = mutation.updateUserPasswordResolver;
-exports.deleteUserAccountResolver = mutation.deleteUserAccountResolver;
-exports.loginUserResolver = query.loginUserResolver;
+exports.resolversMap = resolversMap;

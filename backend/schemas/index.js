@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const builder = require('./builder');
+const builder = require("./builder");
 
 // Export.
 exports.graphqlSchema = builder.graphqlSchema;

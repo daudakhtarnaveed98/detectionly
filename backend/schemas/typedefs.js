@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // Define root schema.
 const rootSchemaDefinition = `

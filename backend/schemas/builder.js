@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const {buildSchema} = require('graphql');
-const utils = require('../utils');
-const queries = require('./queries');
-const mutations = require('./mutations');
-const inputs = require('./inputs');
-const typedef = require('./typedefs');
+const {buildSchema} = require("graphql");
+const utils = require("../utils");
+const queries = require("./queries");
+const mutations = require("./mutations");
+const inputs = require("./inputs");
+const typedef = require("./typedefs");
 
 // Concatenate schemas, queries and mutation.
 const concatenatedSchema = utils.concatenateSchemas(

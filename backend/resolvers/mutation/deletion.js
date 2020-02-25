@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const utils = require('../../utils');
-const models = require('../../models');
-const commons = require('../../commons');
+const utils = require("../../utils");
+const models = require("../../models");
+const commons = require("../../commons");
 
 // Function to delete user account.
 async function deleteUserAccount(userEmailAddress, password) {
@@ -12,31 +12,36 @@ async function deleteUserAccount(userEmailAddress, password) {
     try {
         userRecordExistsInDatabase = await utils.checkIfUserRecordExistsInDatabase(userEmailAddress);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
     // Proceed if user exists.
     if (userRecordExistsInDatabase) {
         // Compare entered password with correct password.
-        const comparisonResult = await utils.authenticateUser(userEmailAddress, password);
+        let comparisonResult = false;
+        try {
+            comparisonResult = await utils.authenticateUser(userEmailAddress, password);
+        } catch (error) {
+            console.error(error);
+        }
 
-        // If comparisonResult === true, delete account, and return OK response.
+        // If comparisonResult is true, delete account, and return OK response.
         if (comparisonResult) {
             try {
                 await models.User.findOneAndDelete({emailAddress: userEmailAddress});
-                return ({statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Account Deletion Successful"});
+                return {statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Account Deletion Successful"};
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         }
         // Else return UNAUTHORIZED response.
         else {
-            return ({statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid Password"});
+            return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid Password"};
         }
     }
     // Else return NOT FOUND response.
     else {
-        return ({statusCode: commons.statusCodes["NOT FOUND"], statusMessage: "NOT FOUND", responseMessage: "User Not Found"});
+        return {statusCode: commons.statusCodes["NOT FOUND"], statusMessage: "NOT FOUND", responseMessage: "User Not Found"};
     }
 }
 

@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Create schema constructor from mongoose.
 const Schema = mongoose.Schema;
@@ -29,28 +29,28 @@ const userSchema = new Schema({
     // Optional properties.
     gender: {
         type: String,
-        default: null
+        default: ""
     },
     phoneNumber: {
         type: String,
-        default: null
+        default: ""
     },
     dateOfBirth: {
         type: String,
-        default: null
+        default: ""
     },
     organizationName: {
         type: String,
-        default: null
+        default: ""
     },
     roleInOrganization: {
         type: String,
-        default: null
+        default: ""
     }
 });
 
 // Create model based on userSchema using mongoose.
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 // Export.
 exports.User = User;

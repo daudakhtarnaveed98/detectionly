@@ -1,12 +1,7 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const registration = require('./registration');
-const update = require('./update');
-const deletion = require('./deletion');
+const mapper = require("./mapper");
 
 // Export.
-exports.registerUserResolver = registration.registerUser;
-exports.updateUserInformationResolver = update.updateUserInformation;
-exports.updateUserPasswordResolver = update.updateUserPassword;
-exports.deleteUserAccountResolver = deletion.deleteUserAccount;
+exports.mutationResolversMap = mapper.mutationResolversMap;

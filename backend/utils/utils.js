@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const models = require('../models');
-const commons = require('../commons');
-const {compare} = require('bcryptjs');
+const models = require("../models");
+const commons = require("../commons");
+const {compare} = require("bcryptjs");
 
 // Utility functions.
 // Function to check if user record exists in database.
@@ -21,7 +21,7 @@ async function checkIfUserRecordExistsInDatabase(userEmailAddress) {
     }
     // Catch and log error.
     catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -32,10 +32,10 @@ async function getUserFromDatabase(userEmailAddress) {
     try {
         doesUserRecordExist = await checkIfUserRecordExistsInDatabase(userEmailAddress);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
-    // If doesUserRecordExist === true, get and return user.
+    // If doesUserRecordExist is true, get and return user.
     if (doesUserRecordExist) {
         // Conditions to find user.
         const conditions = {
@@ -49,7 +49,7 @@ async function getUserFromDatabase(userEmailAddress) {
         }
             // Catch and log error.
         catch (error) {
-            console.log(error);
+            console.error(error);
         }
     } else {
         return null;
@@ -85,7 +85,7 @@ async function saveUserToDatabase(userRegistrationData) {
     }
     // Catch and log error.
     catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -96,7 +96,7 @@ async function authenticateUser(userEmailAddress, password) {
     try {
         userFromDatabase = await getUserFromDatabase(userEmailAddress);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
     if (userFromDatabase != null) {
@@ -107,7 +107,7 @@ async function authenticateUser(userEmailAddress, password) {
         try {
             return await compare(password, userCurrentPassword);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     } else {
         return false;
@@ -117,7 +117,7 @@ async function authenticateUser(userEmailAddress, password) {
 // Function to concatenate schemas.
 function concatenateSchemas(...schemasToCombine) {
     // Variable to hold concatenated schemas.
-    let concatenatedSchemas = '';
+    let concatenatedSchemas = "";
 
     // Loop and concatenate.
     for (const schema of schemasToCombine) {
