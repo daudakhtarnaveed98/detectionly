@@ -38,7 +38,7 @@ const mutationResolversMap = {
     deleteUserAccount: async (args) => {
         const {userEmailAddress: userEmailAddress, password: password} = args;
         try {
-            return (await deletion.deleteUserAccount(userEmailAddress, password));
+            return await deletion.deleteUserAccount(userEmailAddress, password);
         } catch (error) {
             console.error(error);
         }

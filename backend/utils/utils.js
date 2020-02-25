@@ -16,7 +16,13 @@ async function checkIfUserRecordExistsInDatabase(userEmailAddress) {
     // Check if user exists in database and return boolean.
     try {
         // Find user from database.
-        const result = await models.User.findOne(conditions).exec();
+        let result = null;
+        try {
+            result = await models.User.findOne(conditions).exec();
+        } catch (error) {
+            console.error(error);
+        }
+
         return result != null;
     }
     // Catch and log error.

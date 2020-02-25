@@ -20,8 +20,13 @@ async function loginUser(userLoginData) {
 
     // Proceed if user exists.
     if (userRecordExistsInDatabase) {
-        // Compare entered password with correct password.
-        const comparisonResult = await utils.authenticateUser(userEmailAddress, password);
+        // Try to compare entered password with correct password.
+        let comparisonResult = false;
+        try {
+            comparisonResult = await utils.authenticateUser(userEmailAddress, password);
+        } catch (error) {
+            console.error(error);
+        }
 
         // If comparisonResult is true, generate and return a token with OK response.
         if (comparisonResult) {

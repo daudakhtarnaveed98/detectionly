@@ -267,11 +267,19 @@ describe('Function: authenticateUser', () => {
 describe('Function: checkIfAllUserRegistrationDataIsProvided', () => {
     // Test with complete registration data.
     test('[Complete Registration Data]: Should return true', async () => {
-        const returnedBoolean = await utils.checkIfAllUserRegistrationDataIsProvided(
-            {
-                "emailAddress": faker.internet.email(), "password": faker.internet.password(), "firstName": faker.name.firstName(), "lastName": faker.name.lastName()
-            }
-        );
+        let returnedBoolean = false;
+        try {
+            returnedBoolean = await utils.checkIfAllUserRegistrationDataIsProvided(
+                {
+                    "emailAddress": faker.internet.email(),
+                    "password": faker.internet.password(),
+                    "firstName": faker.name.firstName(),
+                    "lastName": faker.name.lastName()
+                }
+            );
+        } catch (error) {
+            console.error(error);
+        }
         expect(returnedBoolean).toBeTruthy();
     });
 
@@ -299,7 +307,12 @@ describe('Function: checkIfAllUserRegistrationDataIsProvided', () => {
         ];
 
         for (let incompleteInputData of incompleteInputDataArray) {
-            const returnedBoolean = await utils.checkIfAllUserRegistrationDataIsProvided(incompleteInputData);
+            let returnedBoolean = true;
+            try {
+                returnedBoolean = await utils.checkIfAllUserRegistrationDataIsProvided(incompleteInputData);
+            } catch (error) {
+                console.error(error);
+            }
             expect(returnedBoolean).toBeFalsy();
         }
     });
@@ -325,9 +338,14 @@ describe('Function: concatenateSchemas', () => {
             deleteUserAccount(userEmailAddress: String!, password: String!): Response!
         }`;
 
-        const concatenatedSchema = await utils.concatenateSchemas(
-            schemaOne, schemaTwo
-        );
+        let concatenatedSchema = "";
+        try {
+            concatenatedSchema = await utils.concatenateSchemas(
+                schemaOne, schemaTwo
+            );
+        } catch (error) {
+            console.error(error);
+        }
         expect(concatenatedSchema).toBe(schemaTwo + schemaOne);
     });
 
@@ -357,9 +375,14 @@ describe('Function: concatenateSchemas', () => {
             newPassword: String!
         }`;
 
-        const concatenatedSchema = await utils.concatenateSchemas(
-            schemaOne, schemaTwo, schemaThree, schemaFour
-        );
+        let concatenatedSchema = "";
+        try {
+            concatenatedSchema = await utils.concatenateSchemas(
+                schemaOne, schemaTwo, schemaThree, schemaFour
+            );
+        } catch (error) {
+            console.error(error);
+        }
         expect(concatenatedSchema).toBe(schemaFour + schemaThree + schemaTwo + schemaOne);
     });
 });

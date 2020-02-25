@@ -42,7 +42,7 @@ async function registerUser(userRegistrationData) {
                 if (statusCode === 201) {
                     return {statusCode: statusCode, statusMessage: "CREATED", responseMessage: "Registration Successful"};
                 }
-                // If unsuccessful, return BAD REQUEST response.
+                // Else, return BAD REQUEST response.
                 else {
                     return {statusCode: statusCode, statusMessage: "BAD REQUEST", responseMessage: "Registration Failed"};
                 }
@@ -50,12 +50,12 @@ async function registerUser(userRegistrationData) {
                 console.error(error);
             }
         }
-        // Else if isAllUserRegistrationDataProvided == false, return NOT ACCEPTABLE response.
+        // Else if isAllUserRegistrationDataProvided is false, return NOT ACCEPTABLE response.
         else {
             return {statusCode: commons.statusCodes["NOT ACCEPTABLE"], statusMessage: "NOT ACCEPTABLE", responseMessage: "Insufficient Registration Data Provided"};
         }
     }
-    // Return CONFLICT response if userRecordExistsInDatabase == true.
+    // Return CONFLICT response if userRecordExistsInDatabase is true.
     else {
         return {statusCode: commons.statusCodes.CONFLICT, statusMessage: "CONFLICT", responseMessage: "User already exists"};
     }
