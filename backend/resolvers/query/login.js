@@ -4,6 +4,7 @@
 const commons = require("../../commons");
 const utils = require("../../utils");
 const jsonwebtoken = require("jsonwebtoken");
+require("dotenv").config();
 
 // Function to login user.
 async function loginUser(userLoginData) {
@@ -31,20 +32,20 @@ async function loginUser(userLoginData) {
         // If comparisonResult is true, generate and return a token with OK response.
         if (comparisonResult) {
             try {
-                const token = jsonwebtoken.sign({emailAddress: userEmailAddress,}, "vMpW~f#1KNAuiT!p%-QmO9K] f+bm9~VC?{s-4_#H<D)e0SC?-I-sGx_Lm<NFAt6", {expiresIn: "1h"});
-                return ({"token":token, "tokenExpirationTime": 1, "response":{statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Login Successful"}});
+                const token = jsonwebtoken.sign({emailAddress: userEmailAddress,}, process.env.PRIVATE_KEY, {expiresIn: "1h"});
+                return {"token":token, "tokenExpirationTime": 1, "response":{statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Login Successful"}};
             } catch (error) {
                 console.error(error);
             }
         }
         // Else return UNAUTHORIZED response.
         else {
-            return ({"response":{statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid Password"}});
+            return {"response":{statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid Password"}};
         }
     }
     // Else return NOT FOUND response.
     else {
-        return ({"response":{statusCode: commons.statusCodes["NOT FOUND"], statusMessage: "NOT FOUND", responseMessage: "User Not Found"}});
+        return {"response":{statusCode: commons.statusCodes["NOT FOUND"], statusMessage: "NOT FOUND", responseMessage: "User Not Found"}};
     }
 }
 

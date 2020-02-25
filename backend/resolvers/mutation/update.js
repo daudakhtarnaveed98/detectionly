@@ -43,14 +43,14 @@ async function updateUserInformation(userEmailAddress, updatedInformation) {
         // Find, update user and return OK response.
         try {
             await models.User.findOneAndUpdate(conditions, update, options).exec();
-            return ({statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Update Successful"});
+            return {statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Update Successful"};
         } catch (error) {
             console.error(error);
         }
     }
     // Else return NOT FOUND response.
     else {
-        return ({statusCode: commons.statusCodes["NOT FOUND"], statusMessage: "NOT FOUND", responseMessage: "User Not Found"});
+        return {statusCode: commons.statusCodes["NOT FOUND"], statusMessage: "NOT FOUND", responseMessage: "User Not Found"};
     }
 }
 
@@ -88,24 +88,24 @@ async function updateUserPassword(userEmailAddress, currentPasswordEntered, newP
                 // Try to update password.
                 try {
                     await models.User.findOneAndUpdate({emailAddress: userEmailAddress}, {password: newPassword}, {useFindAndModify:false, new: true}).exec();
-                    return ({statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Password Update Successful"});
+                    return {statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Password Update Successful"};
                 } catch (error) {
                     console.error(error);
                 }
             }
             // Else return NOT ACCEPTABLE response.
             else {
-                return ({statusCode: commons.statusCodes["NOT ACCEPTABLE"], statusMessage: "NOT ACCEPTABLE", responseMessage: "New Password Not Provided"});
+                return {statusCode: commons.statusCodes["NOT ACCEPTABLE"], statusMessage: "NOT ACCEPTABLE", responseMessage: "New Password Not Provided"};
             }
         }
         // Else return UNAUTHORIZED response.
         else {
-            return ({statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid Password"});
+            return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid Password"};
         }
     }
     // Else return NOT FOUND response.
     else {
-        return ({statusCode: commons.statusCodes["NOT FOUND"], statusMessage: "NOT FOUND", responseMessage: "User Not Found"});
+        return {statusCode: commons.statusCodes["NOT FOUND"], statusMessage: "NOT FOUND", responseMessage: "User Not Found"};
     }
 }
 
