@@ -1,9 +1,9 @@
 "use strict";
 
 // Require modules.
-const utils = require("../../utils");
-const models = require("../../models");
-const commons = require("../../commons");
+const utils = require("../../../../../utils");
+const models = require("../../../../../models");
+const commons = require("../../../../../commons");
 
 // Function to delete user account.
 async function deleteUserAccount(userEmailAddress, password) {

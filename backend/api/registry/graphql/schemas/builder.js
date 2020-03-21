@@ -2,7 +2,7 @@
 
 // Require modules.
 const {buildSchema} = require("graphql");
-const utils = require("../utils");
+const utils = require("../../../../utils");
 const queries = require("./queries");
 const mutations = require("./mutations");
 const inputs = require("./inputs");

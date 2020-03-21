@@ -1,9 +1,9 @@
 "use strict";
 
 // Require modules.
-const utils = require("../../utils");
+const utils = require("../../../../../utils");
 const {hash} = require("bcryptjs");
-const commons = require("../../commons");
+const commons = require("../../../../../commons");
 
 // Function to register user.
 async function registerUser(userRegistrationData) {

@@ -1,8 +1,8 @@
 "use strict";
 
 // Require modules.
-const commons = require("../../commons");
-const utils = require("../../utils");
+const commons = require("../../../../../commons");
+const utils = require("../../../../../utils");
 const jsonwebtoken = require("jsonwebtoken");
 require("dotenv").config();
 

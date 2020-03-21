@@ -1,9 +1,9 @@
 "use strict";
 
 // Require modules.
-const utils = require("../../utils");
-const models = require("../../models");
-const commons = require("../../commons");
+const utils = require("../../../../../utils");
+const models = require("../../../../../models");
+const commons = require("../../../../../commons");
 const {hash} = require("bcryptjs");
 
 // Function to update user personal information.
