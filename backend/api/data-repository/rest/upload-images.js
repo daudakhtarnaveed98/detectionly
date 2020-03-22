@@ -35,6 +35,13 @@ const upload = multer({
 function uploadImages(detectionly) {
     // Route to upload images.
     detectionly.post("/api/v1/repository/images/upload/", upload.array("images", 2), function (req, res, next) {
+        // In case no file is selected.
+        const files = req.files;
+        if (!files || files.length === 0) {
+            const error = new Error("Please select files");
+            return next(error);
+        }
+
         // Get json web token from authorization header.
         const jwt = req.headers['authorization'].split(" ")[1];
 
@@ -43,7 +50,7 @@ function uploadImages(detectionly) {
             // Temp directory path.
             const tempDir = process.env.TEMP_FILE_UPLOAD_PATH;
 
-            // In case of verification fail, throw error.
+            // In case of verification fail, clean temporary error and throw error.
             if (error) {
                 // Clean temporary folder.
                 fs.readdir(tempDir, (err, files) => {
@@ -52,34 +59,27 @@ function uploadImages(detectionly) {
                     });
                 });
                 throw error;
-            }
+            } else {
+                // Get email address from decoded.
+                const emailAddress = decoded.emailAddress;
 
-            // Get email address from decoded.
-            const emailAddress = decoded.emailAddress;
+                // Create directory for logged in user, if not exists.
+                const userDir = process.env.PERM_FILE_UPLOAD_PATH + emailAddress + "/";
+                if (!fs.existsSync(userDir)) {
+                    fs.mkdirSync(userDir);
+                }
 
-            // Create directory for logged in user, if not exists.
-            const userDir = process.env.PERM_FILE_UPLOAD_PATH + emailAddress + "/";
-            if (!fs.existsSync(userDir)) {
-                fs.mkdirSync(userDir);
-            }
-
-            // Move files to user's directory.
-            const files = req.files;
-            const filesLength = files.length;
-            for (let i = 0; i < filesLength; i++) {
-                const filePath = files[i].path;
-                fs.rename(filePath, userDir + files[i].filename, (error) => {
-                    if (error) throw error;
-                });
+                // Move files to user's directory.
+                const files = req.files;
+                const filesLength = files.length;
+                for (let i = 0; i < filesLength; i++) {
+                    const filePath = files[i].path;
+                    fs.rename(filePath, userDir + files[i].filename, (error) => {
+                        if (error) throw error;
+                    });
+                }
             }
         });
-
-        // In case no file is selected.
-        const files = req.files;
-        if (!files || files.length === 0) {
-            const error = new Error("Please select files");
-            return next(error);
-        }
         res.send(files);
     });
 }
