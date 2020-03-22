@@ -14,11 +14,14 @@ function initializeServer(serverPort) {
 
     // Use middleware.
     detectionly.use(bodyParser.json());
-    detectionly.use("/api/v1", graphqlHttp({
+    detectionly.use("/api/v1/registry/", graphqlHttp({
         schema: api.registry.graphql.schemas.graphqlSchema,
         rootValue: api.registry.graphql.resolvers.resolversMap,
         graphiql: true,
     }));
+
+    // Setup images upload.
+    api.dataRepository.rest.uploadImages(detectionly);
 
     // Connect with database.
     database.connectWithMongoDB()
