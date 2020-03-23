@@ -80,7 +80,11 @@ function uploadImages(detectionly) {
                 }
             }
         });
-        res.send(files);
+        res.status(201).send({
+            "statusMessage": "CREATED",
+            "responseMessage": "Upload Successful",
+            "imagesUploaded": files
+        });
     });
 }
 

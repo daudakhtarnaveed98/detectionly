@@ -20,8 +20,9 @@ function initializeServer(serverPort) {
         graphiql: true,
     }));
 
-    // Setup images upload.
+    // Setup images upload and delete.
     api.dataRepository.rest.uploadImages(detectionly);
+    api.dataRepository.rest.deleteImage(detectionly);
 
     // Connect with database.
     database.connectWithMongoDB()
