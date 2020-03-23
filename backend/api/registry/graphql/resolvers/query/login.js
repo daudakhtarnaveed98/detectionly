@@ -32,7 +32,7 @@ async function loginUser(userLoginData) {
         // If comparisonResult is true, generate and return a token with OK response.
         if (comparisonResult) {
             try {
-                const token = jsonwebtoken.sign({emailAddress: userEmailAddress,}, process.env.PRIVATE_KEY, {expiresIn: "1h"});
+                const token = jsonwebtoken.sign({emailAddress: userEmailAddress,}, process.env.PRIVATE_KEY, {expiresIn: "3d"});
                 return {"token":token, "tokenExpirationTime": 1, "response":{statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Login Successful"}};
             } catch (error) {
                 console.error(error);
