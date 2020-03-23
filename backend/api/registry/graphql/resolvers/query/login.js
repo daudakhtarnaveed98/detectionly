@@ -33,7 +33,7 @@ async function loginUser(userLoginData) {
         if (comparisonResult) {
             try {
                 const token = jsonwebtoken.sign({emailAddress: userEmailAddress,}, process.env.PRIVATE_KEY, {expiresIn: "3d"});
-                return {"token":token, "tokenExpirationTime": 1, "response":{statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Login Successful"}};
+                return {"token":token, "tokenExpirationTime": "3d", "response":{statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Login Successful"}};
             } catch (error) {
                 console.error(error);
             }

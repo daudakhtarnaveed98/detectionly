@@ -5,7 +5,6 @@ const fs = require("fs");
 const path = require("path");
 const uuid = require("uuid");
 const multer = require("multer");
-const jsonwebtoken = require("jsonwebtoken");
 require("dotenv-expand")(require("dotenv").config());
 
 // Setup storage.
@@ -42,49 +41,45 @@ function uploadImages(detectionly) {
             return next(error);
         }
 
-        // Get json web token from authorization header.
-        const jwt = req.headers['authorization'].split(" ")[1];
+        // Get isAuthorized from req.
+        const isAuthorized = req.isAuthorized;
 
-        // Verify the provided token.
-        jsonwebtoken.verify(jwt, process.env.PRIVATE_KEY, function(error, decoded) {
+        // If isAuthorized === false, clean temporary upload directory, and return UNAUTHORIZED response.
+        if (isAuthorized === false) {
             // Temp directory path.
             const tempDir = process.env.TEMP_FILE_UPLOAD_PATH;
 
-            // In case of verification fail, clean temporary error and throw error.
-            if (error) {
-                // Clean temporary folder.
-                fs.readdir(tempDir, (err, files) => {
-                    files.forEach(file => {
-                        fs.unlinkSync(tempDir + file);
-                    });
+            // Clean temporary folder.
+            fs.readdir(tempDir, (err, files) => {
+                files.forEach(file => {
+                    fs.unlinkSync(tempDir + file);
                 });
-                throw error;
-            } else {
-                // Get email address from decoded.
-                const emailAddress = decoded.emailAddress;
+            });
 
-                // Create directory for logged in user, if not exists.
-                const userDir = process.env.PERM_FILE_UPLOAD_PATH + emailAddress + "/";
-                if (!fs.existsSync(userDir)) {
-                    fs.mkdirSync(userDir);
-                }
+            // Return UNAUTHORIZED response.
+            res.status(406).send({"statusMessage": "UNAUTHORIZED", "responseMessage": "Invalid / Expired Token"});
+        } else {
+            // Get email address from req.
+            const emailAddress = req.emailAddress;
 
-                // Move files to user's directory.
-                const files = req.files;
-                const filesLength = files.length;
-                for (let i = 0; i < filesLength; i++) {
-                    const filePath = files[i].path;
-                    fs.rename(filePath, userDir + files[i].filename, (error) => {
-                        if (error) throw error;
-                    });
-                }
+            // Create directory for logged in user, if not exists.
+            const userDir = process.env.PERM_FILE_UPLOAD_PATH + emailAddress + "/";
+            if (!fs.existsSync(userDir)) {
+                fs.mkdirSync(userDir);
             }
-        });
-        res.status(201).send({
-            "statusMessage": "CREATED",
-            "responseMessage": "Upload Successful",
-            "imagesUploaded": files
-        });
+
+            // Move files to user's directory.
+            const files = req.files;
+            const filesLength = files.length;
+            for (let i = 0; i < filesLength; i++) {
+                const filePath = files[i].path;
+                fs.rename(filePath, userDir + files[i].filename, (error) => {
+                    if (error) throw error;
+                });
+            }
+            // Send OK response.
+            res.status(201).send({"statusMessage": "CREATED", "responseMessage": "Upload Successful", "imagesUploaded": files});
+        }
     });
 }
 

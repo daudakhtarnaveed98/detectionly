@@ -4,7 +4,6 @@
 const update = require("./update");
 const deletion  = require("./deletion");
 const registration = require("./registration");
-const jsonwebtoken = require("jsonwebtoken");
 const commons = require("../../../../../commons");
 require("dotenv-expand")(require("dotenv").config());
 
@@ -18,33 +17,30 @@ const mutationResolversMap = {
             console.error(error);
         }
     },
-
     updateUserInformation: async (args, req) => {
-        // Get json web token from authorization header.
-        const jwt = req.headers['authorization'].split(" ")[1];
+        // Get isAuthorized from req.
+        const isAuthorized = req.isAuthorized;
 
-        // Verify the provided token.
-        try {
-            jsonwebtoken.verify(jwt, process.env.PRIVATE_KEY);
+        // If isAuthorized === false, clean temporary upload directory, and return UNAUTHORIZED response.
+        if (isAuthorized === false) {
+            return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
+        } else {
             const {userEmailAddress: userEmailAddress, updatedInformation: updatedInformation} = args;
             try {
                 return await update.updateUserInformation(userEmailAddress, updatedInformation);
             } catch (error) {
                 console.error(error);
             }
-        } catch (error) {
-            console.error(error);
-            return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
         }
     },
-
     updateUserPassword: async (args, req) => {
-        // Get json web token from authorization header.
-        const jwt = req.headers['authorization'].split(" ")[1];
+        // Get isAuthorized from req.
+        const isAuthorized = req.isAuthorized;
 
-        // Verify the provided token.
-        try {
-            jsonwebtoken.verify(jwt, process.env.PRIVATE_KEY);
+        // If isAuthorized === false, clean temporary upload directory, and return UNAUTHORIZED response.
+        if (isAuthorized === false) {
+            return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
+        } else {
             const {userEmailAddress: userEmailAddress, userUpdatePasswordData: userUpdatePasswordData} = args;
             const {currentPassword: currentPassword, newPassword: newPassword} = userUpdatePasswordData;
             try {
@@ -52,29 +48,22 @@ const mutationResolversMap = {
             } catch (error) {
                 console.error(error);
             }
-        } catch (error) {
-            console.error(error);
-            return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
         }
-
     },
-
     deleteUserAccount: async (args, req) => {
-        // Get json web token from authorization header.
-        const jwt = req.headers['authorization'].split(" ")[1];
+        // Get isAuthorized from req.
+        const isAuthorized = req.isAuthorized;
 
-        // Verify the provided token.
-        try {
-            jsonwebtoken.verify(jwt, process.env.PRIVATE_KEY);
+        // If isAuthorized === false, clean temporary upload directory, and return UNAUTHORIZED response.
+        if (isAuthorized === false) {
+            return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
+        } else {
             const {userEmailAddress: userEmailAddress, password: password} = args;
             try {
                 return await deletion.deleteUserAccount(userEmailAddress, password);
             } catch (error) {
                 console.error(error);
             }
-        } catch (error) {
-            console.error(error);
-            return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
         }
     }
 };

@@ -4,6 +4,7 @@
 const models = require("../models");
 const commons = require("../commons");
 const {compare} = require("bcryptjs");
+const fsPromises = require("fs").promises;
 
 // Utility functions.
 // Function to check if user record exists in database.

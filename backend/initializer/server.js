@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
 const api = require("../api");
 const database = require("./database");
+const middleware = require("../middleware");
 
 // Function to initialize server.
 function initializeServer(serverPort) {
@@ -13,6 +14,7 @@ function initializeServer(serverPort) {
     const detectionly = express();
 
     // Use middleware.
+    detectionly.use(middleware.authenticateRequest);
     detectionly.use(bodyParser.json());
     detectionly.use("/api/v1/registry/", graphqlHttp({
         schema: api.registry.graphql.schemas.graphqlSchema,
@@ -23,6 +25,7 @@ function initializeServer(serverPort) {
     // Setup images upload and delete.
     api.dataRepository.rest.uploadImages(detectionly);
     api.dataRepository.rest.deleteImage(detectionly);
+    api.dataRepository.rest.getImages(detectionly);
 
     // Connect with database.
     database.connectWithMongoDB()
