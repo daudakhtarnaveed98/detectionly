@@ -27,6 +27,7 @@ function initializeServer(serverPort) {
     api.dataRepository.rest.deleteImagePair(detectionly);
     api.dataRepository.rest.locateImages(detectionly);
     api.dataRepository.rest.getImage(detectionly);
+    api.changeDetector.rest.detectChange(detectionly);
 
     // Connect with database.
     database.connectWithMongoDB()
