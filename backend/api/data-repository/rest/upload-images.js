@@ -33,7 +33,7 @@ const upload = multer({
 // Function to upload images.
 function uploadImages(detectionly) {
     // Route to upload images.
-    detectionly.post("/api/v1/repository/images/upload/", upload.array("images", 2), function (req, res, next) {
+    detectionly.post("/api/v1/repository/upload/", upload.array("images", 2), function (req, res, next) {
         // In case no file is selected.
         const files = req.files;
         if (!files || files.length === 0) {
@@ -62,18 +62,24 @@ function uploadImages(detectionly) {
             // Get email address from req.
             const emailAddress = req.emailAddress;
 
-            // Create directory for logged in user, if not exists.
+            // Create user directory, if not exists
             const userDir = process.env.PERM_FILE_UPLOAD_PATH + emailAddress + "/";
             if (!fs.existsSync(userDir)) {
                 fs.mkdirSync(userDir);
             }
 
-            // Move files to user's directory.
+            // Create folder with uuid inside user directory.
+            const imagesUploadPath = userDir + "/" + uuid.v4() + "/";
+            if (!fs.existsSync(imagesUploadPath)) {
+                fs.mkdirSync(imagesUploadPath);
+            }
+
+            // Move files to images upload path directory.
             const files = req.files;
             const filesLength = files.length;
             for (let i = 0; i < filesLength; i++) {
                 const filePath = files[i].path;
-                fs.rename(filePath, userDir + files[i].filename, (error) => {
+                fs.rename(filePath, imagesUploadPath + files[i].originalname, (error) => {
                     if (error) throw error;
                 });
             }

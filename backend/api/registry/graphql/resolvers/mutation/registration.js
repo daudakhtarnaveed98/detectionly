@@ -4,6 +4,7 @@
 const utils = require("../../../../../utils");
 const {hash} = require("bcryptjs");
 const commons = require("../../../../../commons");
+const fs = require("fs");
 
 // Function to register user.
 async function registerUser(userRegistrationData) {

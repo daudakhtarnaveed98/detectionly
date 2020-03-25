@@ -4,6 +4,7 @@
 const commons = require("../../../../../commons");
 const utils = require("../../../../../utils");
 const jsonwebtoken = require("jsonwebtoken");
+const fs = require("fs");
 require("dotenv").config();
 
 // Function to login user.
@@ -33,6 +34,14 @@ async function loginUser(userLoginData) {
         if (comparisonResult) {
             try {
                 const token = jsonwebtoken.sign({emailAddress: userEmailAddress,}, process.env.PRIVATE_KEY, {expiresIn: "3d"});
+
+                // Create user directory.
+                const userDir = process.env.PERM_FILE_UPLOAD_PATH + userLoginData.emailAddress;
+                if (!fs.existsSync(userDir)) {
+                    fs.mkdirSync(userDir);
+                }
+
+                // Return OK response along with token.
                 return {"token":token, "tokenExpirationTime": "3d", "response":{statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Login Successful"}};
             } catch (error) {
                 console.error(error);

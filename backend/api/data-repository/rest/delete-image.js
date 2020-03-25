@@ -5,9 +5,9 @@ const fs = require("fs");
 require("dotenv-expand")(require("dotenv").config());
 
 // Function to delete an image.
-function deleteImage(detectionly) {
+function deleteImagePair(detectionly) {
     // Route to delete image.
-    detectionly.delete("/api/v1/repository/images/delete/", function (req, res) {
+    detectionly.delete("/api/v1/repository/delete/", function (req, res) {
         // Get isAuthorized from req.
         const isAuthorized = req.isAuthorized;
 
@@ -18,19 +18,19 @@ function deleteImage(detectionly) {
         // Else get image to delete from request body and delete.
         else {
             const userDir = process.env.PERM_FILE_UPLOAD_PATH + req.emailAddress + "/";
-            const {nameOfImageToDelete} = req.body;
-            const imageToDelete = userDir + nameOfImageToDelete;
+            const {nameOfImagePairFolder} = req.query;
+            const imagePairToDelete = userDir + nameOfImagePairFolder + "/";
 
             // Check if image exists.
-            fs.access(imageToDelete, fs.constants.F_OK, (error) => {
+            fs.access(imagePairToDelete, fs.constants.F_OK, (error) => {
                 // If image does not exist.
                 if (error) {
                     // Return NOT FOUND response.
-                    res.status(404).send({"statusMessage": "NOT FOUND", "responseMessage": "Image Does Not Exist"});
+                    res.status(404).send({"statusMessage": "NOT FOUND", "responseMessage": "Image Pair Folder Does Not Exist"});
                 } else {
-                    // If image exists, unlink it.
-                    fs.unlink(imageToDelete, (error) => {
-                        // If error in unlink, return INTERNAL SERVER ERROR response.
+                    // If image pair folder exists, remove and all files in it.
+                    fs.rmdir(imagePairToDelete, {recursive: true}, (error) => {
+                        // If error in removal, return INTERNAL SERVER ERROR response.
                         if (error) {
                             res.status(500).send({"statusMessage": "INTERNAL SERVER ERROR", "responseMessage": "Cannot Delete Image"});
                         } else {
@@ -45,4 +45,4 @@ function deleteImage(detectionly) {
 }
 
 // Export.
-exports.deleteImage = deleteImage;
+exports.deleteImagePair = deleteImagePair;

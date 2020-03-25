@@ -3,9 +3,11 @@
 // Require modules.
 const imageUploader = require("./upload-images");
 const imageDeleter = require("./delete-image");
-const imageGetter = require("./get-images");
+const imageLocator = require("./locate-images");
+const imageGetter = require("./get-image");
 
 // Export.
 exports.uploadImages = imageUploader.uploadImages;
-exports.deleteImage = imageDeleter.deleteImage;
-exports.getImages = imageGetter.getImages;
+exports.deleteImagePair = imageDeleter.deleteImagePair;
+exports.locateImages = imageLocator.locateImages;
+exports.getImage = imageGetter.getImage;
