@@ -3,6 +3,7 @@
 // Require modules.
 const fs = require("fs");
 const path = require("path");
+const {PythonShell} = require("python-shell");
 require("dotenv-expand")(require("dotenv").config());
 
 // Function to detect changes in image pair.
@@ -23,17 +24,23 @@ function detectChange(detectionly) {
             const {imagePairFolderName} = req.query;
 
             // Get user directory.
-            const imagePairFolderPath = process.env.PERM_FILE_UPLOAD_PATH + req.emailAddress + "/" + imagePairFolderName + "/";
+            const imagePairFolderPathRelative = process.env.PERM_FILE_UPLOAD_PATH + req.emailAddress + "/" + imagePairFolderName + "/";
+            const imagePairFolderPathAbsolute = path.join(__dirname, "../../../", imagePairFolderPathRelative);
 
             // Get image pair paths.
-            const imagePairPaths = fs.readdirSync(imagePairFolderPath).map((currentImageName) => {
-                return imagePairFolderPath + "/" + currentImageName;
+            const imagePairPaths = fs.readdirSync(imagePairFolderPathAbsolute).map((currentImageName) => {
+                return imagePairFolderPathAbsolute + currentImageName;
             });
 
             // Change directory to one containing run shell script.
-            const scriptPath = path.join(__dirname + "../../model/run.sh");
-            const exec = require('child_process').exec;
-            exec(scriptPath);
+            const scriptPath = path.join(__dirname, "../model/");
+            process.chdir(scriptPath);
+            PythonShell.run("app.py", null, (error) => {
+                if (error) {
+                    throw error;
+                }
+                console.log('finished');
+            });
         }
     });
 }
