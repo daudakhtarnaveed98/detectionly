@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // Define mutation.
 const mutationsSchema = `

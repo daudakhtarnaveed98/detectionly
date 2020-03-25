@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const models = require('../models');
-const commons = require('../commons');
-const {compare} = require('bcryptjs');
+const models = require("../models");
+const commons = require("../commons");
+const {compare} = require("bcryptjs");
 
 // Utility functions.
 // Function to check if user record exists in database.
@@ -16,30 +16,49 @@ async function checkIfUserRecordExistsInDatabase(userEmailAddress) {
     // Check if user exists in database and return boolean.
     try {
         // Find user from database.
-        const result = await models.User.findOne(conditions).exec();
+        let result = null;
+        try {
+            result = await models.User.findOne(conditions).exec();
+        } catch (error) {
+            console.error(error);
+        }
+
         return result != null;
     }
     // Catch and log error.
     catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
 // Function to get a user from database.
 async function getUserFromDatabase(userEmailAddress) {
-    // Conditions to find user.
-    const conditions = {
-        emailAddress: userEmailAddress
-    };
-
-    // Try to find user and return.
+    // Try to check if user record exists in database.
+    let doesUserRecordExist = false;
     try {
-        // Find user from database.
-        return await models.User.findOne(conditions).exec();
+        doesUserRecordExist = await checkIfUserRecordExistsInDatabase(userEmailAddress);
+    } catch (error) {
+        console.error(error);
     }
-    // Catch and log error.
-    catch (error) {
-        console.log(error);
+
+    // If doesUserRecordExist is true, get and return user.
+    if (doesUserRecordExist) {
+        // Conditions to find user.
+        const conditions = {
+            emailAddress: userEmailAddress
+        };
+
+        // Try to find user and return.
+        try {
+            // Find user from database.
+            return await models.User.findOne(conditions).exec();
+        }
+            // Catch and log error.
+        catch (error) {
+            console.error(error);
+        }
+    } else {
+        return null;
     }
 }
 
@@ -72,7 +91,7 @@ async function saveUserToDatabase(userRegistrationData) {
     }
     // Catch and log error.
     catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -83,24 +102,28 @@ async function authenticateUser(userEmailAddress, password) {
     try {
         userFromDatabase = await getUserFromDatabase(userEmailAddress);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
-    // Extract password.
-    const {password: userCurrentPassword} = userFromDatabase;
+    if (userFromDatabase != null) {
+        // Extract password.
+        const {password: userCurrentPassword} = userFromDatabase;
 
-    // Compare passwords.
-    try {
-        return await compare(password, userCurrentPassword);
-    } catch (error) {
-        console.log(error);
+        // Compare passwords.
+        try {
+            return await compare(password, userCurrentPassword);
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        return false;
     }
 }
 
 // Function to concatenate schemas.
 function concatenateSchemas(...schemasToCombine) {
     // Variable to hold concatenated schemas.
-    let concatenatedSchemas = '';
+    let concatenatedSchemas = "";
 
     // Loop and concatenate.
     for (const schema of schemasToCombine) {

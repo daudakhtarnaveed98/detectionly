@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const user = require('./user');
+const user = require("./user");
 
 // Export.
 exports.User = user.User;

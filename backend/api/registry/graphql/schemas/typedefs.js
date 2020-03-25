@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // Define root schema.
 const rootSchemaDefinition = `
@@ -28,7 +28,7 @@ const userSchemaDefinition = `
 const authenticationDataDefinition = `
     type AuthenticationData {
         token: String
-        tokenExpirationTime: Int
+        tokenExpirationTime: String
         response: Response!
     }
 `;

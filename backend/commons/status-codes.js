@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 // Define constants.
-const constants = Object.freeze(
-    {
+// Status codes.
+const statusCodes = Object.freeze({
         "OK"            : 200,
         "CREATED"       : 201,
         "ACCEPTED"      : 202,
@@ -11,8 +11,7 @@ const constants = Object.freeze(
         "UNAUTHORIZED"  : 401,
         "BAD REQUEST"   : 400,
         "NOT ACCEPTABLE": 406
-    }
-);
+});
 
 // Export.
-exports.statusCodes = constants;
+exports.statusCodes = statusCodes;

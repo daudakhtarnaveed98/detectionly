@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
 // Require modules.
-const utils = require('./utils');
+const utils = require("./utils");
 
 // Export.
 exports.checkIfUserRecordExistsInDatabase = utils.checkIfUserRecordExistsInDatabase;
