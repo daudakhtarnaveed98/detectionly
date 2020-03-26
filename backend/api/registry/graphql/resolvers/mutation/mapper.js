@@ -25,9 +25,9 @@ const mutationResolversMap = {
         if (isAuthorized === false) {
             return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
         } else {
-            const {userEmailAddress: userEmailAddress, updatedInformation: updatedInformation} = args;
+            const {updatedInformation: updatedInformation} = args;
             try {
-                return await update.updateUserInformation(userEmailAddress, updatedInformation);
+                return await update.updateUserInformation(req.emailAddress, updatedInformation);
             } catch (error) {
                 console.error(error);
             }
@@ -41,10 +41,10 @@ const mutationResolversMap = {
         if (isAuthorized === false) {
             return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
         } else {
-            const {userEmailAddress: userEmailAddress, userUpdatePasswordData: userUpdatePasswordData} = args;
+            const {userUpdatePasswordData: userUpdatePasswordData} = args;
             const {currentPassword: currentPassword, newPassword: newPassword} = userUpdatePasswordData;
             try {
-                return await update.updateUserPassword(userEmailAddress, currentPassword, newPassword);
+                return await update.updateUserPassword(req.emailAddress, currentPassword, newPassword);
             } catch (error) {
                 console.error(error);
             }
@@ -58,9 +58,9 @@ const mutationResolversMap = {
         if (isAuthorized === false) {
             return {statusCode: commons.statusCodes.UNAUTHORIZED, statusMessage: "UNAUTHORIZED", responseMessage: "Invalid / Expired Token"};
         } else {
-            const {userEmailAddress: userEmailAddress, password: password} = args;
+            const {password: password} = args;
             try {
-                return await deletion.deleteUserAccount(userEmailAddress, password);
+                return await deletion.deleteUserAccount(req.emailAddress, password);
             } catch (error) {
                 console.error(error);
             }

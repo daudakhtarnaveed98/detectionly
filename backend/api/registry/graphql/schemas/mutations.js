@@ -4,9 +4,9 @@
 const mutationsSchema = `
     type Mutation {
         registerUser(userRegistrationData: UserRegistrationInput): Response!
-        updateUserInformation(userEmailAddress: String!, updatedInformation: UserInformationUpdateInput): Response!
-        updateUserPassword(userEmailAddress: String!, userUpdatePasswordData: UserPasswordUpdateInput): Response!
-        deleteUserAccount(userEmailAddress: String!, password: String!): Response!
+        updateUserInformation(updatedInformation: UserInformationUpdateInput): Response!
+        updateUserPassword(userUpdatePasswordData: UserPasswordUpdateInput): Response!
+        deleteUserAccount(password: String!): Response!
     }
 `;
 
