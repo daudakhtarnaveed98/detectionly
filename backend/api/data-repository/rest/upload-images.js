@@ -10,7 +10,7 @@ require("dotenv-expand")(require("dotenv").config());
 // Setup storage.
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, process.env.TEMP_FILE_UPLOAD_PATH);
+        cb(null, path.join(__dirname, "../../../", process.env.TEMP_FILE_UPLOAD_PATH));
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname + '-' + uuid.v4() + path.extname(file.originalname));
@@ -37,9 +37,11 @@ function uploadImages(detectionly) {
         // In case no file is selected.
         const files = req.files;
         if (!files || files.length === 0) {
-            const error = new Error("Please select files");
-            return next(error);
+            // Return NOT ACCEPTABLE response.
+            res.status(406).send({"statusMessage": "NOT ACCEPTABLE", "responseMessage": "Please select images."});
+            return next();
         }
+
 
         // Get isAuthorized from req.
         const isAuthorized = req.isAuthorized;
@@ -47,29 +49,29 @@ function uploadImages(detectionly) {
         // If isAuthorized === false, clean temporary upload directory, and return UNAUTHORIZED response.
         if (isAuthorized === false) {
             // Temp directory path.
-            const tempDir = process.env.TEMP_FILE_UPLOAD_PATH;
+            const imageUploadTemporaryDirectory = path.join(__dirname, "../../../", process.env.TEMP_FILE_UPLOAD_PATH);
 
             // Clean temporary folder.
-            fs.readdir(tempDir, (err, files) => {
+            fs.readdir(imageUploadTemporaryDirectory, (err, files) => {
                 files.forEach(file => {
-                    fs.unlinkSync(tempDir + file);
+                    fs.unlinkSync(path.join(imageUploadTemporaryDirectory, file));
                 });
             });
 
             // Return UNAUTHORIZED response.
-            res.status(406).send({"statusMessage": "UNAUTHORIZED", "responseMessage": "Invalid / Expired Token"});
+            res.status(401).send({"statusMessage": "UNAUTHORIZED", "responseMessage": "Invalid / Expired Token"});
         } else {
             // Get email address from req.
             const emailAddress = req.emailAddress;
 
             // Create user directory, if not exists
-            const userDir = process.env.PERM_FILE_UPLOAD_PATH + emailAddress + "/";
-            if (!fs.existsSync(userDir)) {
-                fs.mkdirSync(userDir);
+            const userDataDirectory = path.join(__dirname, "../../../", process.env.PERM_FILE_UPLOAD_PATH, emailAddress);
+            if (!fs.existsSync(userDataDirectory)) {
+                fs.mkdirSync(userDataDirectory);
             }
 
             // Create folder with uuid inside user directory.
-            const imagesUploadPath = userDir + "/" + uuid.v4() + "/";
+            const imagesUploadPath = path.join(userDataDirectory, uuid.v4());
             if (!fs.existsSync(imagesUploadPath)) {
                 fs.mkdirSync(imagesUploadPath);
             }
@@ -79,7 +81,7 @@ function uploadImages(detectionly) {
             const filesLength = files.length;
             for (let i = 0; i < filesLength; i++) {
                 const filePath = files[i].path;
-                fs.rename(filePath, imagesUploadPath + files[i].originalname, (error) => {
+                fs.rename(filePath, path.join(imagesUploadPath, files[i].originalname), (error) => {
                     if (error) throw error;
                 });
             }
