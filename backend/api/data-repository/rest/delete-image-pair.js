@@ -21,25 +21,32 @@ function deleteImagePair(detectionly) {
             const {nameOfImagePairFolder} = req.query;
             const imagePairToDelete = path.join(__dirname, "../../../", process.env.PERM_FILE_UPLOAD_PATH, req.emailAddress, nameOfImagePairFolder);
 
-            // Check if image exists.
-            fs.access(imagePairToDelete, fs.constants.F_OK, (error) => {
-                // If image does not exist.
-                if (error) {
-                    // Return NOT FOUND response.
-                    res.status(404).send({"statusMessage": "NOT FOUND", "responseMessage": "Image Pair Folder Not Found"});
-                } else {
-                    // If image pair folder exists, remove and all files in it.
-                    fs.rmdir(imagePairToDelete, {recursive: true}, (error) => {
-                        // If error in removal, return INTERNAL SERVER ERROR response.
-                        if (error) {
-                            res.status(500).send({"statusMessage": "INTERNAL SERVER ERROR", "responseMessage": "Cannot Delete Image Pair"});
-                        } else {
-                            // Return OK response.
-                            res.status(200).send({"statusMessage": "OK", "responseMessage": "Image Pair Deletion Successful"});
-                        }
-                    });
-                }
-            });
+            // If image pair folder name is not provided as query parameter.
+            if (nameOfImagePairFolder === null || nameOfImagePairFolder === "") {
+                // Return BAD REQUEST response.
+                res.status(400).send({"statusMessage": "BAD REQUEST", "responseMessage": "Image Pair Folder Name Cannot Be Empty"});
+            }
+            else {
+                // Check if image pair folder exists on filesystem.
+                fs.access(imagePairToDelete, fs.constants.F_OK, (error) => {
+                    // If image does not exist.
+                    if (error) {
+                        // Return NOT FOUND response.
+                        res.status(404).send({"statusMessage": "NOT FOUND", "responseMessage": "Image Pair Folder Not Found"});
+                    } else {
+                        // If image pair folder exists, remove and all files in it.
+                        fs.rmdir(imagePairToDelete, {recursive: true}, (error) => {
+                            // If error in removal, return INTERNAL SERVER ERROR response.
+                            if (error) {
+                                res.status(500).send({"statusMessage": "INTERNAL SERVER ERROR", "responseMessage": "Cannot Delete Image Pair"});
+                            } else {
+                                // Return OK response.
+                                res.status(200).send({"statusMessage": "OK", "responseMessage": "Image Pair Deletion Successful"});
+                            }
+                        });
+                    }
+                });
+            }
         }
     });
 }
