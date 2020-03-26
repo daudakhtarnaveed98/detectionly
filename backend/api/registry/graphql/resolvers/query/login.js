@@ -5,7 +5,8 @@ const commons = require("../../../../../commons");
 const utils = require("../../../../../utils");
 const jsonwebtoken = require("jsonwebtoken");
 const fs = require("fs");
-require("dotenv").config();
+const path = require("path");
+require("dotenv-expand")(require("dotenv").config());
 
 // Function to login user.
 async function loginUser(userLoginData) {
@@ -35,10 +36,10 @@ async function loginUser(userLoginData) {
             try {
                 const token = jsonwebtoken.sign({emailAddress: userEmailAddress,}, process.env.PRIVATE_KEY, {expiresIn: "3d"});
 
-                // Create user directory.
-                const userDir = process.env.PERM_FILE_UPLOAD_PATH + userLoginData.emailAddress;
-                if (!fs.existsSync(userDir)) {
-                    fs.mkdirSync(userDir);
+                // Create user data directory, if not exists.
+                const userDataDirectory = path.join(__dirname, "../../../../../", process.env.PERM_FILE_UPLOAD_PATH, userEmailAddress);
+                if (!fs.existsSync(userDataDirectory)) {
+                    fs.mkdirSync(userDataDirectory);
                 }
 
                 // Return OK response along with token.
