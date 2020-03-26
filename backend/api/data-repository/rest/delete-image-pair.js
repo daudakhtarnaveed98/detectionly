@@ -32,7 +32,7 @@ function deleteImagePair(detectionly) {
                     fs.rmdir(imagePairToDelete, {recursive: true}, (error) => {
                         // If error in removal, return INTERNAL SERVER ERROR response.
                         if (error) {
-                            res.status(500).send({"statusMessage": "INTERNAL SERVER ERROR", "responseMessage": "Cannot Delete Image"});
+                            res.status(500).send({"statusMessage": "INTERNAL SERVER ERROR", "responseMessage": "Cannot Delete Image Pair"});
                         } else {
                             // Return OK response.
                             res.status(200).send({"statusMessage": "OK", "responseMessage": "Image Pair Deletion Successful"});
