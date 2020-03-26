@@ -3,6 +3,7 @@
 // Require modules.
 require("dotenv-expand")(require("dotenv").config());
 const fs = require("fs");
+const path = require("path");
 
 // Function to locate images.
 function locateImages(detectionly) {
@@ -13,23 +14,23 @@ function locateImages(detectionly) {
 
         // If isAuthorized === false, return UNAUTHORIZED response.
         if (isAuthorized === false) {
-            res.status(401).send({"statusMessage": "UNAUTHORIZED", "responseMessage": "Invalid Token"});
+            res.status(401).send({"statusMessage": "UNAUTHORIZED", "responseMessage": "Invalid / Expired Token"});
         }
         // Else get images associated with that user.
         else {
             // Try to read contents of userDir.
-            const userDir = process.env.PERM_FILE_UPLOAD_PATH + req.emailAddress + "/";
+            const userDataDirectory = path.join(__dirname, "../../../", process.env.PERM_FILE_UPLOAD_PATH, req.emailAddress);
             let userUploadedImagesPairFolders;
             try {
-                fs.readdirSync(userDir);
+                fs.readdirSync(userDataDirectory);
             } catch (error) {
                 // Directory does not exist, create one.
-                if (!fs.existsSync(userDir)) {
-                    fs.mkdirSync(userDir);
+                if (!fs.existsSync(userDataDirectory)) {
+                    fs.mkdirSync(userDataDirectory);
                 }
             } finally {
                 // Read contents again (in newly created directory).
-                userUploadedImagesPairFolders = fs.readdirSync(userDir);
+                userUploadedImagesPairFolders = fs.readdirSync(userDataDirectory);
             }
 
             // If no images are found in directory, return NOT FOUND response.
@@ -40,8 +41,8 @@ function locateImages(detectionly) {
                 // For each folder containing image pair, get paths of images.
                 let userUploadedImagePairPaths = [];
                 userUploadedImagesPairFolders.forEach((currentFolderContainingImagePair) => {
-                    fs.readdirSync(userDir + currentFolderContainingImagePair).forEach((userUploadedCurrentImagePath) => {
-                        userUploadedImagePairPaths.push(currentFolderContainingImagePair + "/" + userUploadedCurrentImagePath);
+                    fs.readdirSync(path.join(userDataDirectory, currentFolderContainingImagePair)).forEach((userUploadedCurrentImagePath) => {
+                        userUploadedImagePairPaths.push(path.join(currentFolderContainingImagePair, userUploadedCurrentImagePath));
                     });
                 });
 

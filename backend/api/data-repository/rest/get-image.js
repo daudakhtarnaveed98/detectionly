@@ -1,6 +1,7 @@
 "use strict";
 
 // Require modules.
+const path = require("path");
 require("dotenv-expand")(require("dotenv").config());
 
 // Function to get image.
@@ -18,19 +19,13 @@ function getImage(detectionly) {
         // Else get images associated with that user.
         else {
             // Get user directory.
-            const userDir = process.env.PERM_FILE_UPLOAD_PATH + req.emailAddress + "/";
+            const userDataDirectory = path.join(__dirname, "../../../", process.env.PERM_FILE_UPLOAD_PATH, req.emailAddress);
 
             // Get image path from query parameters.
             let {imagePath} = req.query;
 
-            // Concat above information to make path for image.
-            imagePath = userDir + imagePath;
-
-            // Options for sendFile.
-            const options = {root: __dirname + "../../../../"};
-
             // Send OK response with image.
-            res.status(200).sendFile(imagePath, options);
+            res.status(200).sendFile(path.join(userDataDirectory, imagePath));
         }
     });
 }
