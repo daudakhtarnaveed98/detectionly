@@ -1,9 +1,12 @@
 "use strict";
 
 // Require modules.
+const fs = require("fs");
+const path = require("path");
 const utils = require("../../../../../utils");
 const models = require("../../../../../models");
 const commons = require("../../../../../commons");
+require("dotenv-expand")(require("dotenv").config());
 
 // Function to delete user account.
 async function deleteUserAccount(userEmailAddress, password) {
@@ -25,14 +28,25 @@ async function deleteUserAccount(userEmailAddress, password) {
             console.error(error);
         }
 
-        // If comparisonResult is true, delete account, and return OK response.
+        // If comparisonResult is true, delete account, user data directory and return OK response.
         if (comparisonResult) {
+            // Delete user.
             try {
                 await models.User.findOneAndDelete({emailAddress: userEmailAddress});
-                return {statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "Account Deletion Successful"};
             } catch (error) {
                 console.error(error);
             }
+
+            // Delete user data directory.
+            const userDataDirectory = path.join(__dirname, "../../../../../", process.env.PERM_FILE_UPLOAD_PATH, userEmailAddress);
+            fs.rmdir(userDataDirectory, {recursive: true}, (error) => {
+                if (error) {
+                    console.error(error);
+                }
+            });
+
+            // Return OK response.
+            return {statusCode: commons.statusCodes.OK, statusMessage: "OK", responseMessage: "User Deletion Successful"};
         }
         // Else return UNAUTHORIZED response.
         else {

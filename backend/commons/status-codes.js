@@ -10,7 +10,8 @@ const statusCodes = Object.freeze({
         "CONFLICT"      : 409,
         "UNAUTHORIZED"  : 401,
         "BAD REQUEST"   : 400,
-        "NOT ACCEPTABLE": 406
+        "NOT ACCEPTABLE": 406,
+        "INTERNAL SERVER ERROR": 500
 });
 
 // Export.
