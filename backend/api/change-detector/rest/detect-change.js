@@ -9,7 +9,7 @@ require("dotenv-expand")(require("dotenv").config());
 // Function to detect changes in image pair.
 function detectChange(detectionly) {
     // Route to get image.
-    detectionly.get("/api/v1/change-detector/", function (req, res) {
+    detectionly.get("/api/v1/change-detector/", function (req, res, next) {
 
         // Get isAuthorized from req.
         const isAuthorized = req.isAuthorized;
@@ -23,24 +23,45 @@ function detectChange(detectionly) {
             // Get image pair folder name.
             const {imagePairFolderName} = req.query;
 
-            // Get user directory.
-            const imagePairFolderPathRelative = process.env.PERM_FILE_UPLOAD_PATH + req.emailAddress + "/" + imagePairFolderName + "/";
-            const imagePairFolderPathAbsolute = path.join(__dirname, "../../../", imagePairFolderPathRelative);
+            // Get image pair folder absolute path.
+            const imagePairFolderPathAbsolute = path.join(__dirname, "../../../", process.env.PERM_FILE_UPLOAD_PATH, req.emailAddress, imagePairFolderName);
 
             // Get image pair paths.
             const imagePairPaths = fs.readdirSync(imagePairFolderPathAbsolute).map((currentImageName) => {
-                return imagePairFolderPathAbsolute + currentImageName;
+                return path.join(imagePairFolderPathAbsolute, currentImageName);
             });
 
-            // Change directory to one containing run shell script.
-            const scriptPath = path.join(__dirname, "../model/");
-            process.chdir(scriptPath);
-            PythonShell.run("app.py", null, (error) => {
-                if (error) {
-                    throw error;
-                }
-                console.log('finished');
-            });
+            // If image pair paths are not found i.e array length is 0.
+            if (imagePairPaths.length === 0) {
+                res.status(400).send({"statusMessage": "BAD REQUEST", "responseMessage": "Invalid Image Pair Folder Path"});
+            }
+            // If image pair has already been inferred i.e array length is 3.
+            else if (imagePairPaths.length === 3) {
+                res.sendFile(path.join(imagePairFolderPathAbsolute, "change-map.jpg"));
+            }
+            else {
+                // Change directory to one containing run shell script.
+                const modelScriptPath = path.join(__dirname, "../model/");
+                process.chdir(modelScriptPath);
+
+                // Options for python script.
+                const options = {
+                    mode: "text",
+                    pythonOptions: ["-u"],
+                    scriptPath: modelScriptPath,
+                    args: [imagePairPaths[0], imagePairPaths[1], imagePairFolderPathAbsolute]
+                };
+
+                // Run python script.
+                PythonShell.run("app.py", options, (error) => {
+                    if (error) {
+                        throw error;
+                    }
+
+                    // Send change map.
+                    res.sendFile(path.join(imagePairFolderPathAbsolute, "change-map.jpg"));
+                });
+            }
         }
     });
 }
