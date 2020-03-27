@@ -23,6 +23,11 @@ function detectChange(detectionly) {
             // Get image pair folder name.
             const {imagePairFolderName} = req.query;
 
+            // Check if image pair folder name is given.
+            if (!imagePairFolderName || imagePairFolderName === "" || imagePairFolderName === null) {
+                return res.status(400).send({"statusMessage": "BAD REQUEST", "responseMessage": "Invalid Image Pair Folder Name"});
+            }
+
             // Get image pair folder absolute path.
             const imagePairFolderPathAbsolute = path.join(__dirname, "../../../", process.env.PERM_FILE_UPLOAD_PATH, req.emailAddress, imagePairFolderName);
 
@@ -33,35 +38,35 @@ function detectChange(detectionly) {
 
             // If image pair paths are not found i.e array length is 0.
             if (imagePairPaths.length === 0) {
-                res.status(400).send({"statusMessage": "BAD REQUEST", "responseMessage": "Invalid Image Pair Folder Path"});
+                return res.status(400).send({"statusMessage": "BAD REQUEST", "responseMessage": "Invalid Image Pair Folder Name"});
             }
             // If image pair has already been inferred i.e array length is 3.
-            else if (imagePairPaths.length === 3) {
-                res.sendFile(path.join(imagePairFolderPathAbsolute, "change-map.jpg"));
+            if (imagePairPaths.length === 3) {
+                return res.sendFile(path.join(imagePairFolderPathAbsolute, "change-map.jpg"));
             }
-            else {
-                // Change directory to one containing run shell script.
-                const modelScriptPath = path.join(__dirname, "../model/");
-                process.chdir(modelScriptPath);
 
-                // Options for python script.
-                const options = {
-                    mode: "text",
-                    pythonOptions: ["-u"],
-                    scriptPath: modelScriptPath,
-                    args: [imagePairPaths[0], imagePairPaths[1], imagePairFolderPathAbsolute]
-                };
+            // Change directory to one containing run shell script.
+            const modelScriptPath = path.join(__dirname, "../model/");
+            process.chdir(modelScriptPath);
 
-                // Run python script.
-                PythonShell.run("app.py", options, (error) => {
-                    if (error) {
-                        throw error;
-                    }
+            // Options for python script.
+            const options = {
+                mode: "text",
+                pythonOptions: ["-u"],
+                scriptPath: modelScriptPath,
+                args: [imagePairPaths[0], imagePairPaths[1], imagePairFolderPathAbsolute]
+            };
 
-                    // Send change map.
-                    res.sendFile(path.join(imagePairFolderPathAbsolute, "change-map.jpg"));
-                });
-            }
+            // Run python script.
+            PythonShell.run("app.py", options, (error) => {
+                if (error) {
+                    throw error;
+                }
+
+                // Send change map.
+                return res.sendFile(path.join(imagePairFolderPathAbsolute, "change-map.jpg"));
+            });
+
         }
     });
 }
