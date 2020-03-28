@@ -2,6 +2,7 @@
 
 // Require modules.
 const initializers = require("./initializer");
+require("dotenv-expand")(require("dotenv").config());
 
 // Initialize server.
-initializers.initializeServer(3000);
+initializers.initializeServer(process.env.SERVER_PORT);

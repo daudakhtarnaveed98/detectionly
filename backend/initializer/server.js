@@ -36,6 +36,7 @@ function initializeServer(serverPort) {
             () => {
                 // Start listening.
                 detectionly.listen(serverPort);
+                console.log("Server started listening on port:" + serverPort);
             })
         // On error.
         .catch(
