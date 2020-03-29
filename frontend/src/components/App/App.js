@@ -1,17 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// Import modules.
+import React from "react";
+import AuthPage from "../../pages";
+import {BrowserRouter, Route} from "react-router-dom";
 
+
+// App component.
 function App() {
-  return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>Edit <code>src/App.js</code> and save to reload.</p>
-          <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">Learn React</a>
-        </header>
-      </div>
-  );
+    return (
+        <BrowserRouter>
+            <Route path="/auth" component={AuthPage}/>
+            <Route path={"/register"} component={null}/>
+        </BrowserRouter>
+    );
 }
 
+// Export.
 export default App;
