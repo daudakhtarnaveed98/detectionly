@@ -1,7 +1,7 @@
 {
-  "name": "registry",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "registry microservice for detectionly project.",
+  "description": "backend for detectionly.",
   "main": "detectionly.js",
   "scripts": {
     "test": "jest"
