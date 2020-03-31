@@ -2,6 +2,7 @@
 
 // Require modules.
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
 const api = require("../api");
@@ -14,6 +15,7 @@ function initializeServer(serverPort) {
     const detectionly = express();
 
     // Use middleware.
+    detectionly.use(cors());
     detectionly.use(middleware.authenticateRequest);
     detectionly.use(bodyParser.json());
     detectionly.use("/api/v1/registry/", graphqlHttp({
