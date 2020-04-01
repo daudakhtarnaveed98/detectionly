@@ -80,9 +80,7 @@ async function saveUserToDatabase(userRegistrationData) {
     const userToSave = new models.User({
         // Required properties.
         emailAddress: userRegistrationData.emailAddress,
-        password: userRegistrationData.password,
-        firstName: userRegistrationData.firstName,
-        lastName: userRegistrationData.lastName,
+        password: userRegistrationData.password
     });
     // Try to save user to database.
     try {

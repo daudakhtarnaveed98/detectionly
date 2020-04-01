@@ -6,8 +6,6 @@ const UserRegistrationInput = `
     input UserRegistrationInput {
         emailAddress: String!
         password: String!
-        firstName: String!
-        lastName: String!
     }`;
 
 // For user login.

@@ -17,16 +17,17 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+
+    // Optional properties.
     firstName: {
         type: String,
-        required: true
+        default: ""
     },
     lastName: {
         type: String,
-        required: true
+        default: ""
     },
 
-    // Optional properties.
     gender: {
         type: String,
         default: ""
