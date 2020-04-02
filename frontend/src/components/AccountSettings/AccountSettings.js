@@ -8,7 +8,6 @@ class AccountSettings extends Component {
     constructor(props) {
         super(props);
     }
-
     render() {
         return (
             <div>
@@ -40,6 +39,11 @@ class AccountSettings extends Component {
                         </form>
                     </div>
                 </div>
+                <style jsx> {`
+                body {
+                    background-color: white;
+                }
+                `}</style>
             </div>
         );
     }

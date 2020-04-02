@@ -25,6 +25,15 @@ const registration = () => {
                 </form>
             </div>
             <p><sup>*</sup>A strong password is a mixture of lowercase and uppercase letters, numbers, and special symbols.</p>
+
+            <style jsx>{
+                    `
+                    body {
+                        background-color: #0E8FD8;
+                    }
+                    `
+            }
+            </style>
         </div>
     );
 };

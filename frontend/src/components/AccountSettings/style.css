@@ -1,8 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
-
 body div.account-settings-card {
-  padding: 1.35% 10%;
-  background-color: white;
+  padding: 0 10%;
   width: 100%;
 }
 body div.account-settings-card h3 {

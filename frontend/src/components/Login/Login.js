@@ -26,6 +26,14 @@ const login = () => {
                 </form>
                 <p>Not Registered? <Link to="/sign-up">Create An Account</Link></p>
             </div>
+            <style jsx>{
+                    `
+                    body {
+                        background-color: #0E8FD8;
+                    }
+                    `
+            }
+            </style>
         </div>
     );
 };
