@@ -35,7 +35,11 @@ const UserPasswordUpdateInput = `
     }`;
 
 // Combined input schema.
-const InputSchema = UserRegistrationInput + UserLoginInput + UserDataUpdateInput + UserPasswordUpdateInput;
+const InputSchema =
+  UserRegistrationInput +
+  UserLoginInput +
+  UserDataUpdateInput +
+  UserPasswordUpdateInput;
 
 // Export.
 exports.InputSchema = InputSchema;

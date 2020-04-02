@@ -4,11 +4,11 @@ import Authentication from "../Authentication";
 
 // Detectionly component.
 function Detectionly() {
-    return (
-        <div>
-            <Authentication/>
-        </div>
-    );
+  return (
+    <div>
+      <Authentication />
+    </div>
+  );
 }
 
 // Export.

@@ -42,7 +42,11 @@ const responseMessageDefinition = `
 `;
 
 // Combined typedefs schema.
-const TypeDefs = rootSchemaDefinition + userSchemaDefinition + authenticationDataDefinition + responseMessageDefinition;
+const TypeDefs =
+  rootSchemaDefinition +
+  userSchemaDefinition +
+  authenticationDataDefinition +
+  responseMessageDefinition;
 
 // Export.
 exports.TypeDefs = TypeDefs;

@@ -6,32 +6,37 @@ body div.account-settings-card h3 {
   margin-top: 2.5%;
   text-align: center;
 }
-body div.account-settings-card div.reset-password-form, body div.account-settings-card div.delete-account-form {
+body div.account-settings-card div.reset-password-form,
+body div.account-settings-card div.delete-account-form {
   text-align: center;
   margin: 2.5% 0 0 0;
 }
-body div.account-settings-card div.reset-password-form form, body div.account-settings-card div.delete-account-form form {
+body div.account-settings-card div.reset-password-form form,
+body div.account-settings-card div.delete-account-form form {
   width: 40%;
   display: inline-block;
   text-align: left;
 }
-body div.account-settings-card div.reset-password-form form input, body div.account-settings-card div.delete-account-form form input {
+body div.account-settings-card div.reset-password-form form input,
+body div.account-settings-card div.delete-account-form form input {
   width: 100%;
   height: 48px;
   border: 2px solid #929191;
   border-radius: 50px;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   outline: 0;
   margin: 2.5% 0 5% 0;
   padding: 2.5%;
 }
-body div.account-settings-card div.reset-password-form form input:focus, body div.account-settings-card div.delete-account-form form input:focus {
-  border-color: #0E8FD8;
+body div.account-settings-card div.reset-password-form form input:focus,
+body div.account-settings-card div.delete-account-form form input:focus {
+  border-color: #0e8fd8;
 }
-body div.account-settings-card div.reset-password-form form button, body div.account-settings-card div.delete-account-form form button {
+body div.account-settings-card div.reset-password-form form button,
+body div.account-settings-card div.delete-account-form form button {
   float: right;
-  color: #F1F1F1;
-  background-color: #0E8FD8;
+  color: #f1f1f1;
+  background-color: #0e8fd8;
   width: 35%;
   height: 2.5rem;
   border-radius: 2.5rem;
@@ -41,31 +46,53 @@ body div.account-settings-card div.reset-password-form form button, body div.acc
   font-weight: bold;
   font-size: 1rem;
 }
-body div.account-settings-card div.reset-password-form form button:hover, body div.account-settings-card div.delete-account-form form button:hover {
-  background-color: #F1F1F1;
-  color: #0E8FD8;
-  border: 2px solid #0E8FD8;
+body div.account-settings-card div.reset-password-form form button:hover,
+body div.account-settings-card div.delete-account-form form button:hover {
+  background-color: #f1f1f1;
+  color: #0e8fd8;
+  border: 2px solid #0e8fd8;
   cursor: pointer;
 }
-body div.account-settings-card div.reset-password-form form button#delete-account-button, body div.account-settings-card div.delete-account-form form button#delete-account-button {
-  background-color: #EB5757;
+body
+  div.account-settings-card
+  div.reset-password-form
+  form
+  button#delete-account-button,
+body
+  div.account-settings-card
+  div.delete-account-form
+  form
+  button#delete-account-button {
+  background-color: #eb5757;
   font-size: 1rem;
 }
-body div.account-settings-card div.reset-password-form form button#delete-account-button:hover, body div.account-settings-card div.delete-account-form form button#delete-account-button:hover {
-  background-color: #F1F1F1;
-  color: #EB5757;
-  border: 2px solid #EB5757;
+body
+  div.account-settings-card
+  div.reset-password-form
+  form
+  button#delete-account-button:hover,
+body
+  div.account-settings-card
+  div.delete-account-form
+  form
+  button#delete-account-button:hover {
+  background-color: #f1f1f1;
+  color: #eb5757;
+  border: 2px solid #eb5757;
 }
-body div.account-settings-card div.reset-password-form form p, body div.account-settings-card div.delete-account-form form p {
+body div.account-settings-card div.reset-password-form form p,
+body div.account-settings-card div.delete-account-form form p {
   font-size: 0.9rem;
 }
-body div.account-settings-card div.reset-password-form form a, body div.account-settings-card div.delete-account-form form a {
-  color: #0E8FD8;
+body div.account-settings-card div.reset-password-form form a,
+body div.account-settings-card div.delete-account-form form a {
+  color: #0e8fd8;
   font-weight: bold;
   text-decoration: none;
 }
-body div.account-settings-card div.reset-password-form a, body div.account-settings-card div.delete-account-form a {
-  color: #0E8FD8;
+body div.account-settings-card div.reset-password-form a,
+body div.account-settings-card div.delete-account-form a {
+  color: #0e8fd8;
   font-weight: bold;
   text-decoration: none;
 }
