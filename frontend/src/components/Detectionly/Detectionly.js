@@ -1,10 +1,13 @@
 // Import modules.
 import React from "react";
+import Authentication from "../Authentication";
 
 // Detectionly component.
 function Detectionly() {
     return (
-        <h1>Detectionly</h1>
+        <div>
+            <Authentication/>
+        </div>
     );
 }
 

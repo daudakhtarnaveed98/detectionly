@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+body div.sign-in-card {
+  font-family: "Montserrat", sans-serif;
+  margin: 2.5% auto 2.5% auto;
+  padding: 2.5% 10%;
+  background-color: #F1F1F1;
+  width: 50%;
+  border-radius: 30px 0;
+}
+body div.sign-in-card img {
+  display: block;
+  margin: 0 auto;
+  width: 45%;
+  height: 45%;
+}
+body div.sign-in-card h2 {
+  margin-top: 5%;
+  text-align: center;
+}
+body div.sign-in-card div.sign-in-form {
+  text-align: center;
+  margin: 7.5% 0 0 0;
+}
+body div.sign-in-card div.sign-in-form form {
+  width: 100%;
+  display: inline-block;
+  text-align: left;
+}
+body div.sign-in-card div.sign-in-form form input {
+  width: 100%;
+  height: 48px;
+  border: 2px solid #929191;
+  border-radius: 50px;
+  background-color: #F1F1F1;
+  outline: 0;
+  margin: 2.5% 0 7.5% 0;
+  padding: 2.5%;
+}
+body div.sign-in-card div.sign-in-form form input:focus {
+  border-color: #0E8FD8;
+}
+body div.sign-in-card div.sign-in-form form button {
+  float: right;
+  color: #F1F1F1;
+  background-color: #0E8FD8;
+  width: 35%;
+  height: 2.5rem;
+  border-radius: 2.5rem;
+  outline: 0;
+  border: 0;
+  transition-duration: 0.1s;
+  font-weight: bold;
+  font-size: 1rem;
+}
+body div.sign-in-card div.sign-in-form form button:hover {
+  background-color: #F1F1F1;
+  color: #0E8FD8;
+  border: 2px solid #0E8FD8;
+  cursor: pointer;
+}
+body div.sign-in-card div.sign-in-form form p {
+  font-size: 0.9rem;
+}
+body div.sign-in-card div.sign-in-form form a {
+  color: #0E8FD8;
+  font-weight: bold;
+  text-decoration: none;
+}
+body div.sign-in-card div.sign-in-form a {
+  color: #0E8FD8;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=style.css.map */
