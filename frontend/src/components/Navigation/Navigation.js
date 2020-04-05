@@ -1,41 +1,78 @@
 // Import modules.
-import React, { Component } from "react";
-import "./style.css";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import styles from "../../styles/Navigation.module.css";
 
 // Component definition.
-class Navigation extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class Navigation extends React.Component {
   render() {
     return (
-      <div>
-        <nav className="nav-bar">
-          <ul className="nav-bar-ul">
-            <li>
-              <a href="#">Change Detector</a>
-            </li>
-            <li>
-              <a href="#">Data Repository</a>
-            </li>
-            <li>
-              <a href="#">User Profile</a>
-            </li>
-            <li>
-              <a href="#">Account Settings</a>
-            </li>
-            <li>
-              <a href="#">Sign Out</a>
-            </li>
-          </ul>
-        </nav>
-        <div className="title-bar">
-          <h2> {this.props.pageTitle} </h2>
-        </div>
-      </div>
+      <React.Fragment>
+        <header className={styles.header}>
+          <h1 className={styles.logoText}>Detectionly</h1>
+          <nav className={styles.navBar}>
+            <ul className={styles.navList}>
+              <li className={styles.navListItem}>
+                <NavLink
+                  className={styles.navLink}
+                  to="/change-detector"
+                  activeClassName={styles.currentPage}
+                >
+                  Change Detector
+                </NavLink>
+              </li>
+              <li className={styles.navListItem}>
+                <NavLink
+                  className={styles.navLink}
+                  to="/data-repository"
+                  activeClassName={styles.currentPage}
+                >
+                  Data Repository
+                </NavLink>
+              </li>
+              <li className={styles.navListItem}>
+                <NavLink
+                  className={styles.navLink}
+                  to="/user-profile"
+                  activeClassName={styles.currentPage}
+                >
+                  User Profile
+                </NavLink>
+              </li>
+              <li className={styles.navListItem}>
+                <NavLink
+                  className={styles.navLink}
+                  to="/account-settings"
+                  activeClassName={styles.currentPage}
+                >
+                  Account Settings
+                </NavLink>
+              </li>
+              <li className={styles.navListItem}>
+                <NavLink
+                  exact
+                  to="/"
+                  className={styles.navLink}
+                  activeClassName={styles.currentPage}
+                  onClick={this.signOutHandler}
+                >
+                  Sign Out
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
+          <div className={styles.pageTitle}>
+            <h2>{this.props.pageTitle}</h2>
+          </div>
+        </header>
+      </React.Fragment>
     );
   }
+
+  // Handler functions.
+  signOutHandler = (e) => {
+    localStorage.removeItem('token');
+  };
 }
 
 // Export.

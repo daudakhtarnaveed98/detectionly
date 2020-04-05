@@ -232,8 +232,8 @@ describe("Function: saveUserToDatabase", () => {
 
 // Tests for authenticateUser function.
 describe("Function: authenticateUser", () => {
-  // Test with an correct user login data.
-  test("[Correct Login Data]: Should return true", async () => {
+  // Test with an correct user signIn data.
+  test("[Correct SignIn Data]: Should return true", async () => {
     // Loop and authenticate each saved user.
     for (let userCredentials of storedFakeUsersCredentials) {
       let returnedBoolean = false;
@@ -251,7 +251,7 @@ describe("Function: authenticateUser", () => {
     }
   });
 
-  // Test with an incorrect user login data.
+  // Test with an incorrect user signIn data.
   test("[Incorrect Email]: Should return false", async () => {
     // Loop and authenticate each saved user with invalid email.
     for (let userCredentials of storedFakeUsersCredentials) {
@@ -288,7 +288,7 @@ describe("Function: authenticateUser", () => {
 // Tests for checkIfAllUserRegistrationDataIsProvided function.
 describe("Function: checkIfAllUserRegistrationDataIsProvided", () => {
   // Test with complete registration data.
-  test("[Complete Registration Data]: Should return true", async () => {
+  test("[Complete SignUp Data]: Should return true", async () => {
     let returnedBoolean = false;
     try {
       returnedBoolean = await utils.checkIfAllUserRegistrationDataIsProvided({
@@ -304,7 +304,7 @@ describe("Function: checkIfAllUserRegistrationDataIsProvided", () => {
   });
 
   // Test with incomplete registration data.
-  test("[Incomplete Registration Data]: Should return false", async () => {
+  test("[Incomplete SignUp Data]: Should return false", async () => {
     const incompleteInputDataArray = [
       {
         emailAddress: "",

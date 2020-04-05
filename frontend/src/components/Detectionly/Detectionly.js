@@ -3,12 +3,14 @@ import React from "react";
 import Authentication from "../Authentication";
 
 // Detectionly component.
-function Detectionly() {
-  return (
-    <div>
-      <Authentication />
-    </div>
-  );
+class Detectionly extends React.Component {
+  render() {
+    return (
+      <React.Fragment>
+        <Authentication />
+      </React.Fragment>
+    );
+  }
 }
 
 // Export.

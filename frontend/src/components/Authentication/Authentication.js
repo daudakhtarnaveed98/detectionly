@@ -1,23 +1,28 @@
 // Import modules.
-import Login from "../Login";
-import React, { Component } from "react";
-import Registration from "../Registration";
+import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import SignUp from "../SignUp";
 import AccountSettings from "../AccountSettings";
+import UserProfile from "../UserProfile";
+import DataRepository from "../DataRepository";
+import SignIn from "../SignIn";
 
 // Authentication class definition.
-class Authentication extends Component {
+class Authentication extends React.Component {
   render() {
     return (
-      <div>
+      <React.Fragment>
         <BrowserRouter>
           <Switch>
-            <Route path="/sign-in" component={Login} />
-            <Route path="/sign-up" component={Registration} />
+            <Route path="/current-component" component={SignIn} />
+            <Route path="/sign-in" component={SignIn} />
+            <Route path="/sign-up" component={SignUp} />
             <Route path="/account-settings" component={AccountSettings} />
+            <Route path="/user-profile" component={UserProfile} />
+            <Route path="/data-repository" component={DataRepository} />
           </Switch>
         </BrowserRouter>
-      </div>
+      </React.Fragment>
     );
   }
 }

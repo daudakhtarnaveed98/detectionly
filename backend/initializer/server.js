@@ -14,17 +14,8 @@ function initializeServer(serverPort) {
   // Initialize express.
   const detectionly = express();
 
-  // Cross origin resource sharing configuration.
-  const corsConfig = {
-    origin: "*",
-    methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-    allowedHeaders: ["Content-Type", "Authorization"],
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  };
-
   // Use middleware.
-  detectionly.use(cors(corsConfig));
+  detectionly.use(cors());
   detectionly.use(middleware.authenticateRequest);
   detectionly.use(bodyParser.json());
   detectionly.use(
