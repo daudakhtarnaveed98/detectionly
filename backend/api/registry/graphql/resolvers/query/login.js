@@ -8,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv-expand")(require("dotenv").config());
 
-// Function to login user.
+// Function to signIn user.
 async function loginUser(userLoginData) {
   // Extract email address and password.
   const { emailAddress: userEmailAddress, password: password } = userLoginData;
@@ -63,7 +63,7 @@ async function loginUser(userLoginData) {
           response: {
             statusCode: commons.statusCodes.OK,
             statusMessage: "OK",
-            responseMessage: "Login Successful",
+            responseMessage: "SignIn Successful",
           },
         };
       } catch (error) {

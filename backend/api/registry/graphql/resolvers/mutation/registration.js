@@ -50,7 +50,7 @@ async function registerUser(userRegistrationData) {
           return {
             statusCode: statusCode,
             statusMessage: "CREATED",
-            responseMessage: "Registration Successful",
+            responseMessage: "SignUp Successful",
           };
         }
         // Else, return BAD REQUEST response.
@@ -58,7 +58,7 @@ async function registerUser(userRegistrationData) {
           return {
             statusCode: statusCode,
             statusMessage: "BAD REQUEST",
-            responseMessage: "Registration Failed",
+            responseMessage: "SignUp Failed",
           };
         }
       } catch (error) {
@@ -70,7 +70,7 @@ async function registerUser(userRegistrationData) {
       return {
         statusCode: commons.statusCodes["NOT ACCEPTABLE"],
         statusMessage: "NOT ACCEPTABLE",
-        responseMessage: "Insufficient Registration Data Provided",
+        responseMessage: "Insufficient SignUp Data Provided",
       };
     }
   }

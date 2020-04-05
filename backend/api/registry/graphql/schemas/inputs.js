@@ -8,7 +8,7 @@ const UserRegistrationInput = `
         password: String!
     }`;
 
-// For user login.
+// For user signIn.
 const UserLoginInput = `
     input UserLoginInput {
         emailAddress: String!
