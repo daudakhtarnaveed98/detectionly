@@ -1,0 +1,33 @@
+.accountSettings {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.deleteAccountButton {
+  background-color: #B71E21;
+  border: 2px solid #B71E21;
+}
+
+.deleteAccountButton:hover {
+  background-color: #F1F1F1;
+  color: #B71E21;
+}
+
+.sectionHeadings {
+  margin: 1vh;
+}
+
+.error {
+  color: red;
+  margin: 2.5vw;
+}
+
+.success {
+  color: green;
+  margin: 2.5vw;
+}
+
+/*# sourceMappingURL=AccountSettings.module.css.map */

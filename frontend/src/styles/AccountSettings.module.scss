@@ -1,0 +1,29 @@
+$color-secondary : #F1F1F1;
+$color-danger: #B71E21;
+
+.accountSettings {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.deleteAccountButton {
+  background-color: $color-danger;
+  border: 2px solid $color-danger;
+}
+.deleteAccountButton:hover {
+  background-color: $color-secondary;
+  color: $color-danger;
+}
+.sectionHeadings {
+  margin: 1vh;
+}
+.error {
+  color: red;
+  margin: 2.5vw;
+}
+.success {
+  color: green;
+  margin: 2.5vw;
+}

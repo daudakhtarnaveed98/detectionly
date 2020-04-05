@@ -1,0 +1,54 @@
+$color-primary: #0e8fd8;
+$color-secondary: #f1f1f1;
+$font-logo: "Pacifico", cursive;
+
+.header {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-primary;
+}
+.logoText {
+  font-family: $font-logo;
+  font-size: 3.5rem;
+  margin: 2.5vh 0;
+  color: $color-secondary;
+  align-self: center;
+}
+.navBar {
+  display: inherit;
+  align-self: center;
+  background-color: $color-secondary;
+  border: 2px solid $color-primary;
+}
+.navList {
+  display: inherit;
+  padding: 0;
+  margin: 0.5vh 0;
+}
+.navListItem {
+  display: inherit;
+  margin: 0 0.25vw;
+  transition-duration: 0.1s;
+}
+.navLink {
+  padding: 1.5vh 1vw;
+  text-decoration: none;
+  font-weight: bold;
+  color: $color-primary;
+}
+.navLink:hover {
+  color: $color-secondary;
+}
+.navListItem:hover {
+  background-color: $color-primary;
+}
+.pageTitle {
+  display: inherit;
+  justify-content: center;
+  padding: 2.5vh;
+  background-color: $color-secondary;
+}
+.currentPage {
+  color: $color-secondary !important;
+  background-color: $color-primary !important;
+}

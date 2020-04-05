@@ -1,0 +1,66 @@
+$color-secondary: #f1f1f1;
+$color-danger: #B71E21;
+$color-success: #48B02C;
+
+.dataRepository {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+}
+.sectionHeadings {
+  margin: 1vh;
+  align-self: center;
+}
+.managementControls {
+  height: 10vh;
+  margin: 2.5vh 5vw 0 5vw;
+  border: 1px solid black;
+  flex-direction: row;
+  width: inherit;
+  justify-content: flex-end;
+  background-color: $color-secondary;
+}
+.addMoreButton {
+  width: 10vw;
+  margin: auto 0.75rem ;
+  background-color: $color-success;
+  border: 2px solid $color-success;
+}
+.addMoreButton:hover {
+  background-color: $color-secondary;
+  color: $color-success;
+}
+.deleteSelectedButton {
+  width: 10vw;
+  margin: auto 0.75rem ;
+  background-color: $color-danger;
+  border: 2px solid $color-danger;
+}
+.deleteSelectedButton:hover {
+  background-color: $color-secondary;
+  color: $color-danger;
+}
+.dataSectionHeader {
+  display: grid;
+  grid-template-columns: 5fr 5fr 45fr 45fr;
+  align-content: center;
+  justify-items: center;
+  width: inherit;
+  border: 1px solid black;
+  border-top: none;
+  margin: 0 5vw;
+  height: 2.5rem;
+}
+.dataSection {
+  display: grid;
+  grid-template-columns: 5fr 5fr 45fr 45fr;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  width: inherit;
+  border: 1px solid black;
+  border-top: none;
+  margin: 0 5vw;
+  height: auto;
+}

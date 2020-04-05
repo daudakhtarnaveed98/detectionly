@@ -1,44 +1,6 @@
+@use "Form";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-form {
-  display: inherit;
-  flex-direction: inherit;
-  width: 32.5vw;
-}
-form label {
-  margin: 2vh 0 1vh 0;
-  font-size: 0.9rem;
-}
-form input {
-  height: 5vh;
-  border: 2px solid #929191;
-  border-radius: 2rem;
-  background-color: #F1F1F1;
-  padding: 1rem;
-  margin: 0 0 2vh 0;
-  outline: 0;
-}
-form input:focus {
-  border-color: #0E8FD8;
-}
-form button {
-  color: #F1F1F1;
-  background-color: #0E8FD8;
-  width: 15rem;
-  height: 2.5rem;
-  border-radius: 2.5rem;
-  outline: 0;
-  border: 2px solid #0E8FD8;
-  transition-duration: 0.1s;
-  font-weight: bold;
-  align-self: flex-end;
-  margin: 2vh 0;
-}
-form button:hover {
-  background-color: #F1F1F1;
-  color: #0E8FD8;
-  cursor: pointer;
-}
 
 * {
   box-sizing: border-box;
@@ -145,24 +107,24 @@ select {
 }
 
 button,
-[type=button],
-[type=reset],
-[type=submit] {
+[type="button"],
+[type="reset"],
+[type="submit"] {
   -webkit-appearance: button;
 }
 
 button::-moz-focus-inner,
-[type=button]::-moz-focus-inner,
-[type=reset]::-moz-focus-inner,
-[type=submit]::-moz-focus-inner {
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
 
 button:-moz-focusring,
-[type=button]:-moz-focusring,
-[type=reset]:-moz-focusring,
-[type=submit]:-moz-focusring {
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
@@ -187,23 +149,23 @@ textarea {
   overflow: auto;
 }
 
-[type=checkbox],
-[type=radio] {
+[type="checkbox"],
+[type="radio"] {
   box-sizing: border-box;
   padding: 0;
 }
 
-[type=number]::-webkit-inner-spin-button,
-[type=number]::-webkit-outer-spin-button {
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
   height: auto;
 }
 
-[type=search] {
+[type="search"] {
   -webkit-appearance: textfield;
   outline-offset: -2px;
 }
 
-[type=search]::-webkit-search-decoration {
+[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -227,5 +189,3 @@ template {
 [hidden] {
   display: none;
 }
-
-/*# sourceMappingURL=index.css.map */

@@ -1,0 +1,61 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  background-color: #0e8fd8;
+}
+
+.logoText {
+  font-family: "Pacifico", cursive;
+  font-size: 3.5rem;
+  margin: 2.5vh 0;
+  color: #f1f1f1;
+  align-self: center;
+}
+
+.navBar {
+  display: inherit;
+  align-self: center;
+  background-color: #f1f1f1;
+  border: 2px solid #0e8fd8;
+}
+
+.navList {
+  display: inherit;
+  padding: 0;
+  margin: 0.5vh 0;
+}
+
+.navListItem {
+  display: inherit;
+  margin: 0 0.25vw;
+  transition-duration: 0.1s;
+}
+
+.navLink {
+  padding: 1.5vh 1vw;
+  text-decoration: none;
+  font-weight: bold;
+  color: #0e8fd8;
+}
+
+.navLink:hover {
+  color: #f1f1f1;
+}
+
+.navListItem:hover {
+  background-color: #0e8fd8;
+}
+
+.pageTitle {
+  display: inherit;
+  justify-content: center;
+  padding: 2.5vh;
+  background-color: #f1f1f1;
+}
+
+.currentPage {
+  color: #f1f1f1 !important;
+  background-color: #0e8fd8 !important;
+}
+
+/*# sourceMappingURL=Navigation.module.css.map */

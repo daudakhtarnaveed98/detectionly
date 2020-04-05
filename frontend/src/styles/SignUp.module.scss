@@ -1,0 +1,57 @@
+$color-primary: #0e8fd8;
+$color-dark-gray: #929191;
+$color-secondary: #f1f1f1;
+$font-logo: "Pacifico", cursive;
+
+.mainWrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-primary;
+}
+
+.signUpForm {
+  display: inherit;
+  flex-direction: column;
+  width: 50vw;
+  height: 90vh;
+  background-color: $color-secondary;
+  border-radius: 2.5rem 0 2.5rem 0;
+  align-items: center;
+}
+
+.logo {
+  font-family: $font-logo;
+  color: $color-primary;
+  font-size: 10vh;
+  margin: 2.5vh 0;
+  padding: 2.5vh 0;
+}
+
+.paragraph {
+  align-self: center;
+  margin: 2.5vh 0;
+}
+
+.link {
+  color: #0e8fd8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.strongPasswordTip {
+  color: $color-dark-gray;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: red;
+  margin: 2.5vw;
+}
+
+.success {
+  color: green;
+  margin: 2.5vw;
+}
