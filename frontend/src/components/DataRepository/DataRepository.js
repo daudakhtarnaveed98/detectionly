@@ -26,9 +26,9 @@ class DataRepository extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Navigation pageTitle={"Data Repository"} />
+        <Navigation pageTitle={"Change Detector"} />
         <section className={styles.dataRepository}>
-          <h3 className={styles.sectionHeadings}>Manage Your Data</h3>
+          <h3 className={styles.sectionHeadings}>Detect Changes In Uploaded Data</h3>
           <form className={styles.managementControls}>
             <label className={styles.fileChooserLabel}>
               <input
