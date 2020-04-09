@@ -24,15 +24,6 @@ class Navigation extends React.Component {
               <li className={styles.navListItem}>
                 <NavLink
                   className={styles.navLink}
-                  to="/data-repository"
-                  activeClassName={styles.currentPage}
-                >
-                  Data Repository
-                </NavLink>
-              </li>
-              <li className={styles.navListItem}>
-                <NavLink
-                  className={styles.navLink}
                   to="/user-profile"
                   activeClassName={styles.currentPage}
                 >
@@ -51,7 +42,7 @@ class Navigation extends React.Component {
               <li className={styles.navListItem}>
                 <NavLink
                   exact
-                  to="/"
+                  to="/sign-in"
                   className={styles.navLink}
                   activeClassName={styles.currentPage}
                   onClick={this.signOutHandler}
