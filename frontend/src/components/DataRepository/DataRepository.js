@@ -38,7 +38,7 @@ class DataRepository extends React.Component {
                 id="fileChooser"
                 onChange={this.addMoreHandler}
               />
-              <p>Add More</p>
+              <p>Upload Images</p>
             </label>
             <button
               className={styles.deleteSelectedButton}
@@ -345,7 +345,6 @@ class DataRepository extends React.Component {
       this.setState({
         selectedItems: selectedItems,
       });
-      console.log(selectedItems);
     } else {
       const selectedItems = this.state.selectedItems;
       selectedItems.delete(e.target.id);
