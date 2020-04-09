@@ -77,49 +77,75 @@ class AccountSettings extends React.Component {
   }
 
   // Handler functions.
+  // Handler for current password input change.
   handleCurrentPasswordChange = (e) => {
     this.setState({ currentPassword: e.target.value });
     this.setState({ response: "", status: false });
   };
 
+  // Handler for new password input change.
   handleNewPasswordChange = (e) => {
     this.setState({ newPassword: e.target.value });
     this.setState({ response: "", status: false });
   };
 
+  // Handler for password input change.
   handlePasswordChangeInput = (e) => {
     this.setState({ password: e.target.value });
     this.setState({ response: "", status: false });
   };
 
+  // Handler for password change button.
   handlePasswordChange = async (e) => {
+    // Prevent default behavior.
     e.preventDefault();
+
+    // If current password is not provided, display error.
     if (this.state.currentPassword === "") {
       this.setState({
         response: "Error: Please provide current password.",
         status: false,
       });
-    } else if (this.state.newPassword === "") {
+    }
+
+    // Else if new password is not provided, show error.
+    else if (this.state.newPassword === "") {
       this.setState({
         response: "Error: Please provide new password.",
         status: false,
       });
-    } else if (!validatePassword(this.state.newPassword)) {
+    }
+
+    // Else if new password does not meet the criteria, show error.
+    else if (!validatePassword(this.state.newPassword)) {
       this.setState({
         response:
           "Error: Password must be of 8 characters, should contain at least one letter, one number and one special character.",
         status: false,
       });
-    } else {
+    }
+
+    // Else proceed.
+    else {
+      // Get current password and new password.
       const { currentPassword, newPassword } = this.state;
 
       // Get token.
       const token = localStorage.getItem("token");
 
-      if (!token) {
+      // If token is not provided, show error and redirect to sign in page.
+      if (!token || token === "" || token === null) {
+        this.setState({
+          response: "Token Expired: Please login again",
+          status: false,
+        });
         this.props.history.push("/sign-in");
-      } else {
-          const passwordUpdateMutation = `
+      }
+
+      // Else proceed.
+      else {
+        // Create password update mutation.
+        const passwordUpdateMutation = `
           mutation {
           updateUserPassword(
             userUpdatePasswordData:{
@@ -135,7 +161,7 @@ class AccountSettings extends React.Component {
 
         // Construct request object.
         const updatePasswordRequest = {
-          url: "http://localhost:65000/api/v1/registry/",
+          url: "http://39.40.116.9:65000/api/v1/registry/",
           method: "POST",
           data: {
             query: passwordUpdateMutation,
@@ -150,27 +176,57 @@ class AccountSettings extends React.Component {
           let response = await axios(updatePasswordRequest);
           if (response.status === 200 || response.status === 201) {
             // Get data from response.
-            const { statusCode, responseMessage } = response.data.data.updateUserPassword;
+            const {
+              statusCode,
+              responseMessage,
+            } = response.data.data.updateUserPassword;
+
+            // If current password provided by user is invalid, show error.
             if (statusCode === 401 && responseMessage === "Invalid Password") {
               this.setState({
                 response: "Error: Invalid password",
                 status: false,
               });
             }
+
+            // If user is not found, show error, most likely it will not happen.
             else if (statusCode === 404) {
               this.setState({
                 response: "Error: Invalid password",
                 status: false,
               });
             }
+
+            // If response is un acceptable, show error.
+            else if (statusCode === 406) {
+              this.setState({
+                response: "Error: Invalid password",
+                status: false,
+              });
+            }
+
+            // Else if token is expired, show error.
+            else if (
+              response.status === 401 &&
+              responseMessage === "Invalid / Expired Token"
+            ) {
+              // Show failure message.
+              this.setState({
+                response: "Token Expired: Please login again",
+                status: false,
+              });
+
+              // Redirect to sign in page.
+              this.props.history.push("/sign-in");
+            }
+
+            // Show success message.
             else {
               this.setState({
                 response: "Success: Password Changed Successfully",
                 status: true,
               });
             }
-          } else if (response.status === 401) {
-            this.props.history.push("/sign-in");
           }
         } catch (error) {
           console.error(error);
@@ -179,8 +235,120 @@ class AccountSettings extends React.Component {
     }
   };
 
-  handleAccountDeletion = (e) => {
+  // Handler for delete account button.
+  handleAccountDeletion = async (e) => {
     e.preventDefault();
+
+    // If current password is not provided, display error.
+    if (this.state.password === "") {
+      this.setState({
+        response: "Error: Please provide current password.",
+        status: false,
+      });
+    }
+
+    // Else proceed.
+    else {
+      // Get current password and new password.
+      const { password } = this.state;
+
+      // Get token.
+      const token = localStorage.getItem("token");
+
+      // If token is not provided, show error and redirect to sign in page.
+      if (!token || token === "" || token === null) {
+        this.setState({
+          response: "Token Expired: Please login again",
+          status: false,
+        });
+        this.props.history.push("/sign-in");
+      }
+
+      // Else proceed.
+      else {
+        // Create password update mutation.
+        const accountDeletionMutation = `
+          mutation {
+            deleteUserAccount(password:"${password}") {
+              statusCode,
+              statusMessage,
+              responseMessage
+            }
+          }
+        `;
+
+        // Construct request object.
+        const deleteAccountRequest = {
+          url: "http://39.40.116.9:65000/api/v1/registry/",
+          method: "POST",
+          data: {
+            query: accountDeletionMutation,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        try {
+          // Make API call.
+          let response = await axios(deleteAccountRequest);
+          if (response.status === 200 || response.status === 201) {
+            // Get data from response.
+            const {
+              statusCode,
+              responseMessage,
+            } = response.data.data.deleteUserAccount;
+
+            // If current password provided by user is invalid, show error.
+            if (statusCode === 401 && responseMessage === "Invalid Password") {
+              this.setState({
+                response: "Error: Invalid password",
+                status: false,
+              });
+            }
+
+            // If user is not found, show error, most likely it will not happen.
+            else if (statusCode === 404) {
+              this.setState({
+                response: "Error: Invalid password",
+                status: false,
+              });
+            }
+
+            // Else if token is expired, show error.
+            else if (
+              response.status === 401 &&
+              responseMessage === "Invalid / Expired Token"
+            ) {
+              // Show failure message.
+              this.setState({
+                response: "Token Expired: Please login again",
+                status: false,
+              });
+
+              // Redirect to sign in page.
+              this.props.history.push("/sign-in");
+            }
+
+            // Show success message.
+            else {
+              this.setState({
+                response: "Success: Account Deleted Successfully",
+                status: true,
+              });
+
+              // Remove token.
+              localStorage.removeItem("token");
+
+              // Redirect to sign in page.
+              this.props.history.push("/sign-up");
+            }
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
   };
 }
 
