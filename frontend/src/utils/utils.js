@@ -104,3 +104,44 @@ export const detectChange = async (token, nameOfImagePairFolder, invalidateCurre
     console.error(error);
   }
 };
+
+export const getUserInformation = async (token) => {
+  // Create a login query.
+  const getUserInformationQuery = `
+        query {
+          getUserInformation {
+            firstName,
+            lastName,
+            phoneNumber,
+            organizationName,
+            roleInOrganization,
+            response {
+              statusCode,
+              statusMessage,
+              responseMessage
+            }
+          }
+        }`;
+
+  // Construct request object.
+  const getUserInformationRequest = {
+    url: "http://39.40.116.9:65000/api/v1/registry/",
+    method: "POST",
+    data: {
+      query: getUserInformationQuery,
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  // Try to make API call.
+  try {
+    let response = await axios(getUserInformationRequest);
+    if (response.status === 200 || response.status === 201) {
+      return response;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
