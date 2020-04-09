@@ -44,9 +44,21 @@
   color: #B71E21;
 }
 
+.detectChangeButton {
+  width: 10vw;
+  margin: auto 0.75rem;
+  background-color: #0E8FD8;
+  border: 2px solid #0E8FD8;
+}
+
+.detectChangeButton:hover {
+  background-color: #f1f1f1;
+  color: #0E8FD8;
+}
+
 .dataSectionHeader {
   display: grid;
-  grid-template-columns: 5fr 5fr 45fr 45fr;
+  grid-template-columns: 5fr 5fr 30fr 30fr 30fr;
   align-content: center;
   justify-items: center;
   width: inherit;
@@ -58,15 +70,51 @@
 
 .dataSection {
   display: grid;
-  grid-template-columns: 5fr 5fr 45fr 45fr;
   align-content: center;
   justify-items: center;
   align-items: center;
+  grid-template-columns: 5fr 5fr 30fr 30fr 30fr;
+  row-gap: 1rem;
   width: inherit;
   border: 1px solid black;
   border-top: none;
   margin: 0 5vw;
   height: auto;
+}
+
+.fileChooser {
+  border: none;
+  display: inherit;
+}
+
+input[type=file] {
+  display: none;
+}
+
+.fileChooserLabel {
+  display: inherit;
+  justify-content: center;
+  align-content: center;
+  margin: auto 0.75rem;
+  background-color: #48B02C;
+  border: 2px solid #48B02C;
+  width: 10vw;
+  height: 2.5rem;
+  border-radius: 2.5rem;
+  transition-duration: 0.1s;
+}
+.fileChooserLabel p {
+  align-self: center;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.fileChooserLabel:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+.fileChooserLabel:hover p {
+  color: #48B02C;
 }
 
 /*# sourceMappingURL=DataRepository.module.css.map */

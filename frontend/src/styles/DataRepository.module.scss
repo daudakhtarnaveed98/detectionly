@@ -1,6 +1,7 @@
 $color-secondary: #f1f1f1;
 $color-danger: #B71E21;
 $color-success: #48B02C;
+$color-primary: #0E8FD8;
 
 .dataRepository {
   width: inherit;
@@ -41,9 +42,21 @@ $color-success: #48B02C;
   background-color: $color-secondary;
   color: $color-danger;
 }
+
+.detectChangeButton {
+  width: 10vw;
+  margin: auto 0.75rem ;
+  background-color: $color-primary;
+  border: 2px solid $color-primary;
+}
+.detectChangeButton:hover {
+  background-color: $color-secondary;
+  color: $color-primary;
+}
+
 .dataSectionHeader {
   display: grid;
-  grid-template-columns: 5fr 5fr 45fr 45fr;
+  grid-template-columns: 5fr 5fr 30fr 30fr 30fr;
   align-content: center;
   justify-items: center;
   width: inherit;
@@ -54,13 +67,50 @@ $color-success: #48B02C;
 }
 .dataSection {
   display: grid;
-  grid-template-columns: 5fr 5fr 45fr 45fr;
   align-content: center;
   justify-items: center;
   align-items: center;
+  grid-template-columns: 5fr 5fr 30fr 30fr 30fr;
+  row-gap: 1rem;
   width: inherit;
   border: 1px solid black;
   border-top: none;
   margin: 0 5vw;
   height: auto;
+}
+
+.fileChooser {
+  border: none;
+  display: inherit;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.fileChooserLabel {
+  display: inherit;
+  justify-content: center;
+  align-content: center;
+  margin: auto 0.75rem;
+  background-color: $color-success;
+  border: 2px solid $color-success;
+  width: 10vw;
+  height: 2.5rem;
+  border-radius: 2.5rem;
+  transition-duration: 0.1s;
+
+  p {
+    align-self: center;
+    font-weight: bold;
+    color: $color-secondary;
+  }
+}
+
+.fileChooserLabel:hover {
+  background-color: $color-secondary;
+  cursor: pointer;
+  p {
+    color: $color-success;
+  }
 }
