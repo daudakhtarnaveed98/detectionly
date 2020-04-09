@@ -76,6 +76,20 @@ class AccountSettings extends React.Component {
     );
   }
 
+  componentDidMount = async () => {
+    // Get token.
+    const token = localStorage.getItem("token");
+
+    // If token is not provided, show error and redirect to sign in page.
+    if (!token || token === "" || token === null) {
+      this.setState({
+        response: "Token Expired: Please login again",
+        status: false,
+      });
+      this.props.history.push("/sign-in");
+    }
+  };
+
   // Handler functions.
   // Handler for current password input change.
   handleCurrentPasswordChange = (e) => {
