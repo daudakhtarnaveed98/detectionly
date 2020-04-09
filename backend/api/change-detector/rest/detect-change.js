@@ -37,10 +37,11 @@ function detectChange(detectionly) {
     }
 
     // Get image pair folder absolute path.
+    const {PERM_FILE_UPLOAD_PATH} = process.env;
     const imagePairFolderPathAbsolute = path.join(
       __dirname,
       "../../../",
-      process.env.PERM_FILE_UPLOAD_PATH,
+      PERM_FILE_UPLOAD_PATH,
       req.emailAddress,
       imagePairFolderName
     );
@@ -70,7 +71,7 @@ function detectChange(detectionly) {
     // If image pair has already been inferred i.e array length is 3.
     if (imagePairPaths.length === 3 && invalidateCurrent !== "true") {
       // Read change map, convert to base64.
-      const base64 = fs.readFileSync(path.join(imagePairFolderPathAbsolute, "change-map.jpg")).toString("base64");
+      const base64 = fs.readFileSync(path.join(imagePairFolderPathAbsolute, "z-map.jpg")).toString("base64");
       const response = "data:image/jpeg;base64," + base64;
 
       // Send OK response with image.
@@ -96,7 +97,7 @@ function detectChange(detectionly) {
       }
 
       // Read change map, convert to base64.
-      const base64 = fs.readFileSync(path.join(imagePairFolderPathAbsolute, "change-map.jpg")).toString("base64");
+      const base64 = fs.readFileSync(path.join(imagePairFolderPathAbsolute, "z-map.jpg")).toString("base64");
       const response = "data:image/jpeg;base64," + base64;
 
       // Send OK response with image.
