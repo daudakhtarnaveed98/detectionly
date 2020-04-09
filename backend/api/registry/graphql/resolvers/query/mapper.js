@@ -34,7 +34,7 @@ const queryResolversMap = {
           }
       };
     } else {
-      const {userEmailAddress: userEmailAddress} = args;
+      const userEmailAddress = req.emailAddress;
       try {
         return await information.getUserInformation(userEmailAddress);
       } catch (error) {
