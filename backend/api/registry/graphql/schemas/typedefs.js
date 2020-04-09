@@ -41,11 +41,23 @@ const responseMessageDefinition = `
     }
 `;
 
+const userInformationDefinition = `
+    type UserInformation {
+        firstName: String
+        lastName: String
+        phoneNumber: String
+        organizationName: String
+        roleInOrganization: String
+        response: Response!
+    }
+`;
+
 // Combined typedefs schema.
 const TypeDefs =
   rootSchemaDefinition +
   userSchemaDefinition +
   authenticationDataDefinition +
+  userInformationDefinition +
   responseMessageDefinition;
 
 // Export.

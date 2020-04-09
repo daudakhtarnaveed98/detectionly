@@ -4,6 +4,7 @@
 const queriesSchema = `
     type Query {
         loginUser(userLoginData: UserLoginInput): AuthenticationData!
+        getUserInformation(userEmailAddress: String): UserInformation
     }
 `;
 
