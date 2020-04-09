@@ -65,19 +65,28 @@ function locateImages(detectionly) {
         }
 
         // For each folder containing image pair, get paths of images.
+        let response = [];
         let userUploadedImagePairPaths = [];
         userUploadedImagesPairFolders.forEach(
           (currentFolderContainingImagePair) => {
+            const responseObject = {
+              folderName: currentFolderContainingImagePair,
+              imagePaths: [],
+              imageCount: 0
+            };
+
             fs.readdirSync(
               path.join(userDataDirectory, currentFolderContainingImagePair)
             ).forEach((userUploadedCurrentImagePath) => {
-              userUploadedImagePairPaths.push(
+              responseObject.imagePaths.push(
                 path.join(
                   currentFolderContainingImagePair,
                   userUploadedCurrentImagePath
                 )
               );
+              responseObject.imageCount += 1;
             });
+            response.push(responseObject);
           }
         );
 
@@ -85,8 +94,7 @@ function locateImages(detectionly) {
         return res.status(200).send({
           statusMessage: "OK",
           responseMessage: "Images Retrieved",
-          userUploadedImagesPairFolders: userUploadedImagesPairFolders,
-          userUploadedImagesPairPaths: userUploadedImagePairPaths,
+          userUploadedImages: response,
         });
       }
     );
