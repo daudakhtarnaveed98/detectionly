@@ -2,7 +2,7 @@
 import React from "react";
 import styles from "../../styles/SignIn.module.css";
 import { Link } from "react-router-dom";
-import { validateEmail, validatePassword } from "../../utils";
+import { validateEmail } from "../../utils";
 import axios from "axios";
 
 // Component definition.
@@ -67,31 +67,45 @@ class SignIn extends React.Component {
   }
 
   // Handler methods.
+  // Handler for email input change.
   handleEmailChange = (e) => {
     this.setState({ emailAddress: e.target.value.toLowerCase() });
     this.setState({ response: "", status: false });
   };
 
+  // Handler for password input change.
   handlePasswordChange = (e) => {
     this.setState({ password: e.target.value });
     this.setState({ response: "", status: false });
   };
 
+  // Handler for sign in button.
   handleSignIn = async (e) => {
+    // Prevent default behavior.
     e.preventDefault();
 
+    // If email is not valid show error.
     if (!validateEmail(this.state.emailAddress)) {
       this.setState({
         response: "Error: Please provide a valid email address",
         status: false,
       });
-    } else if (this.state.password === "") {
+    }
+
+    // If password is not provided, show error.
+    else if (this.state.password === "") {
       this.setState({
         response: "Error: Please provide a password.",
         status: false,
       });
-    } else {
+    }
+
+    // Else proceed.
+    else {
+      // Get email and password from state.
       const { emailAddress, password } = this.state;
+
+      // Create a login query.
       const loginQuery = `
         query {
           loginUser(userLoginData:{
@@ -110,19 +124,20 @@ class SignIn extends React.Component {
 
       // Construct request object.
       const loginUserRequest = {
-        url: "http://localhost:65000/api/v1/registry/",
+        url: "http://39.40.116.9:65000/api/v1/registry/",
         method: "POST",
         data: {
           query: loginQuery,
         },
       };
 
-      // Make API call.
-      let response;
+      // Try to make API call.
       try {
-        response = await axios(loginUserRequest);
+        let response = await axios(loginUserRequest);
+
+        // If response is 200 or 201, proceed.
         if (response.status === 200 || response.status === 201) {
-          // Get data from response.
+          // Get status code from response.
           const { statusCode } = response.data.data.loginUser.response;
 
           // In case of conflict, show error.
@@ -131,18 +146,31 @@ class SignIn extends React.Component {
               response: "Error: Email address or password is invalid",
               status: false,
             });
-          } else {
-              const {token} = response.data.data.loginUser;
-              localStorage.setItem('token', token);
+          }
+
+          // Else proceed.
+          else {
+            // Get and store token.
+            const { token } = response.data.data.loginUser;
+            localStorage.setItem("token", token);
+
+            // Show success message.
             this.setState({
               response: "Success: Logged in successfully",
               status: true,
             });
 
-            setTimeout(() => {
-              this.props.history.push("/change-detector");
-            }, 1000);
+            // Redirect to app.
+            this.props.history.push("/change-detector");
           }
+        }
+
+        // Else, show error.
+        else {
+          this.setState({
+            response: "Error: Sign in failed, internal server error.",
+            status: false,
+          });
         }
       } catch (error) {
         console.error(error);
