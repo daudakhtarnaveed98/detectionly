@@ -10,8 +10,6 @@ import {
   locateCurrentData,
 } from "../../utils/utils";
 import ImagePair from "../ImagePair";
-import imageA from "../../images/A.jpg";
-import imageB from "../../images/B.jpg";
 
 // Component definition.
 class DataRepository extends React.Component {
@@ -79,7 +77,6 @@ class DataRepository extends React.Component {
           <section className={styles.dataSection}>
             {Array.from(this.state.retrievedImages).map(
               (currentPair, index) => {
-                console.log(currentPair);
                 const pairNumber = index + 1;
                 const folderName = currentPair[0];
                 const imageA = currentPair[1].imageA.data;
@@ -127,33 +124,34 @@ class DataRepository extends React.Component {
         return;
       }
 
-      const {
-        userUploadedImagesPairFolders,
-        userUploadedImagesPairPaths,
-      } = locateResponse.data;
+      const { userUploadedImages } = locateResponse.data;
 
-      // Get images in form of pairs.
+      // Get current images in state.
       const retrievedImages = this.state.retrievedImages;
-      for (let i = 0; i < userUploadedImagesPairFolders.length; i++) {
-        const j = 3 * i;
-        let imageA = await getImage(token, userUploadedImagesPairPaths[j]);
-        let imageB = await getImage(token, userUploadedImagesPairPaths[j + 1]);
-        let changeMap = await getImage(
-          token,
-          userUploadedImagesPairPaths[j + 2]
-        );
-        console.log(changeMap);
 
-        if (imageA === undefined) imageA = "";
-        if (imageB === undefined) imageB = "";
-        if (changeMap === undefined) changeMap = "";
+      for (let i = 0; i < userUploadedImages.length; i++) {
+        const currentObject = userUploadedImages[i];
+        const currentFolder = currentObject.folderName;
+        const imageCount = currentObject.imageCount;
+        const imagePaths = currentObject.imagePaths;
 
-        const imagePair = {
+        let imageA = "";
+        let imageB = "";
+        let changeMap = "";
+
+        if (imageCount === 3) {
+          changeMap = await getImage(token, imagePaths[2]);
+        }
+
+        imageA = await getImage(token, imagePaths[0]);
+        imageB = await getImage(token, imagePaths[1]);
+
+        const imagePairToAdd = {
           imageA: imageA,
           imageB: imageB,
           changeMap: changeMap,
         };
-        retrievedImages.set(userUploadedImagesPairFolders[i], imagePair);
+        retrievedImages.set(currentFolder, imagePairToAdd);
       }
 
       // Set state.
@@ -204,37 +202,26 @@ class DataRepository extends React.Component {
         // Make API call.
         let uploadResponse = await axios(fileUploadRequest);
         if (uploadResponse.status === 200 || uploadResponse.status === 201) {
+
           // Locate newly uploaded image paths.
           const locateResponse = await locateCurrentData(token);
-          const uploadedImagePairFolder =
-            uploadResponse.data.imagesUploadedPairFolder;
-          const uploadedImagesLocations = locateResponse.data.userUploadedImagesPairPaths.filter(
+          const uploadedImagePairFolder = uploadResponse.data.imagesUploadedPairFolder;
+          const uploadedImagesObject = locateResponse.data.userUploadedImages
+            .filter(
             (current) => {
-              return current.includes(uploadedImagePairFolder);
+              return current.folderName === uploadedImagePairFolder;
             }
           );
 
           // Get uploaded images.
-          const imagesUploaded = [];
-          for (let i = 0; i < uploadedImagesLocations.length; i++) {
-            const currentImage = await getImage(
-              token,
-              uploadedImagesLocations[i]
-            );
-            imagesUploaded.push(currentImage);
-          }
+          const imagesUploaded = uploadedImagesObject[0].imagePaths;
 
           // If image A or image B is not retrieved, push an empty string.
-          let imageA = imagesUploaded[0];
-          let imageB = imagesUploaded[1];
+          let imageA = await getImage(token, imagesUploaded[0]);
+          let imageB = await getImage(token, imagesUploaded[1]);
 
-          if (imageA === undefined) {
-            imageA = "";
-          }
-
-          if (imageB === undefined) {
-            imageB = "";
-          }
+          if (imageA === undefined) imageA = "";
+          if (imageB === undefined) imageB = "";
 
           // Create image pair object to add.
           const imagePairToAdd = {
