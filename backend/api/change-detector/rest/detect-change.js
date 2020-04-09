@@ -69,9 +69,12 @@ function detectChange(detectionly) {
     }
     // If image pair has already been inferred i.e array length is 3.
     if (imagePairPaths.length === 3 && invalidateCurrent !== "true") {
-      return res.sendFile(
-        path.join(imagePairFolderPathAbsolute, "change-map.jpg")
-      );
+      // Read change map, convert to base64.
+      const base64 = fs.readFileSync(path.join(imagePairFolderPathAbsolute, "change-map.jpg")).toString("base64");
+      const response = "data:image/jpeg;base64," + base64;
+
+      // Send OK response with image.
+      return res.status(200).send(response);
     }
 
     // Change directory to one containing run shell script.
@@ -92,10 +95,12 @@ function detectChange(detectionly) {
         throw error;
       }
 
-      // Send change map.
-      return res.sendFile(
-        path.join(imagePairFolderPathAbsolute, "change-map.jpg")
-      );
+      // Read change map, convert to base64.
+      const base64 = fs.readFileSync(path.join(imagePairFolderPathAbsolute, "change-map.jpg")).toString("base64");
+      const response = "data:image/jpeg;base64," + base64;
+
+      // Send OK response with image.
+      return res.status(200).send(response);
     });
   });
 }

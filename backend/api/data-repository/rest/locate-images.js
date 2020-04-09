@@ -21,10 +21,11 @@ function locateImages(detectionly) {
     }
 
     // Get user data directory path, check if it exists, if not return NOT FOUND response.
+    const {PERM_FILE_UPLOAD_PATH} = process.env;
     const userDataDirectory = path.join(
       __dirname,
       "../../../",
-      process.env.PERM_FILE_UPLOAD_PATH,
+      PERM_FILE_UPLOAD_PATH,
       req.emailAddress
     );
     if (!fs.existsSync(userDataDirectory)) {

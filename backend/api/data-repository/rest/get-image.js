@@ -30,10 +30,11 @@ function getImage(detectionly) {
     }
 
     // Image complete path.
+    const {PERM_FILE_UPLOAD_PATH} = process.env;
     const image = path.join(
       __dirname,
       "../../../",
-      process.env.PERM_FILE_UPLOAD_PATH,
+      PERM_FILE_UPLOAD_PATH,
       req.emailAddress,
       imagePath
     );
@@ -46,8 +47,12 @@ function getImage(detectionly) {
       });
     }
 
+    // Read image, convert to base64.
+    const base64 = fs.readFileSync(image).toString("base64");
+    const response = "data:image/jpeg;base64," + base64;
+
     // Send OK response with image.
-    return res.status(200).sendFile(image);
+    return res.status(200).send(response);
   });
 }
 

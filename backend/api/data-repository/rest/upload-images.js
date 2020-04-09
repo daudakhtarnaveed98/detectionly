@@ -108,7 +108,8 @@ function uploadImages(detectionly) {
       }
 
       // Create folder with uuid inside user directory.
-      const imagesUploadPath = path.join(userDataDirectory, uuid.v4());
+      const imagePairFolder = uuid.v4();
+      const imagesUploadPath = path.join(userDataDirectory, imagePairFolder);
       if (!fs.existsSync(imagesUploadPath)) {
         fs.mkdirSync(imagesUploadPath);
       }
@@ -133,6 +134,7 @@ function uploadImages(detectionly) {
         statusMessage: "CREATED",
         responseMessage: "Upload Successful",
         imagesUploaded: files,
+        imagesUploadedPairFolder: imagePairFolder
       });
     }
   );
