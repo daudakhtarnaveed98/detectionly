@@ -14,12 +14,12 @@ class Authentication extends React.Component {
       <React.Fragment>
         <BrowserRouter>
           <Switch>
-            <Route path="/current-component" component={SignIn} />
             <Route path="/sign-in" component={SignIn} />
             <Route path="/sign-up" component={SignUp} />
+            <Route exact path="/" component={SignUp} />
             <Route path="/account-settings" component={AccountSettings} />
             <Route path="/user-profile" component={UserProfile} />
-            <Route path="/data-repository" component={DataRepository} />
+            <Route path="/change-detector" component={DataRepository} />
           </Switch>
         </BrowserRouter>
       </React.Fragment>
