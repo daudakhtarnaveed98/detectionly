@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(
       null,
-      file.originalname + "-" + uuid.v4() + path.extname(file.originalname)
+      file.originalname + "-" + uuid.v1({msecs: new Date().getTime()}) + path.extname(file.originalname)
     );
   },
 });
@@ -108,7 +108,7 @@ function uploadImages(detectionly) {
       }
 
       // Create folder with uuid inside user directory.
-      const imagePairFolder = uuid.v4();
+      const imagePairFolder = uuid.v1({msecs: new Date().getTime()});
       const imagesUploadPath = path.join(userDataDirectory, imagePairFolder);
       if (!fs.existsSync(imagesUploadPath)) {
         fs.mkdirSync(imagesUploadPath);
