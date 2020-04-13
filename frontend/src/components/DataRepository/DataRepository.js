@@ -37,6 +37,7 @@ class DataRepository extends React.Component {
                 name="fileChooser"
                 id="fileChooser"
                 onChange={this.addMoreHandler}
+                accept="image/*"
               />
               <p>Upload Images</p>
             </label>
@@ -178,6 +179,11 @@ class DataRepository extends React.Component {
 
     // Else proceed.
     else {
+      if (e.target.files.length < 2) {
+        alert("Please select 2 images");
+        return ;
+      }
+
       // Get selected images.
       const file = e.target.files[0];
       const file1 = e.target.files[1];
