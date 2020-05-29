@@ -175,7 +175,7 @@ class AccountSettings extends React.Component {
 
         // Construct request object.
         const updatePasswordRequest = {
-          url: "http://39.40.116.9:65000/api/v1/registry/",
+          url: "http://localhost:65000/api/v1/registry/",
           method: "POST",
           data: {
             query: passwordUpdateMutation,
@@ -293,7 +293,7 @@ class AccountSettings extends React.Component {
 
         // Construct request object.
         const deleteAccountRequest = {
-          url: "http://39.40.116.9:65000/api/v1/registry/",
+          url: "http://localhost:65000/api/v1/registry/",
           method: "POST",
           data: {
             query: accountDeletionMutation,

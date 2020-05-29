@@ -124,7 +124,7 @@ class SignIn extends React.Component {
 
       // Construct request object.
       const loginUserRequest = {
-        url: "http://39.40.116.9:65000/api/v1/registry/",
+        url: "http://localhost:65000/api/v1/registry/",
         method: "POST",
         data: {
           query: loginQuery,

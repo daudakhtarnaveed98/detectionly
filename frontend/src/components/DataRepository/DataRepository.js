@@ -195,7 +195,7 @@ class DataRepository extends React.Component {
 
       // Construct request object.
       const fileUploadRequest = {
-        url: "http://39.40.116.9:65000/api/v1/repository/upload/",
+        url: "http://localhost:65000/api/v1/repository/upload/",
         method: "POST",
         data: fd,
         headers: {

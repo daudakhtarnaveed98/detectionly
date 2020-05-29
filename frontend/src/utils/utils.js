@@ -14,7 +14,7 @@ export const passwordValidator = (password) => {
 export const locateCurrentData = async (token) => {
   // Construct request object.
   const dataLocateRequest = {
-    url: "http://39.40.116.9:65000/api/v1/repository/locate/all",
+    url: "http://localhost:65000/api/v1/repository/locate/all",
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -35,7 +35,7 @@ export const locateCurrentData = async (token) => {
 export const getImage = async (token, imagePath) => {
   // Construct request object.
   const getImageRequest = {
-    url: "http://39.40.116.9:65000/api/v1/repository/get/",
+    url: "http://localhost:65000/api/v1/repository/get/",
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ export const getImage = async (token, imagePath) => {
 export const deleteImagePair = async (token, nameOfImagePairFolder) => {
   // Construct request object.
   const deleteImageRequest = {
-    url: "http://39.40.116.9:65000/api/v1/repository/delete/",
+    url: "http://localhost:65000/api/v1/repository/delete/",
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -83,7 +83,7 @@ export const deleteImagePair = async (token, nameOfImagePairFolder) => {
 export const detectChange = async (token, nameOfImagePairFolder, invalidateCurrent) => {
   // Construct request object.
   const deleteImageRequest = {
-    url: "http://39.40.116.9:65000/api/v1/change-detector/",
+    url: "http://localhost:65000/api/v1/change-detector/",
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -125,7 +125,7 @@ export const getUserInformation = async (token) => {
 
   // Construct request object.
   const getUserInformationRequest = {
-    url: "http://39.40.116.9:65000/api/v1/registry/",
+    url: "http://localhost:65000/api/v1/registry/",
     method: "POST",
     data: {
       query: getUserInformationQuery,
