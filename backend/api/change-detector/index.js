@@ -1,6 +1,7 @@
+// Use strict mode.
 "use strict";
 
-// Require modules.
+// Require libraries and modules.
 const rest = require("./rest");
 
 // Export.
