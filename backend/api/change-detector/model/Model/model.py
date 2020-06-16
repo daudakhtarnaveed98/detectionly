@@ -78,30 +78,30 @@ class LocalMSCDNet(nn.Module):
         self.pool = nn.MaxPool2d(2, 2, return_indices=True)
         self.unpool = nn.MaxUnpool2d(2, 2)
         # Encoder
-        self.double_conv1 = DoubleConv2d(in_channels, 16)
-        self.double_conv2 = DoubleConv2d(16, 32)
-        self.double_conv3 = DoubleConv2d(32, 64)
-        self.conv1 = Conv2d(64, 64)
-        self.double_conv4 = DoubleConv2d(64, 128)
-        self.conv2 = Conv2d(128, 128)
+        self.double_conv1 = DoubleConv2d(in_channels, 32)
+        self.double_conv2 = DoubleConv2d(32, 64)
+        self.double_conv3 = DoubleConv2d(64, 128)
+        self.conv1 = Conv2d(128, 128)
+        self.double_conv4 = DoubleConv2d(128, 256)
+        self.conv2 = Conv2d(256, 256)
         # Decoder
-        self.diff_conv1 = DiffConv(256, 128)
-        self.aspp = ASPP(128, 64)
+        self.diff_conv1 = DiffConv(512, 256)
+        self.aspp = ASPP(256, 128)
         # self.double_conv5 = DoubleConv2d(128, 64)
         # self.conv3 = Conv2d(64, 64)
 
-        self.diff_conv2 = DiffConv(128, 64)
-        self.double_conv6 = DoubleConv2d(128, 64)
-        self.conv4 = Conv2d(64, 32)
+        self.diff_conv2 = DiffConv(256, 128)
+        self.double_conv6 = DoubleConv2d(256, 128)
+        self.conv4 = Conv2d(128, 64)
 
-        self.diff_conv3 = DiffConv(64, 32)
-        self.conv5 = Conv2d(64, 32)
-        self.conv6 = Conv2d(32, 16)
+        self.diff_conv3 = DiffConv(128, 64)
+        self.conv5 = Conv2d(128, 64)
+        self.conv6 = Conv2d(64, 32)
 
-        self.diff_conv4 = DiffConv(32, 16)
-        self.double_conv8 = DoubleConv2d(32, 16)
+        self.diff_conv4 = DiffConv(64, 32)
+        self.double_conv8 = DoubleConv2d(64, 32)
 
-        self.out = nn.Conv2d(16, 1, 1)
+        self.out = nn.Conv2d(32, 1, 1)
 
     def forward(self, x1, x2):
         x1_l1, x1_l2, x1_l3, x1_l4, _ = self.encode(x1)
@@ -155,8 +155,8 @@ class Model:
         self.patch_size = patch_size
         self.model = LocalMSCDNet(in_channels)
         self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
-        checkpoint = torch.load('Model/model.tar', map_location=self.device)
-        self.model.load_state_dict(checkpoint['model_state_dict'])
+        checkpoint = torch.load('Model/model.pt', map_location=self.device)
+        self.model.load_state_dict(checkpoint)
         self.model = self.model.to(self.device)
 
     def predict(self, img1, img2):
