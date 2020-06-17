@@ -48,6 +48,16 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
+
+  // Activation properties.
+  active: {
+    type: Boolean,
+    default: false
+  },
+  activeToken: String,
+
+  // Password reset properties.
+  passwordResetToken: String,
 });
 
 // Create model based on userSchema using mongoose.

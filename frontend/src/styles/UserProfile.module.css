@@ -10,4 +10,12 @@
   margin: 1vh;
 }
 
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
+
 /*# sourceMappingURL=UserProfile.module.css.map */

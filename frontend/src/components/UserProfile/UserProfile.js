@@ -24,6 +24,9 @@ class UserProfile extends React.Component {
       <React.Fragment>
         <Navigation pageTitle={"User Profile"} />
         <section className={styles.userProfile}>
+          <h3 className={this.state.status ? styles.success : styles.error}>
+            {this.state.response}
+          </h3>
           <h3 className={styles.sectionHeadings}>Update User Information</h3>
           <form>
             <label htmlFor="firstName">First Name:</label>
@@ -194,7 +197,7 @@ class UserProfile extends React.Component {
         // Make API call.
         let response = await axios(updatePasswordRequest);
         if (response.status === 200 || response.status === 201) {
-          this.setState({ response: "Information Updated Successfully" });
+          this.setState({ response: "Information Updated Successfully", status: true });
         }
       } catch (error) {
         console.error(error);

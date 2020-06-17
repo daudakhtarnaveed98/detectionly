@@ -44,7 +44,7 @@ $color-primary: #0E8FD8;
 }
 
 .detectChangeButton {
-  width: 10vw;
+  width: 12.5vw;
   margin: auto 0.75rem ;
   background-color: $color-primary;
   border: 2px solid $color-primary;
@@ -77,6 +77,7 @@ $color-primary: #0E8FD8;
   border-top: none;
   margin: 0 5vw;
   height: auto;
+  background-color: #f5f5f5;
 }
 
 .fileChooser {
@@ -86,6 +87,14 @@ $color-primary: #0E8FD8;
 
 input[type="file"] {
   display: none;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  padding: 10px;
+  outline: none;
 }
 
 .fileChooserLabel {
@@ -112,5 +121,11 @@ input[type="file"] {
   cursor: pointer;
   p {
     color: $color-success;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .detectChangeButton {
+    height: auto;
   }
 }

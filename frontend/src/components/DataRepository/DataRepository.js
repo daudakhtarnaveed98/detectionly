@@ -8,6 +8,7 @@ import {
   detectChange,
   getImage,
   locateCurrentData,
+  composeImages,
 } from "../../utils/utils";
 import ImagePair from "../ImagePair";
 
@@ -20,6 +21,7 @@ class DataRepository extends React.Component {
       changeMaps: new Map(),
       selectedItems: new Set(),
       displayMessage: "",
+      deleteButtonDisabled: false,
     };
   }
 
@@ -41,7 +43,26 @@ class DataRepository extends React.Component {
               />
               <p>Upload Images</p>
             </label>
+
             <button
+              className={styles.detectChangeButton}
+              name="deleteSelectedButton"
+              id="deleteSelectedButton"
+              onClick={this.detectChangeHandler}
+            >
+              Detect Change (Selected)
+            </button>
+
+            <button
+              className={styles.detectChangeButton}
+              name="deleteSelectedButton"
+              id="deleteSelectedButton"
+              onClick={this.detectChangeAllHandler}
+            >
+              Detect Change (All)
+            </button>
+            <button
+              disabled={this.state.deleteButtonDisabled}
               className={styles.deleteSelectedButton}
               name="deleteSelectedButton"
               id="deleteSelectedButton"
@@ -50,12 +71,13 @@ class DataRepository extends React.Component {
               Delete Selected
             </button>
             <button
-              className={styles.detectChangeButton}
+              disabled={this.state.deleteButtonDisabled}
+              className={styles.deleteSelectedButton}
               name="deleteSelectedButton"
               id="deleteSelectedButton"
-              onClick={this.detectChangeHandler}
+              onClick={this.deleteAllHandler}
             >
-              Detect Change
+              Delete All
             </button>
           </form>
           <section className={styles.dataSectionHeader}>
@@ -63,7 +85,7 @@ class DataRepository extends React.Component {
               <h3>#</h3>
             </div>
             <div>
-              <h3></h3>
+              <h3>Select</h3>
             </div>
             <div>
               <h3>Image A</h3>
@@ -147,18 +169,32 @@ class DataRepository extends React.Component {
         imageA = await getImage(token, imagePaths[0]);
         imageB = await getImage(token, imagePaths[1]);
 
-        const imagePairToAdd = {
+        let imagePairToAdd = {
           imageA: imageA,
           imageB: imageB,
           changeMap: changeMap,
         };
-        retrievedImages.set(currentFolder, imagePairToAdd);
-      }
 
-      // Set state.
-      this.setState({
-        retrievedImages: retrievedImages,
-      });
+        // Composing images with change maps.
+        if (imageCount === 3) {
+          const composedImages = await composeImages(imageA, imageB, changeMap);
+
+          // Set base64 strings to current pair of images.
+          imageA["data"] = composedImages[0];
+          imageB["data"] = composedImages[1];
+
+          imagePairToAdd = {
+            ...imagePairToAdd,
+            isComposed: true,
+          }
+        }
+        retrievedImages.set(currentFolder, imagePairToAdd);
+
+        // Set state.
+        this.setState({
+          retrievedImages: retrievedImages,
+        });
+      }
     }
   };
 
@@ -184,69 +220,86 @@ class DataRepository extends React.Component {
         return ;
       }
 
-      // Get selected images.
-      const file = e.target.files[0];
-      const file1 = e.target.files[1];
+      // Get selected files from event e.
+      const files = e.target.files;
 
-      // Create form data.
-      const fd = new FormData();
-      fd.append("images", file, file.name);
-      fd.append("images", file1, file1.name);
+      // Check if odd number of images is selected.
+      if (files.length % 2 !== 0) {
+        alert("Please select even (in pairs) number of images.");
+        return ;
+      }
 
-      // Construct request object.
-      const fileUploadRequest = {
-        url: "http://localhost:65000/api/v1/repository/upload/",
-        method: "POST",
-        data: fd,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      };
+      // Limit 10 image pairs per upload event.
+      if (files.length > 20) {
+        alert("Please select upto 10 image pairs.");
+        return ;
+      }
 
-      try {
-        // Make API call.
-        let uploadResponse = await axios(fileUploadRequest);
-        if (uploadResponse.status === 200 || uploadResponse.status === 201) {
+      for (let i = 0; i < files.length; i += 2) {
+        // Get selected images.
+        const file = files[i];
+        const file1 = files[i + 1];
 
-          // Locate newly uploaded image paths.
-          const locateResponse = await locateCurrentData(token);
-          const uploadedImagePairFolder = uploadResponse.data.imagesUploadedPairFolder;
-          const uploadedImagesObject = locateResponse.data.userUploadedImages
-            .filter(
-            (current) => {
-              return current.folderName === uploadedImagePairFolder;
-            }
-          );
+        // Create form data.
+        const fd = new FormData();
+        fd.append("images", file, file.name);
+        fd.append("images", file1, file1.name);
 
-          // Get uploaded images.
-          const imagesUploaded = uploadedImagesObject[0].imagePaths;
+        // Construct request object.
+        const fileUploadRequest = {
+          url: "http://localhost:65000/api/v1/repository/upload/",
+          method: "POST",
+          data: fd,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        };
 
-          // If image A or image B is not retrieved, push an empty string.
-          let imageA = await getImage(token, imagesUploaded[0]);
-          let imageB = await getImage(token, imagesUploaded[1]);
+        try {
+          // Make API call.
+          let uploadResponse = await axios(fileUploadRequest);
+          if (uploadResponse.status === 200 || uploadResponse.status === 201) {
 
-          if (imageA === undefined) imageA = "";
-          if (imageB === undefined) imageB = "";
+            // Locate newly uploaded image paths.
+            const locateResponse = await locateCurrentData(token);
+            const uploadedImagePairFolder = uploadResponse.data.imagesUploadedPairFolder;
+            const uploadedImagesObject = locateResponse.data.userUploadedImages
+              .filter(
+                (current) => {
+                  return current.folderName === uploadedImagePairFolder;
+                }
+              );
 
-          // Create image pair object to add.
-          const imagePairToAdd = {
-            imageA: imageA,
-            imageB: imageB,
-            changeMap: "",
-          };
+            // Get uploaded images.
+            const imagesUploaded = uploadedImagesObject[0].imagePaths;
 
-          // Merge images.
-          const merged = this.state.retrievedImages;
-          merged.set(uploadedImagePairFolder, imagePairToAdd);
+            // If image A or image B is not retrieved, push an empty string.
+            let imageA = await getImage(token, imagesUploaded[0]);
+            let imageB = await getImage(token, imagesUploaded[1]);
 
-          // Set state.
-          this.setState({
-            retrievedImages: merged,
-          });
+            if (imageA === undefined) imageA = "";
+            if (imageB === undefined) imageB = "";
+
+            // Create image pair object to add.
+            const imagePairToAdd = {
+              imageA: imageA,
+              imageB: imageB,
+              changeMap: "",
+            };
+
+            // Merge images.
+            const merged = this.state.retrievedImages;
+            merged.set(uploadedImagePairFolder, imagePairToAdd);
+
+            // Set state.
+            this.setState({
+              retrievedImages: merged,
+            });
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
       }
     }
   };
@@ -325,22 +378,202 @@ class DataRepository extends React.Component {
         return;
       }
 
+      this.setState({
+        deleteButtonDisabled: true
+      });
+
       let retrievedImages = this.state.retrievedImages;
       for (let item of selectedItems) {
         // Make API call.
         const changeDetectResponse = await detectChange(token, item, true);
         let currentPair = retrievedImages.get(item);
+
+        if (currentPair.isComposed === undefined) {
+          const composedImages = await composeImages(currentPair.imageA, currentPair.imageB, changeDetectResponse);
+
+          if (composedImages === undefined) {
+            window.location.reload();
+            return ;
+          }
+
+          // Set base64 strings to current pair of images.
+          currentPair.imageA["data"] = composedImages[0];
+          currentPair.imageB["data"] = composedImages[1];
+        }
+
         currentPair = {
           ...currentPair,
           changeMap: changeDetectResponse,
+          isComposed: true
         };
         retrievedImages.set(item, currentPair);
       }
+
       this.setState({
         retrievedImages: retrievedImages,
+        deleteButtonDisabled: false
       });
     }
   };
+
+  // Detect change all handler.
+  detectChangeAllHandler = async (e) => {
+    e.preventDefault();
+
+    const retrievedImages = this.state.retrievedImages;
+    const selectedItems = this.state.selectedItems;
+
+    for (let key of retrievedImages) {
+      if (!selectedItems.has(key[0])) {
+        selectedItems.add(key[0]);
+      }
+    }
+    this.setState({
+      selectedItems: selectedItems,
+    });
+
+    // Get token.
+    const token = localStorage.getItem("token");
+
+    // If token is not provided, show error and redirect to sign in page.
+    if (!token || token === "" || token === null) {
+      this.setState({
+        response: "Token Expired: Please login again",
+        status: false,
+      });
+      this.props.history.push("/sign-in");
+    }
+
+    // Else proceed.
+    else {
+
+      // Loop and delete selected items.
+      const selectedItems = this.state.selectedItems;
+
+      // Check if any item is selected to delete.
+      if (selectedItems.size === 0) {
+        alert("Please upload items to detect change");
+        return;
+      }
+
+      this.setState({
+        deleteButtonDisabled: true
+      });
+      
+      let retrievedImages = this.state.retrievedImages;
+      for (let item of selectedItems) {
+        // Make API call.
+        const changeDetectResponse = await detectChange(token, item, false);
+        let currentPair = retrievedImages.get(item);
+
+        if (currentPair.isComposed === undefined) {
+          const composedImages = await composeImages(currentPair.imageA, currentPair.imageB, changeDetectResponse);
+
+          if (composedImages === undefined) {
+            window.location.reload();
+            return ;
+          }
+
+          // Set base64 strings to current pair of images.
+          currentPair.imageA["data"] = composedImages[0];
+          currentPair.imageB["data"] = composedImages[1];
+        }
+
+        currentPair = {
+          ...currentPair,
+          changeMap: changeDetectResponse,
+          isComposed: true
+        };
+        retrievedImages.set(item, currentPair);
+
+        this.setState({
+          retrievedImages: retrievedImages,
+        });
+      }
+      this.setState({
+        deleteButtonDisabled: false
+      });
+    }
+
+    selectedItems.clear();
+    this.setState(
+      {
+        selectedItems: selectedItems
+      }
+    )
+  };
+
+  // Delete all handler.
+  deleteAllHandler = async (e) => {
+    e.preventDefault();
+
+    // Confirm about deleting all data.
+    const isConfirmed = window.confirm("Are you sure about deleting all data?");
+    if (!isConfirmed)
+      return ;
+
+    const retrievedImages = this.state.retrievedImages;
+    const selectedItems = this.state.selectedItems;
+
+    for (let key of retrievedImages) {
+      if (!selectedItems.has(key[0])) {
+        selectedItems.add(key[0]);
+      }
+    }
+    this.setState({
+      selectedItems: selectedItems,
+    });
+
+    // Get token.
+    const token = localStorage.getItem("token");
+
+    // If token is not provided, show error and redirect to sign in page.
+    if (!token || token === "" || token === null) {
+      this.setState({
+        response: "Token Expired: Please login again",
+        status: false,
+      });
+      this.props.history.push("/sign-in");
+    }
+
+    // Else proceed.
+    else {
+      // Loop and delete selected items.
+      const selectedItems = this.state.selectedItems;
+
+      // Check if any item is selected to delete.
+      if (selectedItems.size === 0) {
+        alert("No items found");
+        return;
+      }
+
+      for (let item of selectedItems) {
+        // Make API call.
+        await deleteImagePair(token, item);
+
+        // Remove from retrieved images.
+        const retrievedImages = this.state.retrievedImages;
+        retrievedImages.delete(item);
+
+        // Remove from selected items.
+        selectedItems.delete(item);
+
+        // Set state.
+        this.setState({
+          selectedItems: selectedItems,
+          retrievedImages: retrievedImages,
+        });
+      }
+    }
+
+    selectedItems.clear();
+    this.setState(
+      {
+        selectedItems: selectedItems
+      }
+    )
+    console.log(this.state.selectedItems);
+  }
 
   // Utility methods.
   // Checkbox change handler.
@@ -358,6 +591,8 @@ class DataRepository extends React.Component {
         selectedItems: selectedItems,
       });
     }
+
+    console.log(this.state.selectedItems);
   };
 }
 

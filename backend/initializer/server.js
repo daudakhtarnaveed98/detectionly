@@ -27,6 +27,15 @@ function initializeServer(serverPort) {
     })
   );
 
+  // Account activation.
+  api.registry.rest.activateAccount(detectionly);
+  api.registry.rest.sendActivationEmail(detectionly);
+
+  // Password resetting.
+  api.registry.rest.sendPasswordResetEmail(detectionly);
+  api.registry.rest.handlePasswordResetTokenAndRedirection(detectionly);
+  api.registry.rest.updateForgottenPassword(detectionly);
+
   // Setup images upload, get and delete.
   api.dataRepository.rest.uploadImages(detectionly);
   api.dataRepository.rest.deleteImagePair(detectionly);

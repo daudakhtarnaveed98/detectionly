@@ -1,6 +1,8 @@
 "use strict";
 
 // Require modules.
+import {afterAll, beforeAll, describe, expect} from "@jest/globals";
+
 const utils = require("../../utils");
 const faker = require("faker");
 const mongoose = require("mongoose");
@@ -233,7 +235,7 @@ describe("Function: saveUserToDatabase", () => {
 // Tests for authenticateUser function.
 describe("Function: authenticateUser", () => {
   // Test with an correct user signIn data.
-  test("[Correct SignIn Data]: Should return true", async () => {
+  test("[Correct ForgotPassword Data]: Should return true", async () => {
     // Loop and authenticate each saved user.
     for (let userCredentials of storedFakeUsersCredentials) {
       let returnedBoolean = false;

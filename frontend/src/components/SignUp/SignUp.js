@@ -173,8 +173,13 @@ class SignUp extends React.Component {
               response: "Redirecting To Sign In Page...",
             });
 
-            // Redirect to sign in page after 1 second.
-            this.props.history.push("/sign-in");
+            // Redirect to account activation page.
+            this.props.history.push({
+              pathname: "/account-activation",
+              state: {
+                emailAddress: emailAddress
+              }
+            });
           }
         }
 

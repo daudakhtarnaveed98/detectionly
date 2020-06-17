@@ -1,6 +1,7 @@
+// Use strict mode.
 "use strict";
 
-// Require modules.
+// Require libraries and modules.
 const fs = require("fs");
 const path = require("path");
 require("dotenv-expand")(require("dotenv").config());
@@ -15,22 +16,26 @@ function getImage(detectionly) {
 
     // If isAuthorized === false, return UNAUTHORIZED response.
     if (isAuthorized === false) {
-      return res.status(401).send({
-        statusMessage: "UNAUTHORIZED",
-        responseMessage: "Invalid Token",
-      });
+      return res
+        .status(401)
+        .send({
+          statusMessage: "UNAUTHORIZED",
+          responseMessage: "Invalid Token",
+        });
     }
 
-    // If imagePath === null || "" || undefined, return UNAUTHORIZED response.
+    // If imagePath === null || "" || undefined, return BAD REQUEST response.
     if (imagePath === null || imagePath === "" || !imagePath) {
-      return res.status(400).send({
-        statusMessage: "BAD REQUEST",
-        responseMessage: "Image Path Cannot Be Empty",
-      });
+      return res
+        .status(400)
+        .send({
+          statusMessage: "BAD REQUEST",
+          responseMessage: "Image Path Cannot Be Empty",
+        });
     }
 
-    // Image complete path.
-    const {PERM_FILE_UPLOAD_PATH} = process.env;
+    // Construct complete path of image.
+    const { PERM_FILE_UPLOAD_PATH } = process.env;
     const image = path.join(
       __dirname,
       "../../../",
@@ -39,20 +44,22 @@ function getImage(detectionly) {
       imagePath
     );
 
-    // If image does not exist.
+    // If image does not exist, send NOT FOUND response.
     if (!fs.existsSync(image)) {
-      return res.status(404).send({
-        statusMessage: "NOT FOUND",
-        responseMessage: "Image Not Found",
-      });
+      return res
+        .status(404)
+        .send({
+          statusMessage: "NOT FOUND",
+          responseMessage: "Image Not Found",
+        });
     }
 
     // Read image, convert to base64.
     const base64 = fs.readFileSync(image).toString("base64");
-    const response = "data:image/jpeg;base64," + base64;
+    const imageBase64 = "data:image/jpeg;base64," + base64;
 
     // Send OK response with image.
-    return res.status(200).send(response);
+    return res.status(200).send(imageBase64);
   });
 }
 

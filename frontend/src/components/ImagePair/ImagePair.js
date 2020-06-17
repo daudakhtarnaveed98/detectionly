@@ -5,6 +5,9 @@ import React from "react";
 class ImagePair extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isComposed: false,
+    }
   }
 
   render() {
@@ -14,7 +17,7 @@ class ImagePair extends React.Component {
         <input type="checkbox" name={this.props.folderName} id={this.props.folderName} onChange={this.props.checkBoxHandler} />
         <img src={this.props.imageA} alt="Image A"/>
         <img src={this.props.imageB} alt="Image B"/>
-        <img src={this.props.changeMap} alt="Not Generated Yet"/>
+        <img title={"Change Map"} src={this.props.changeMap} alt="Not Generated Yet"/>
       </React.Fragment>
     );
   }

@@ -1,6 +1,7 @@
+// Use strict mode.
 "use strict";
 
-// Require modules.
+// Require libraries and modules.
 const imageUploader = require("./upload-images");
 const imageDeleter = require("./delete-image-pair");
 const imageLocator = require("./locate-images");

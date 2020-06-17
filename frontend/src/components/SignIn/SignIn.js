@@ -50,9 +50,9 @@ class SignIn extends React.Component {
             </form>
             <p className={styles.paragraph}>
               Forgot Password?{" "}
-              <a className={styles.link} href="#">
+              <Link to="/forgot-password" className={styles.link} href="#">
                 Click Here
-              </a>
+              </Link>
             </p>
             <p className={styles.paragraph}>
               Not Registered?{" "}
@@ -139,6 +139,15 @@ class SignIn extends React.Component {
         if (response.status === 200 || response.status === 201) {
           // Get status code from response.
           const { statusCode } = response.data.data.loginUser.response;
+
+          // In case of bad request, show error.
+          if (statusCode === 400) {
+            this.setState({
+              response: "Error: Activate Your Account By Clicking Link In Email",
+              status: false,
+            });
+            return ;
+          }
 
           // In case of conflict, show error.
           if (statusCode === 401 || statusCode === 404) {

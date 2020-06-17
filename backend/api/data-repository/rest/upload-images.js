@@ -1,6 +1,7 @@
+// Use strict mode.
 "use strict";
 
-// Require modules.
+// Require libraries and modules.
 const fs = require("fs");
 const path = require("path");
 const uuid = require("uuid");
@@ -12,13 +13,16 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(
       null,
-      path.join(__dirname, "../../../", process.env.TEMP_FILE_UPLOAD_PATH)
+      path.join(__dirname, "../../../", process.env["TEMP_FILE_UPLOAD_PATH"])
     );
   },
   filename: function (req, file, cb) {
     cb(
       null,
-      file.originalname + "-" + uuid.v1({msecs: new Date().getTime()}) + path.extname(file.originalname)
+      file.originalname +
+        "-" +
+        uuid.v1({ msecs: new Date().getTime() }) +
+        path.extname(file.originalname)
     );
   },
 });
@@ -65,7 +69,7 @@ function uploadImages(detectionly) {
         const imageUploadTemporaryDirectory = path.join(
           __dirname,
           "../../../",
-          process.env.TEMP_FILE_UPLOAD_PATH
+          process.env["TEMP_FILE_UPLOAD_PATH"]
         );
 
         // Clean temporary folder.
@@ -75,6 +79,7 @@ function uploadImages(detectionly) {
             console.error(error);
           }
 
+          // Remove each file in temporary folder.
           files.forEach((file) => {
             fs.unlink(
               path.join(imageUploadTemporaryDirectory, file),
@@ -86,6 +91,7 @@ function uploadImages(detectionly) {
             );
           });
         });
+
         // Return UNAUTHORIZED response.
         return res.status(401).send({
           statusMessage: "UNAUTHORIZED",
@@ -100,7 +106,7 @@ function uploadImages(detectionly) {
       const userDataDirectory = path.join(
         __dirname,
         "../../../",
-        process.env.PERM_FILE_UPLOAD_PATH,
+        process.env["PERM_FILE_UPLOAD_PATH"],
         emailAddress
       );
       if (!fs.existsSync(userDataDirectory)) {
@@ -108,7 +114,7 @@ function uploadImages(detectionly) {
       }
 
       // Create folder with uuid inside user directory.
-      const imagePairFolder = uuid.v1({msecs: new Date().getTime()});
+      const imagePairFolder = uuid.v1({ msecs: new Date().getTime() });
       const imagesUploadPath = path.join(userDataDirectory, imagePairFolder);
       if (!fs.existsSync(imagesUploadPath)) {
         fs.mkdirSync(imagesUploadPath);
@@ -134,7 +140,7 @@ function uploadImages(detectionly) {
         statusMessage: "CREATED",
         responseMessage: "Upload Successful",
         imagesUploaded: files,
-        imagesUploadedPairFolder: imagePairFolder
+        imagesUploadedPairFolder: imagePairFolder,
       });
     }
   );

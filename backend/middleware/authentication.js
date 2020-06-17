@@ -27,7 +27,7 @@ function authenticateRequest(req, res, next) {
   // Try to verify jwt.
   let decodedValues;
   try {
-    decodedValues = jsonwebtoken.verify(jwt, process.env.PRIVATE_KEY);
+    decodedValues = jsonwebtoken.verify(jwt, process.env["PRIVATE_KEY"]);
   } catch (error) {
     req.isAuthorized = false;
     return next();

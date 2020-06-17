@@ -1,13 +1,14 @@
+// Use strict mode.
 "use strict";
 
-// Require modules.
+// Require libraries and modules.
 require("dotenv-expand")(require("dotenv").config());
 const fs = require("fs");
 const path = require("path");
 
 // Function to locate images.
 function locateImages(detectionly) {
-  // Route to get images.
+  // Route to locate images.
   detectionly.get("/api/v1/repository/locate/all", function (req, res) {
     // Get isAuthorized from req.
     const isAuthorized = req.isAuthorized;
@@ -20,14 +21,16 @@ function locateImages(detectionly) {
       });
     }
 
-    // Get user data directory path, check if it exists, if not return NOT FOUND response.
-    const {PERM_FILE_UPLOAD_PATH} = process.env;
+    // Generate user data directory path.
+    const { PERM_FILE_UPLOAD_PATH } = process.env;
     const userDataDirectory = path.join(
       __dirname,
       "../../../",
       PERM_FILE_UPLOAD_PATH,
       req.emailAddress
     );
+
+    // Check if it exists, if not return NOT FOUND response.
     if (!fs.existsSync(userDataDirectory)) {
       return res.status(404).send({
         statusMessage: "NOT FOUND",
@@ -64,28 +67,36 @@ function locateImages(detectionly) {
           });
         }
 
-        // For each folder containing image pair, get paths of images.
+        // Variable to hold response.
         let response = [];
-        let userUploadedImagePairPaths = [];
+
+        // For each folder containing image pair, get paths of images.
         userUploadedImagesPairFolders.forEach(
           (currentFolderContainingImagePair) => {
+            // Create a response object with current folder name, array to hold paths of images in it and image count.
             const responseObject = {
               folderName: currentFolderContainingImagePair,
               imagePaths: [],
-              imageCount: 0
+              imageCount: 0,
             };
 
+            // Read current folder containing images.
             fs.readdirSync(
               path.join(userDataDirectory, currentFolderContainingImagePair)
             ).forEach((userUploadedCurrentImagePath) => {
+              // For each image in current folder, generate its absolute path and push it to response object image paths array.
               responseObject.imagePaths.push(
                 path.join(
                   currentFolderContainingImagePair,
                   userUploadedCurrentImagePath
                 )
               );
+
+              // Increase image count by one.
               responseObject.imageCount += 1;
             });
+
+            // Push response object to response.
             response.push(responseObject);
           }
         );

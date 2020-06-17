@@ -25,6 +25,25 @@ async function loginUser(userLoginData) {
 
   // Proceed if user exists.
   if (userRecordExistsInDatabase) {
+    // Check if account is activated.
+    let isActivated = false;
+    try {
+      isActivated = await utils.isActivated(userEmailAddress);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // If account is not activated then return BAD REQUEST response.
+    if (!isActivated) {
+      return {
+        response: {
+          statusCode: commons.statusCodes["BAD REQUEST"],
+          statusMessage: "BAD REQUEST",
+          responseMessage: "Account Not Activated",
+        },
+      };
+    }
+
     // Try to compare entered password with correct password.
     let comparisonResult = false;
     try {
@@ -63,7 +82,7 @@ async function loginUser(userLoginData) {
           response: {
             statusCode: commons.statusCodes.OK,
             statusMessage: "OK",
-            responseMessage: "SignIn Successful",
+            responseMessage: "Login Successful",
           },
         };
       } catch (error) {

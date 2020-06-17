@@ -4,6 +4,9 @@
 const models = require("../models");
 const commons = require("../commons");
 const { compare } = require("bcryptjs");
+const md5 = require("md5");
+const uuid = require("uuid");
+const { transporter } = require("./mailer");
 
 // Utility functions.
 // Function to check if user record exists in database.
@@ -82,9 +85,27 @@ async function saveUserToDatabase(userRegistrationData) {
     emailAddress: userRegistrationData.emailAddress,
     password: userRegistrationData.password,
   });
+
+
+  // Set activation token for user.
+  userToSave.activeToken = userToSave._id;
+
+  // Construct activation link with activation token.
+  const link = 'http://localhost:65000/activate/' + userToSave.activeToken;
+
   // Try to save user to database.
   try {
     await userToSave.save();
+
+    // Send activation email.
+    await transporter.sendMail({
+      from: '"Detectionly" <detectionly@gmail.com>',
+      to: userRegistrationData.emailAddress,
+      text: "Account Activation",
+      subject: 'Welcome to Detectionly',
+      html: 'Please click <a href="' + link + '"> here </a> to activate your account.'
+    });
+
     return commons.statusCodes["CREATED"];
   } catch (error) {
     // Catch and log error.
@@ -117,6 +138,94 @@ async function authenticateUser(userEmailAddress, password) {
   }
 }
 
+// Function to check if account is activated.
+async function isActivated(userEmailAddress) {
+  // Try to fetch user object and then check if it is activated.
+  let userFromDatabase = null;
+  try {
+    userFromDatabase = await getUserFromDatabase(userEmailAddress);
+  } catch (error) {
+    console.error(error);
+  }
+
+  return userFromDatabase["active"] === true;
+}
+
+// Function to send activation email.
+async function sendActivationEmail(userEmailAddress) {
+  // Get user from database.
+  const user = await getUserFromDatabase(userEmailAddress);
+
+  if (user === null) {
+    return false;
+  }
+
+  // Set activation token for user.
+  user.activeToken = user._id;
+
+  // Construct activation link with activation token.
+  const link = 'http://localhost:65000/activate/' + user.activeToken;
+
+  // Send activation email.
+  await transporter.sendMail({
+    from: '"Detectionly" <detectionly@gmail.com>',
+    to: userEmailAddress,
+    text: "Account Activation",
+    subject: 'Welcome to Detectionly',
+    html: 'Please click <a href="' + link + '"> here </a> to activate your account.'
+  });
+
+  return true;
+}
+
+// Function to send password reset email.
+async function sendPasswordResetEmail(userEmailAddress) {
+  // Password reset token.
+  const passwordResetToken = uuid.v4();
+  const passwordResetTokenHash = md5(passwordResetToken);
+
+  // Conditions to find user.
+  const conditions = {
+    emailAddress: userEmailAddress,
+  };
+
+  // Set password reset token for user.
+  const update = {
+    passwordResetToken: passwordResetToken,
+  };
+
+  // Options.
+  const options = {
+    useFindAndModify: false,
+    new: true,
+  };
+
+  // Update with activated field.
+  try {
+    const result = await models.User.findOneAndUpdate(conditions, update, options).exec();
+    if (result === null) {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+
+  // Construct activation link with password reset token.
+  const link = 'http://localhost:65000/reset-password/' + passwordResetToken + "/" + passwordResetTokenHash;
+
+  // Send activation email.
+  await transporter.sendMail({
+    from: '"Detectionly" <detectionly@gmail.com>',
+    to: userEmailAddress,
+    text: "Password Reset",
+    subject: 'Password Reset Request',
+    html: 'Please click <a href="' + link + '"> here </a> to reset your account password.'
+  });
+
+  return true;
+}
+
 // Function to concatenate schemas.
 function concatenateSchemas(...schemasToCombine) {
   // Variable to hold concatenated schemas.
@@ -138,3 +247,6 @@ exports.checkIfAllUserRegistrationDataIsProvided = checkIfAllUserRegistrationDat
 exports.saveUserToDatabase = saveUserToDatabase;
 exports.authenticateUser = authenticateUser;
 exports.concatenateSchemas = concatenateSchemas;
+exports.isActivated = isActivated;
+exports.sendActivationEmail = sendActivationEmail;
+exports.sendPasswordResetEmail = sendPasswordResetEmail;
