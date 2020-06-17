@@ -1,6 +1,13 @@
 # Detectionly
 Detectionly is a web application that can be used to detect changes in a given pair of images.
 
+# Dataset
+Dataset employed was proposed by the following paper:
+
+MA Lebedev, Yu V Vizilter, OV Vygolov, VA Knyaz, and A Yu Rubis. Change detection in remote sensing images using conditional adversarial networks. International Archives of the Photogrammetry, Remote Sensing & Spatial Information Sciences, 42(2), 2018.
+
+Dataset Link: https://drive.google.com/file/d/1GX656JqqOyBi_Ef0w65kDGVto-nHrNs9
+
 # How to run
 
   - Prerequisites: Linux, Python, PyTorch, Yarn, NodeJS, MongoDB and OpenCV.
