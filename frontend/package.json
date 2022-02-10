@@ -13,7 +13,7 @@
     "bcryptjs": "^2.4.3",
     "jimp": "^0.13.0",
     "md5": "^2.2.1",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
